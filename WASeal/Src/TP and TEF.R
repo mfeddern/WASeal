@@ -8,11 +8,22 @@ library(lme4)
 #install.packages("digitize")
 #install.packages("mgcv")
 library(mgcv)
-data <- read.csv("Data/Compiled/WASealAAandTP2.csv")
+#data <- read.csv("Data/Compiled/WASealAAandTP2.csv")
+data <- read.csv("Data/Compiled/SI Data.csv")
 #install.packages("visreg")
 library(visreg)
 #data <- read.csv("SortedTP.csv")
 #dev.off()
+
+library(tidyverse)
+library(caret)
+library(glmnet)
+library(Momocs)
+library(dplyr)
+library(glinternet)
+# Loading the data
+#data(swiss)
+
 #################################################################################################
 ########################     Calculating TEFs                      ############################
 #################################################################################################
@@ -125,95 +136,75 @@ transform_to_log_scale <- function(x){
 }
 
 
-data.hGLU = data[,c("years","Location.2","TP.GLU")]
-data.hGLU =cbind(data.hGLU, AA=rep('Glu',length(data.hGLU$TP.GLU)), TP.norm=transform_to_log_scale(data.hGLU$TP.GLU-mean(na.omit(data.hGLU$TP.GLU))))
+data.hGLU = data[,c("years","Location.2","TP.GLU", "Sample.ID")]
+data.hGLU =cbind(data.hGLU, AA=rep('Glu',length(data.hGLU$TP.GLU)), TP.norm=data.hGLU$TP.GLU-mean(na.omit(data.hGLU$TP.GLU)))
 data.hGLU =dplyr::rename(data.hGLU, TP = TP.GLU)
 
-data.hASP = data[,c("years","Location.2","TP.ASP")]
-data.hASP =cbind(data.hASP, AA=rep('Asp',length(data.hASP$TP.ASP)), TP.norm=transform_to_log_scale(data.hASP$TP.ASP-mean(na.omit(data.hASP$TP.ASP))))
+data.hASP = data[,c("years","Location.2","TP.ASP", "Sample.ID")]
+data.hASP =cbind(data.hASP, AA=rep('Asp',length(data.hASP$TP.ASP)), TP.norm=data.hASP$TP.ASP-mean(na.omit(data.hASP$TP.ASP)))
 data.hASP =dplyr::rename(data.hASP, TP = TP.ASP)
 
-data.hPRO = data[,c("years","Location.2","TP.PRO")]
-data.hPRO =cbind(data.hPRO, AA=rep('Pro',length(data.hPRO$TP.PRO)), TP.norm=transform_to_log_scale(data.hPRO$TP.PRO-mean(na.omit(data.hPRO$TP.PRO))))
+data.hPRO = data[,c("years","Location.2","TP.PRO", "Sample.ID")]
+data.hPRO =cbind(data.hPRO, AA=rep('Pro',length(data.hPRO$TP.PRO)), TP.norm=data.hPRO$TP.PRO-mean(na.omit(data.hPRO$TP.PRO)))
 data.hPRO =dplyr::rename(data.hPRO, TP = TP.PRO)
 
-data.hVAL = data[,c("years","Location.2","TP.VAL")]
-data.hVAL =cbind(data.hVAL, AA=rep('Val',length(data.hVAL$TP.VAL)), TP.norm=transform_to_log_scale(data.hVAL$TP.VAL-mean(na.omit(data.hVAL$TP.VAL))))
+data.hVAL = data[,c("years","Location.2","TP.VAL", "Sample.ID")]
+data.hVAL =cbind(data.hVAL, AA=rep('Val',length(data.hVAL$TP.VAL)), TP.norm=data.hVAL$TP.VAL-mean(na.omit(data.hVAL$TP.VAL)))
 data.hVAL =dplyr::rename(data.hVAL, TP = TP.VAL)
 
-data.hALA = data[,c("years","Location.2","TP.ALA")]
-data.hALA =cbind(data.hALA, AA=rep('Ala',length(data.hALA$TP.ALA)), TP.norm=transform_to_log_scale(data.hALA$TP.ALA-mean(na.omit(data.hALA$TP.ALA))))
+data.hALA = data[,c("years","Location.2","TP.ALA", "Sample.ID")]
+data.hALA =cbind(data.hALA, AA=rep('Ala',length(data.hALA$TP.ALA)), TP.norm=data.hALA$TP.ALA-mean(na.omit(data.hALA$TP.ALA)))
 data.hALA =dplyr::rename(data.hALA, TP = TP.ALA)
 
-########################     Hierarchical Environmental Models       ############################
+data.hPHE = data[,c("years","PHE.mean", "Sample.ID")]
+data.hPHE =cbind(data.hPHE,PHE.norm=data.hPHE$PHE.mean-mean(na.omit(data.hPHE$PHE.mean)))
+
+data.d13C = data[,c("years","d13C.s", "Sample.ID")]
+data.d13C =cbind(data.d13C,d13C.norm=data.d13C$d13C.s-mean(na.omit(data.d13C$d13C.s)))
+
+########################     Hierarchical Climate Models       ############################
 
 data.hier <- rbind(data.hGLU, data.hASP)
 data.hier <- rbind(data.hier, data.hPRO)
 data.hier <- rbind(data.hier, data.hVAL)
 data.hier <- rbind(data.hier, data.hALA)
 data.hier<- subset(data.hier, Location.2=="Coastal"|Location.2=="Inland")
-data.hier <- cbind(data.hier, Year=data.hier$years+1)
+data.hier <- cbind(data.hier, Year=data.hier$years+1) # adding 1 year lag
 
 dfa <- read.csv("Data/Compiled/DFA.csv")
 dfa = dfa[,c("Year","Up.DFA1","Climate.DFA1.x", "SST.DFA1", "Dis.DFA1")]
 data2<-merge(dfa,data.hier, by='Year', all.x=TRUE)
+data2<-merge(data2,data.hPHE, by='Sample.ID', all.x=TRUE)
+data2<-merge(data2,data.d13C, by='Sample.ID', all.x=TRUE)
 
 
-Mod.Upwelling <- lmer(TP~Up.DFA1+Location.2+(1|AA), data=data2)
-summary(Mod.Upwelling)
-AIC(Mod.Upwelling)
-
-Mod <- lmer(TP~Location.2+(1|AA), data=data2)
-summary(Mod)
-AIC(Mod)
-
-Mod.Clim <- lmer(TP~Climate.DFA1.x+Location.2+(1|AA), data=data2)
-summary(Mod.Clim)
-AIC(Mod.Clim)
-
-
-ModelSelection.WA <- function(dataframe,n,y) {
+ModelSelection.WA <- function(dataframe,n) {
   
-  aic.output <- rbind(AIC(lmer(y~Location.2+(1|AA), data=dataframe)), 
-                      AIC(lmer(y~Climate.DFA1.x+Location.2+(1|AA), data=dataframe)),
-                      AIC(lmer(y~SST.DFA1+Location.2+(1|AA), data=dataframe)),
-                      AIC(lmer(y~Up.DFA1+Location.2+(1|AA), data=dataframe)),
-                      AIC(lmer(y~Dis.DFA1+Location.2+(1|AA), data=dataframe)),
-                      AIC(lmer(y~Climate.DFA1.x+SST.DFA1+Location.2+(1|AA), data=dataframe)),#1
-                      AIC(lmer(y~Climate.DFA1.x+Dis.DFA1+Location.2+(1|AA), data=dataframe)),#2
-                      AIC(lmer(y~Climate.DFA1.x+Up.DFA1+Location.2+(1|AA), data=dataframe)),#3
-                      AIC(lmer(y~Dis.DFA1+SST.DFA1+Location.2+(1|AA), data=dataframe)),#4
-                      AIC(lmer(y~Up.DFA1+SST.DFA1+Location.2+(1|AA), data=dataframe)),#5
-                      AIC(lmer(y~Up.DFA1+Dis.DFA1+Location.2+(1|AA), data=dataframe)),#6
-                      AIC(lmer(y~Up.DFA1+SST.DFA1+Dis.DFA1+Location.2+(1|AA), data=dataframe)),#7
-                      AIC(lmer(y~Climate.DFA1.x+Up.DFA1+Dis.DFA1+Location.2+(1|AA), data=dataframe)),#8
-                      AIC(lmer(y~Climate.DFA1.x+Up.DFA1+SST.DFA1+Location.2+(1|AA), data=dataframe)),#9
-                      AIC(lmer(y~Climate.DFA1.x+Up.DFA1+Dis.DFA1+SST.DFA1+Location.2+(1|AA), data=dataframe)),#10
-                      AIC(lmer(y~Climate.DFA1.x+SST.DFA1+Dis.DFA1+Location.2+(1|AA), data=dataframe))#11
+  aic.output <- rbind(AIC(lmer(TP.norm~Location.2+(1|AA), data=dataframe)), 
+                      AIC(lmer(TP.norm~Climate.DFA1.x+Location.2+(1|AA), data=dataframe)),
+                      AIC(lmer(TP.norm~SST.DFA1+Location.2+(1|AA), data=dataframe)),
+                      AIC(lmer(TP.norm~Up.DFA1+Location.2+(1|AA), data=dataframe)),
+                      AIC(lmer(TP.norm~Dis.DFA1+Location.2+(1|AA), data=dataframe)),
+                      AIC(lmer(TP.norm~Climate.DFA1.x+SST.DFA1+Location.2+(1|AA), data=dataframe)),#1
+                      AIC(lmer(TP.norm~Climate.DFA1.x+Dis.DFA1+Location.2+(1|AA), data=dataframe)),#2
+                      AIC(lmer(TP.norm~Climate.DFA1.x+Up.DFA1+Location.2+(1|AA), data=dataframe)),#3
+                      AIC(lmer(TP.norm~Dis.DFA1+SST.DFA1+Location.2+(1|AA), data=dataframe)),#4
+                      AIC(lmer(TP.norm~Up.DFA1+SST.DFA1+Location.2+(1|AA), data=dataframe)),#5
+                      AIC(lmer(TP.norm~Up.DFA1+Dis.DFA1+Location.2+(1|AA), data=dataframe)),#6
+                      AIC(lmer(TP.norm~Up.DFA1+SST.DFA1+Dis.DFA1+Location.2+(1|AA), data=dataframe)),#7
+                      AIC(lmer(TP.norm~Climate.DFA1.x+Up.DFA1+Dis.DFA1+Location.2+(1|AA), data=dataframe)),#8
+                      AIC(lmer(TP.norm~Climate.DFA1.x+Up.DFA1+SST.DFA1+Location.2+(1|AA), data=dataframe)),#9
+                      AIC(lmer(TP.norm~Climate.DFA1.x+Up.DFA1+Dis.DFA1+SST.DFA1+Location.2+(1|AA), data=dataframe)),#10
+                      AIC(lmer(TP.norm~Climate.DFA1.x+SST.DFA1+Dis.DFA1+Location.2+(1|AA), data=dataframe))
   )
   
-  model.summary <- rbind(summary(lmer(y~Location.2+(1|AA), data=dataframe)), 
-                         summary(lmer(y~Climate.DFA1.x+Location.2+(1|AA), data=dataframe)),
-                         summary(lmer(y~SST.DFA1+Location.2+(1|AA), data=dataframe)),
-                         summary(lmer(y~Up.DFA1+Location.2+(1|AA), data=dataframe)),
-                         summary(lmer(y~Dis.DFA1+Location.2+(1|AA), data=dataframe)),
-                         summary(lmer(y~Climate.DFA1.x+SST.DFA1+Location.2+(1|AA), data=dataframe)),#1
-                         summary(lmer(y~Climate.DFA1.x+Dis.DFA1+Location.2+(1|AA), data=dataframe)),#2
-                         summary(lmer(y~Climate.DFA1.x+Up.DFA1+Location.2+(1|AA), data=dataframe)),#3
-                         summary(lmer(y~Dis.DFA1+SST.DFA1+Location.2+(1|AA), data=dataframe)),#4
-                         summary(lmer(y~Up.DFA1+SST.DFA1+Location.2+(1|AA), data=dataframe)),#5
-                         summary(lmer(y~Up.DFA1+Dis.DFA1+Location.2+(1|AA), data=dataframe)),#6
-                         summary(lmer(y~Up.DFA1+SST.DFA1+Dis.DFA1+Location.2+(1|AA), data=dataframe)),#7
-                         summary(lmer(y~Climate.DFA1.x+Up.DFA1+Dis.DFA1+Location.2+(1|AA), data=dataframe)),#8
-                         summary(lmer(y~Climate.DFA1.x+Up.DFA1+SST.DFA1+Location.2+(1|AA), data=dataframe)),#9
-                         summary(lmer(y~Climate.DFA1.x+Up.DFA1+Dis.DFA1+SST.DFA1+Location.2+(1|AA), data=dataframe)),#10
-                         summary(lmer(y~Climate.DFA1.x+SST.DFA1+Dis.DFA1+Location.2+(1|AA), data=dataframe))#11
-                         
-  )
+ 
   
   names <- seq(1,n,1)
   model.names <- c("Location", "Climate", "SST", "Up", "Dis","1. Clim, SST", "2. Clim, Dis", "3. Clim, Up", "4. SST, Dis",
-                   "5. SST, Up", "6. Up, Dis", "7. SST, Dis, Up", "8. Clim, Up, Dis", "9. Clim, Up, SST", "10. Clim, Up, SST, Dis", "11. Clim Dis SST")
+                   "5. SST, Up", "6. Up, Dis", "7. SST, Dis, Up", "8. Clim, Up, Dis", "9. Clim, Up, SST", "10. Clim, Up,
+                   SST, Dis", "11. Clim Dis SST"
+                )
   
   row.names(aic.output) <- model.names
   delaic <- aic.output-min(aic.output)
@@ -221,39 +212,204 @@ ModelSelection.WA <- function(dataframe,n,y) {
   aic.weight <- aic.weight1/sum(aic.weight1)
   #dev.ex <- model.summary[,14]
   aic.output <- cbind(aic.output, delaic, aic.weight)
-  aic.output<- cbind(aic.output, model.names)
-  colnames(aic.output)<- c("AICc", "delAICc", "AICc Weight", "model.names")
+  
+  colnames(aic.output)<- c("AICc", "delAICc", "AICc Weight")
   return(aic.output)
 }
 
 
 n<- 17
-model.selectionENV <- ModelSelection.WA(data2, n, data2$TP.norm)
+model.selectionENV <- ModelSelection.WA(data2, n)
 model.selectionENV <-transform(model.selectionENV, AICc = as.numeric(AICc))
 
 ########################     Hierarchical Prey Models       ############################
 
 prey <- read.csv("Data/Compiled/WA.Prey.tot.csv")
-data3<-merge(prey,data.hier, by='Year', all.x=TRUE)
+data.merge <- list(prey,data.hier, dfa)
+data3 <- Reduce(function(x,y) merge(x,y, by='Year', all.x=TRUE), data.merge)
+data3<-merge(data3,data.hPHE, by='Sample.ID', all.x=TRUE)
+data3<-merge(data3,data.d13C, by='Sample.ID', all.x=TRUE)
 data3 <- subset(data3, Year>=1973&Year<=2008)
 
 
-Mod.loc <- lmer(TP~Location.2+(1|AA), data=data3)
-summary(Mod.loc)
-AIC(Mod.loc)
+ModelSelection.WA2 <- function(dataframe,n) {
+  
+  aic.output <- rbind(AIC(lmer(TP.norm~Location.2+(1|AA), data=dataframe)), 
+                      AIC(lmer(TP.norm~Herring.Biomass+Location.2+(1|AA), data=dataframe)),
+                      AIC(lmer(TP.norm~Chinook+Location.2+(1|AA), data=dataframe)),
+                      AIC(lmer(TP.norm~HatcherySmolts+Location.2+(1|AA), data=dataframe)),
+                      AIC(lmer(TP.norm~HakeBiomass+Location.2+(1|AA), data=dataframe)),
+                      AIC(lmer(TP.norm~Herring.Biomass+Chinook+Location.2+(1|AA), data=dataframe)),#1
+                      AIC(lmer(TP.norm~Herring.Biomass+HakeBiomass+Location.2+(1|AA), data=dataframe)),#2
+                      AIC(lmer(TP.norm~Herring.Biomass+HatcherySmolts+Location.2+(1|AA), data=dataframe)),#3
+                      AIC(lmer(TP.norm~HakeBiomass+Chinook+Location.2+(1|AA), data=dataframe)),#4
+                      AIC(lmer(TP.norm~HatcherySmolts+Chinook+Location.2+(1|AA), data=dataframe)),#5
+                      AIC(lmer(TP.norm~HatcherySmolts+HakeBiomass+Location.2+(1|AA), data=dataframe)),#6
+                      AIC(lmer(TP.norm~HatcherySmolts+Chinook+HakeBiomass+Location.2+(1|AA), data=dataframe)),#7
+                      AIC(lmer(TP.norm~Herring.Biomass+HatcherySmolts+HakeBiomass+Location.2+(1|AA), data=dataframe)),#8
+                      AIC(lmer(TP.norm~Herring.Biomass+HatcherySmolts+Chinook+Location.2+(1|AA), data=dataframe)),#9
+                      AIC(lmer(TP.norm~Herring.Biomass+HatcherySmolts+HakeBiomass+Chinook+Location.2+(1|AA), data=dataframe)),#10
+                      AIC(lmer(TP.norm~Herring.Biomass+Chinook+HakeBiomass+Location.2+(1|AA), data=dataframe)) #11
+                      
+            
+                      
+  )
+  
+  names <- seq(1,n,1)
+  model.names <- c("Location", "Herring", "Chinook", "Hatch", "Hake","1. Herring, Chinook", "2. Herring, Hake", "3. Herring, Hatch", "4. Chinook, Hake",
+                   "5. Chinook, Hatch", "6. Hatch, Hake", "7. Chinook, Hake, Hatch", "8. Herring, Hatch, Hake", "9. Herring, Hatch, Chinook", "10. Herring, 
+                   Hatch, Chinook, Hake", "11. Herring Hake Chinook")
+  
+  row.names(aic.output) <- model.names
+  delaic <- aic.output-min(aic.output)
+  aic.weight1 <- exp(-0.5*delaic)
+  aic.weight <- aic.weight1/sum(aic.weight1)
+  #dev.ex <- model.summary[,14]
+  aic.output <- cbind(aic.output, delaic, aic.weight)
+  
+  colnames(aic.output)<- c("AICc", "delAICc", "AICc Weight")
+  return(aic.output)
+}
+n<- 17
 
-Mod <- lmer(TP~Location.2+Herring.Biomass+(1|AA), data=data3)
-summary(Mod)
-AIC(Mod)
+model.selectionPREY <- ModelSelection.WA2(data3, n)
+model.selectionPREY <-transform(model.selectionPREY, AICc = as.numeric(AICc))
 
-Mod <- lmer(TP~Location.2+Chinook+(1|AA), data=data3)
-summary(Mod)
-AIC(Mod)
 
-Mod <- lmer(TP~Location.2+HatcherySmolts+(1|AA), data=data3)
-summary(Mod)
-AIC(Mod)
 
-Mod <- lmer(TP~Location.2+HakeBiomass+(1|AA), data=data3)
-summary(Mod)
-AIC(Mod)
+
+########################     Hierarchical Nutrient Models       ############################
+
+
+ModelSelection.WA3 <- function(dataframe,n) {
+  
+  aic.output <- rbind(AIC(lmer(TP.norm~Location.2+(1|AA), data=dataframe)), 
+                      AIC(lmer(TP.norm~PHE.norm+Location.2+(1|AA), data=dataframe)),
+                      AIC(lmer(TP.norm~d13C.norm+Location.2+(1|AA), data=dataframe)),
+                      AIC(lmer(TP.norm~PHE.norm+d13C.norm+Location.2+(1|AA), data=dataframe))
+                      
+              
+                       )
+  
+  names <- seq(1,n,1)
+  model.names <- c("Location", "Phe", "13C", "PHE, 13C")
+  
+  row.names(aic.output) <- model.names
+  delaic <- aic.output-min(aic.output)
+  aic.weight1 <- exp(-0.5*delaic)
+  aic.weight <- aic.weight1/sum(aic.weight1)
+  #dev.ex <- model.summary[,14]
+  aic.output <- cbind(aic.output, delaic, aic.weight)
+  
+  colnames(aic.output)<- c("AICc", "delAICc", "AICc Weight")
+  return(aic.output)
+}
+
+n<-4
+model.selectionNUTRIENT <- ModelSelection.WA3(data2, n)
+model.selectionPREY <-transform(model.selectionPREY, AICc = as.numeric(AICc))
+
+#AIC(lmer(TP.norm~PHE.mean+(1|AA), data=dataframe)),#10
+
+
+
+
+########################     Lasso Regression       ############################
+
+
+WA.lasso <- data3
+cor(WA.lasso)
+WA.lasso <- subset(WA.lasso, AA="Glu")
+Wa.lasso <- WA.lasso[complete.cases(WA.lasso), ]
+WA.lasso <- na.omit(WA.lasso)
+
+y<- Wa.lasso$TP.norm
+Wa.lasso <- Wa.lasso %>%
+  select(-TP) %>%
+  select(-Sample.ID) %>%
+  select(-Year) %>%
+  select(-X) %>%
+  select(-years.x) %>%
+  select(-years.y) %>%
+  select(-TP.norm) %>%
+  select(-AA)%>%
+  select(-PHE.mean)%>%
+  select(-d13C.s)%>%
+  select(-years)%>%
+  #select(-PHE.norm)%>%
+  select(-Climate.DFA1.x)%>%
+  select(-HarborSeal)
+  #select(-Climate.DFA1.x)%>%
+  #select(-Up.DFA1)%>%
+  #select(-SST.DFA1)%>%
+  #select(-Dis.DFA1)
+
+
+i_num <- sapply(Wa.lasso, is.numeric)
+Wa.lasso[, i_num] <- apply(Wa.lasso[, i_num], 2, function(x) ifelse(is.na(x), median(x, na.rm=T), x))
+
+# impute empty categories
+Wa.lasso[, !i_num] <- apply(Wa.lasso[, !i_num, drop=F], 2, function(x) {
+  x[x==""] <- "empty"
+  x[is.na(x)] <- "missing"
+  x
+})
+#nlevels(X$Location)
+
+# get the numLevels vector containing the number of categories
+X <- Wa.lasso
+
+
+numLevels <- X %>% sapply(nlevels)
+numLevels[8] <- 2
+numLevels[numLevels==0] <- 1
+#apply(X[, 'Location'], factor)
+
+#X[8][X[8] == 2] <- 0
+#X[8][X[8] == 3] <- 1
+
+# make the categorical variables take integer values starting from 0
+X[, !i_num] <- apply(X[, !i_num], 2, function(col) as.integer(as.factor(col)) - 1)
+sapply(X, class)
+
+
+
+
+
+
+library(glinternet)
+set.seed(2001)
+
+head(X)
+
+pairs <- matrix(c(8,1, 8,2, 8,3, 8,4,
+                  8,5, 8,6, 8,7,  8,9, 
+                  8,10,  8,11,  8,12, 8,13, 8,14), ncol=13, byrow=TRUE)
+
+cv_fit <- glinternet.cv(X, y, numLevels=numLevels, interactionPairs = pairs)
+cv_fit <- glinternet.cv(X, y, numLevels=numLevels)
+
+plot(cv_fit)
+i_1Std <- which(cv_fit$lambdaHat1Std == cv_fit$lambda)
+coefs <- coef(cv_fit$glinternetFit)[[i_1Std]]
+
+
+coefs$mainEffects
+idx_num <- (1:length(i_num))[i_num]
+idx_cat <- (1:length(i_num))[!i_num]
+names(numLevels)[idx_cat[coefs$mainEffects$cat]]
+names(numLevels)[idx_num[coefs$mainEffects$cont]]
+coefs$mainEffects
+coefs$mainEffectsCoef
+
+coefs$interactions
+coefs$interactionsCoef
+
+
+
+
+-0.8836366+10.89 #coastal intercept
+10.89+0.4197787 #salish sea intercept
+
+
+
