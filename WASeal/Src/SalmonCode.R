@@ -22,7 +22,11 @@ coho <- read.csv("Data/Compiled/Prey/coho.tot.csv")
 hatch <- read.csv("Data/Compiled/Prey/salmon/RMIS_WA_smolts.csv")
 hake <- read.csv("Data/Compiled/Prey/HakeNMFS.csv")
 eulachon <- read.csv("Data/Compiled/Prey/Eulachon.csv")
+wildproduction <- read.csv("Data/Compiled/Prey/wildproduction.tot.csv")[2:3]
 
+hatch2<- subset(hatch, Year>=1973&Year<=2013)
+hatch2 <- cbind(hatch2$Smolts, wildproduction$value)
+allsmolt <- cbind(wildproduction$yr, rowSums(hatch2))
 
 ########################## Normalize, demean############################
 
@@ -42,9 +46,37 @@ seal.norm <- cbind(Year=seal[,2], Total=transform_to_log_scale(seal[,3]-mean(sea
 hatch.norm <- cbind(Year=hatch$Year, Total=transform_to_log_scale(hatch$Smolts-mean(na.omit(hatch$Smolts))))
 hake.norm <- cbind(Year=hake[,1], Total=transform_to_log_scale(hake[,4]-mean(na.omit(hake[,4]))))
 eulachon.norm <- cbind(Year=eulachon[,1], Total=transform_to_log_scale(eulachon[,2]-mean(na.omit(eulachon[,2]))))
+wildproduction.norm <- cbind(Year=wildproduction[,1], Total=transform_to_log_scale(wildproduction[,2]-mean(na.omit(wildproduction[,2]))))
+allsmolt.norm <- cbind(Year=allsmolt[,1], Total=transform_to_log_scale(allsmolt[,2]-mean(na.omit(allsmolt[,2]))))
 
-data.merge <- list(herring.norm, chinook.norm, chum.norm, coho.norm, seal.norm, hatch.norm, hake.norm, eulachon.norm)
+herring.norm2 <- cbind(Year=herring$yr, Total=transform_to_log_scale(herring$value)-mean(transform_to_log_scale(herring$value)))
+chinook.norm2 <- cbind(Year=chinook$Year, Total=transform_to_log_scale(chinook$Count)-mean(transform_to_log_scale(chinook$Count)))
+chum.norm2 <- cbind(Year=chum$Year, Total=transform_to_log_scale(chum$Count)-mean(transform_to_log_scale(chum$Count)))
+coho.norm2 <- cbind(Year=coho$yr, Total=transform_to_log_scale(coho$value)-mean(transform_to_log_scale(coho$value)))
+seal.norm2 <- cbind(Year=seal[,2], Total=transform_to_log_scale(seal[,3])-mean(transform_to_log_scale(seal[,3])))
+hatch.norm2 <- cbind(Year=hatch$Year, Total=transform_to_log_scale(hatch$Smolts)-mean(transform_to_log_scale(hatch$Smolts)))
+hake.norm2 <- cbind(Year=hake[,1], Total=transform_to_log_scale(hake[,4])-mean(transform_to_log_scale(hake[,4])))
+eulachon.norm2 <- cbind(Year=eulachon[,1], Total=transform_to_log_scale(eulachon[,2])-mean(transform_to_log_scale(eulachon[,2])))
+wildproduction.norm2 <- cbind(Year=wildproduction[,1], Total=transform_to_log_scale(wildproduction[,2])-mean(transform_to_log_scale(wildproduction[,2])))
+allsmolt.norm2 <- cbind(Year=allsmolt[,1], Total=transform_to_log_scale(allsmolt[,2])-mean(transform_to_log_scale(allsmolt[,2])))
+
+
+
+data.merge <- list(herring.norm, chinook.norm, chum.norm, coho.norm, seal.norm,
+                   hatch.norm, hake.norm, eulachon.norm, wildproduction.norm, allsmolt.norm)
 Wa.Prey <- Reduce(function(x,y) merge(x,y, by='Year', all.x=TRUE), data.merge)
-colnames(Wa.Prey)<- c("Year","Herring.Biomass", "Chinook", "Chum", "Coho", "HarborSeal", "HatcherySmolts", "HakeBiomass","EulachonLandings")
+colnames(Wa.Prey)<- c("Year","Herring.Biomass", "Chinook", "Chum", "Coho", "HarborSeal",
+                      "HatcherySmolts", "HakeBiomass","EulachonLandings", "WildProduction", "allSmolt")
 
 write.csv(Wa.Prey, "Data/Compiled/WA.Prey.tot.csv")
+
+
+data.merge <- list(herring.norm2, chinook.norm2, chum.norm2, coho.norm2, seal.norm2,
+                   hatch.norm2, hake.norm2, eulachon.norm2, wildproduction.norm2, allsmolt.norm2)
+Wa.Prey2 <- Reduce(function(x,y) merge(x,y, by='Year', all.x=TRUE), data.merge)
+colnames(Wa.Prey2)<- c("Year","Herring.Biomass", "Chinook", "Chum", "Coho", "HarborSeal",
+                      "HatcherySmolts", "HakeBiomass","EulachonLandings", "WildProduction", "allSmolt")
+
+write.csv(Wa.Prey2, "Data/Compiled/WA.Prey2.tot.csv")
+
+

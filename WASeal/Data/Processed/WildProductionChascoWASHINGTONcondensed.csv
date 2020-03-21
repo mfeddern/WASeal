@@ -1,0 +1,822 @@
+Year,Group,escapement
+1976,"Above Bonneville (spring, 311)",14357
+1977,"Above Bonneville (spring, 311)",14357
+1978,"Above Bonneville (spring, 311)",14357
+1979,"Above Bonneville (spring, 311)",14357
+1980,"Above Bonneville (spring, 311)",14357
+1981,"Above Bonneville (spring, 311)",26365
+1982,"Above Bonneville (spring, 311)",26365
+1983,"Above Bonneville (spring, 311)",26365
+1984,"Above Bonneville (spring, 311)",26365
+1985,"Above Bonneville (spring, 311)",26365
+1986,"Above Bonneville (spring, 311)",38810
+1987,"Above Bonneville (spring, 311)",38810
+1988,"Above Bonneville (spring, 311)",38810
+1989,"Above Bonneville (spring, 311)",38810
+1990,"Above Bonneville (spring, 311)",38810
+1991,"Above Bonneville (spring, 311)",21284
+1992,"Above Bonneville (spring, 311)",21284
+1993,"Above Bonneville (spring, 311)",21284
+1994,"Above Bonneville (spring, 311)",21284
+1995,"Above Bonneville (spring, 311)",21284
+1996,"Above Bonneville (spring, 311)",9089
+1997,"Above Bonneville (spring, 311)",50229
+1998,"Above Bonneville (spring, 311)",17110
+1999,"Above Bonneville (spring, 311)",10017
+2000,"Above Bonneville (spring, 311)",51435
+2001,"Above Bonneville (spring, 311)",222102
+2002,"Above Bonneville (spring, 311)",117924
+2003,"Above Bonneville (spring, 311)",100177
+2004,"Above Bonneville (spring, 311)",91279
+2005,"Above Bonneville (spring, 311)",49277
+2006,"Above Bonneville (spring, 311)",41312
+2007,"Above Bonneville (spring, 311)",41360
+2008,"Above Bonneville (spring, 311)",94038
+2009,"Above Bonneville (spring, 311)",83413
+2010,"Above Bonneville (spring, 311)",149652
+2011,"Above Bonneville (spring, 311)",115279
+2012,"Above Bonneville (spring, 311)",95249
+2013,"Above Bonneville (spring, 311)",52804
+2014,"Above Bonneville (spring, 311)",106661
+2015,"Above Bonneville (spring, 311)",133360
+1971,"Below Bonneville (summer, 322)",19900
+1972,"Below Bonneville (summer, 322)",19900
+1973,"Below Bonneville (summer, 322)",19900
+1974,"Below Bonneville (summer, 322)",19900
+1975,"Below Bonneville (summer, 322)",19900
+1976,"Below Bonneville (summer, 322)",25856
+1977,"Below Bonneville (summer, 322)",25856
+1978,"Below Bonneville (summer, 322)",25856
+1979,"Below Bonneville (summer, 322)",25856
+1980,"Below Bonneville (summer, 322)",25856
+1981,"Below Bonneville (summer, 322)",18666
+1982,"Below Bonneville (summer, 322)",18666
+1983,"Below Bonneville (summer, 322)",18666
+1984,"Below Bonneville (summer, 322)",18666
+1985,"Below Bonneville (summer, 322)",18666
+1986,"Below Bonneville (summer, 322)",6100
+1987,"Below Bonneville (summer, 322)",6100
+1988,"Below Bonneville (summer, 322)",6100
+1989,"Below Bonneville (summer, 322)",6100
+1990,"Below Bonneville (summer, 322)",6100
+1991,"Below Bonneville (summer, 322)",11160
+1992,"Below Bonneville (summer, 322)",11160
+1993,"Below Bonneville (summer, 322)",11160
+1994,"Below Bonneville (summer, 322)",11160
+1995,"Below Bonneville (summer, 322)",11160
+1996,"Below Bonneville (summer, 322)",9000
+1997,"Below Bonneville (summer, 322)",13300
+1998,"Below Bonneville (summer, 322)",5955
+1999,"Below Bonneville (summer, 322)",17826
+2000,"Below Bonneville (summer, 322)",10342
+2001,"Below Bonneville (summer, 322)",41726
+2002,"Below Bonneville (summer, 322)",75505
+2003,"Below Bonneville (summer, 322)",84829
+2004,"Below Bonneville (summer, 322)",83016
+2005,"Below Bonneville (summer, 322)",36644
+2006,"Below Bonneville (summer, 322)",11820
+2007,"Below Bonneville (summer, 322)",8769
+2008,"Below Bonneville (summer, 322)",36487
+2009,"Below Bonneville (summer, 322)",17783
+2010,"Below Bonneville (summer, 322)",50122
+2011,"Below Bonneville (summer, 322)",27375
+2012,"Below Bonneville (summer, 322)",31318
+2013,"Below Bonneville (summer, 322)",26381
+2014,"Below Bonneville (summer, 322)",40767
+2015,"Below Bonneville (summer, 322)",19930
+1971,"Below Bonneville (fall, 332)",92400
+1972,"Below Bonneville (fall, 332)",92400
+1973,"Below Bonneville (fall, 332)",92400
+1974,"Below Bonneville (fall, 332)",92400
+1975,"Below Bonneville (fall, 332)",92400
+1976,"Below Bonneville (fall, 332)",81560
+1977,"Below Bonneville (fall, 332)",81560
+1978,"Below Bonneville (fall, 332)",81560
+1979,"Below Bonneville (fall, 332)",81560
+1980,"Below Bonneville (fall, 332)",81560
+1981,"Below Bonneville (fall, 332)",74601
+1982,"Below Bonneville (fall, 332)",74601
+1983,"Below Bonneville (fall, 332)",74601
+1984,"Below Bonneville (fall, 332)",74601
+1985,"Below Bonneville (fall, 332)",74601
+1986,"Below Bonneville (fall, 332)",87595
+1987,"Below Bonneville (fall, 332)",87595
+1988,"Below Bonneville (fall, 332)",87595
+1989,"Below Bonneville (fall, 332)",87595
+1990,"Below Bonneville (fall, 332)",87595
+1991,"Below Bonneville (fall, 332)",47334
+1992,"Below Bonneville (fall, 332)",47334
+1993,"Below Bonneville (fall, 332)",47334
+1994,"Below Bonneville (fall, 332)",47334
+1995,"Below Bonneville (fall, 332)",47334
+1996,"Below Bonneville (fall, 332)",66571
+1997,"Below Bonneville (fall, 332)",47320
+1998,"Below Bonneville (fall, 332)",39748
+1999,"Below Bonneville (fall, 332)",31581
+2000,"Below Bonneville (fall, 332)",22925
+2001,"Below Bonneville (fall, 332)",82430
+2002,"Below Bonneville (fall, 332)",130808
+2003,"Below Bonneville (fall, 332)",131554
+2004,"Below Bonneville (fall, 332)",83502
+2005,"Below Bonneville (fall, 332)",58640
+2006,"Below Bonneville (fall, 332)",42590
+2007,"Below Bonneville (fall, 332)",25258
+2008,"Below Bonneville (fall, 332)",48793
+2009,"Below Bonneville (fall, 332)",55182
+2010,"Below Bonneville (fall, 332)",74926
+2011,"Below Bonneville (fall, 332)",76069
+2012,"Below Bonneville (fall, 332)",51859
+2013,"Below Bonneville (fall, 332)",74073
+2014,"Below Bonneville (fall, 332)",72597
+2015,"Below Bonneville (fall, 332)",72020
+1971,Below Bonneville (fall),29400
+1972,Below Bonneville (fall),29400
+1973,Below Bonneville (fall),29400
+1974,Below Bonneville (fall),29400
+1975,Below Bonneville (fall),29400
+1976,Below Bonneville (fall),13720
+1977,Below Bonneville (fall),13720
+1978,Below Bonneville (fall),13720
+1979,Below Bonneville (fall),13720
+1980,Below Bonneville (fall),13720
+1981,Below Bonneville (fall),12480
+1982,Below Bonneville (fall),12480
+1983,Below Bonneville (fall),12480
+1984,Below Bonneville (fall),12480
+1985,Below Bonneville (fall),12480
+1986,Below Bonneville (fall),18383
+1987,Below Bonneville (fall),18383
+1988,Below Bonneville (fall),18383
+1989,Below Bonneville (fall),18383
+1990,Below Bonneville (fall),18383
+1991,Below Bonneville (fall),10101
+1992,Below Bonneville (fall),10101
+1993,Below Bonneville (fall),10101
+1994,Below Bonneville (fall),10101
+1995,Below Bonneville (fall),10101
+1996,Below Bonneville (fall),13914
+1997,Below Bonneville (fall),11241
+1998,Below Bonneville (fall),6493
+1999,Below Bonneville (fall),3257
+2000,Below Bonneville (fall),9422
+2001,Below Bonneville (fall),13610
+2002,Below Bonneville (fall),19654
+2003,Below Bonneville (fall),17668
+2004,Below Bonneville (fall),16346
+2005,Below Bonneville (fall),11725
+2006,Below Bonneville (fall),12758
+2007,Below Bonneville (fall),3857
+2008,Below Bonneville (fall),6183
+2009,Below Bonneville (fall),6893
+2010,Below Bonneville (fall),10661
+2011,Below Bonneville (fall),10601
+2012,Below Bonneville (fall),9407
+2013,Below Bonneville (fall),18675
+2014,Below Bonneville (fall),22900
+2015,Below Bonneville (fall),12590
+1971,"BelowBonneville (spring, 313)",67500
+1972,"BelowBonneville (spring, 313)",67500
+1973,"BelowBonneville (spring, 313)",67500
+1974,"BelowBonneville (spring, 313)",67500
+1975,"BelowBonneville (spring, 313)",67500
+1976,"BelowBonneville (spring, 313)",83655
+1977,"BelowBonneville (spring, 313)",83655
+1978,"BelowBonneville (spring, 313)",83655
+1979,"BelowBonneville (spring, 313)",83655
+1980,"BelowBonneville (spring, 313)",83655
+1981,"BelowBonneville (spring, 313)",94280
+1982,"BelowBonneville (spring, 313)",94280
+1983,"BelowBonneville (spring, 313)",94280
+1984,"BelowBonneville (spring, 313)",94280
+1985,"BelowBonneville (spring, 313)",94280
+1986,"BelowBonneville (spring, 313)",117553
+1987,"BelowBonneville (spring, 313)",117553
+1988,"BelowBonneville (spring, 313)",117553
+1989,"BelowBonneville (spring, 313)",117553
+1990,"BelowBonneville (spring, 313)",117553
+1991,"BelowBonneville (spring, 313)",75847
+1992,"BelowBonneville (spring, 313)",75847
+1993,"BelowBonneville (spring, 313)",75847
+1994,"BelowBonneville (spring, 313)",75847
+1995,"BelowBonneville (spring, 313)",75847
+1996,"BelowBonneville (spring, 313)",44245
+1997,"BelowBonneville (spring, 313)",53288
+1998,"BelowBonneville (spring, 313)",62650
+1999,"BelowBonneville (spring, 313)",73184
+2000,"BelowBonneville (spring, 313)",71467
+2001,"BelowBonneville (spring, 313)",94211
+2002,"BelowBonneville (spring, 313)",158946
+2003,"BelowBonneville (spring, 313)",169051
+2004,"BelowBonneville (spring, 313)",207032
+2005,"BelowBonneville (spring, 313)",95244
+2006,"BelowBonneville (spring, 313)",99578
+2007,"BelowBonneville (spring, 313)",72988
+2008,"BelowBonneville (spring, 313)",45376
+2009,"BelowBonneville (spring, 313)",58594
+2010,"BelowBonneville (spring, 313)",127676
+2011,"BelowBonneville (spring, 313)",88422
+2012,"BelowBonneville (spring, 313)",88417
+2013,"BelowBonneville (spring, 313)",72636
+2014,"BelowBonneville (spring, 313)",76781
+2015,"BelowBonneville (spring, 313)",137368
+1971,"UpRiverBrights (fall, 3328)",39500
+1972,"UpRiverBrights (fall, 3328)",39500
+1973,"UpRiverBrights (fall, 3328)",39500
+1974,"UpRiverBrights (fall, 3328)",39500
+1975,"UpRiverBrights (fall, 3328)",39500
+1976,"UpRiverBrights (fall, 3328)",31612
+1977,"UpRiverBrights (fall, 3328)",31612
+1978,"UpRiverBrights (fall, 3328)",31612
+1979,"UpRiverBrights (fall, 3328)",31612
+1980,"UpRiverBrights (fall, 3328)",31612
+1981,"UpRiverBrights (fall, 3328)",51628
+1982,"UpRiverBrights (fall, 3328)",51628
+1983,"UpRiverBrights (fall, 3328)",51628
+1984,"UpRiverBrights (fall, 3328)",51628
+1985,"UpRiverBrights (fall, 3328)",51628
+1986,"UpRiverBrights (fall, 3328)",107943
+1987,"UpRiverBrights (fall, 3328)",107943
+1988,"UpRiverBrights (fall, 3328)",107943
+1989,"UpRiverBrights (fall, 3328)",107943
+1990,"UpRiverBrights (fall, 3328)",107943
+1991,"UpRiverBrights (fall, 3328)",62265
+1992,"UpRiverBrights (fall, 3328)",62265
+1993,"UpRiverBrights (fall, 3328)",62265
+1994,"UpRiverBrights (fall, 3328)",62265
+1995,"UpRiverBrights (fall, 3328)",62265
+1996,"UpRiverBrights (fall, 3328)",75237
+1997,"UpRiverBrights (fall, 3328)",68643
+1998,"UpRiverBrights (fall, 3328)",65700
+1999,"UpRiverBrights (fall, 3328)",81737
+2000,"UpRiverBrights (fall, 3328)",69980
+2001,"UpRiverBrights (fall, 3328)",119432
+2002,"UpRiverBrights (fall, 3328)",154033
+2003,"UpRiverBrights (fall, 3328)",191702
+2004,"UpRiverBrights (fall, 3328)",185608
+2005,"UpRiverBrights (fall, 3328)",142720
+2006,"UpRiverBrights (fall, 3328)",97129
+2007,"UpRiverBrights (fall, 3328)",67463
+2008,"UpRiverBrights (fall, 3328)",118497
+2009,"UpRiverBrights (fall, 3328)",119711
+2010,"UpRiverBrights (fall, 3328)",188739
+2011,"UpRiverBrights (fall, 3328)",186440
+2012,"UpRiverBrights (fall, 3328)",208160
+2013,"UpRiverBrights (fall, 3328)",511556
+2014,"UpRiverBrights (fall, 3328)",471473
+2015,"UpRiverBrights (fall, 3328)",455879
+1975,"Fraser (spring, 5127)",7048.381293
+1976,"Fraser (spring, 5127)",4628.226237
+1977,"Fraser (spring, 5127)",3860.035547
+1978,"Fraser (spring, 5127)",4413.688951
+1979,"Fraser (spring, 5127)",2984.439913
+1980,"Fraser (spring, 5127)",6291.639861
+1981,"Fraser (spring, 5127)",3100.568101
+1982,"Fraser (spring, 5127)",5636.578744
+1983,"Fraser (spring, 5127)",2665.496298
+1984,"Fraser (spring, 5127)",6523.351034
+1985,"Fraser (spring, 5127)",9609.471262
+1986,"Fraser (spring, 5127)",10383.38658
+1987,"Fraser (spring, 5127)",4989.695668
+1988,"Fraser (spring, 5127)",4221.504978
+1989,"Fraser (spring, 5127)",5986.598916
+1990,"Fraser (spring, 5127)",3345.909344
+1991,"Fraser (spring, 5127)",3679.846035
+1992,"Fraser (spring, 5127)",6105.453118
+1993,"Fraser (spring, 5127)",7980.405413
+1994,"Fraser (spring, 5127)",10956.66728
+1995,"Fraser (spring, 5127)",9857.81112
+1996,"Fraser (spring, 5127)",20653.64359
+1997,"Fraser (spring, 5127)",10084.07027
+1998,"Fraser (spring, 5127)",3258.676902
+1999,"Fraser (spring, 5127)",8878.35436
+2000,"Fraser (spring, 5127)",11854.61623
+2001,"Fraser (spring, 5127)",10866.43623
+2002,"Fraser (spring, 5127)",17036.49587
+2003,"Fraser (spring, 5127)",19131.71008
+2004,"Fraser (spring, 5127)",12416.72028
+2005,"Fraser (spring, 5127)",4269.755422
+2006,"Fraser (spring, 5127)",6805.493463
+2007,"Fraser (spring, 5127)",1522.206108
+2008,"Fraser (spring, 5127)",6260.563303
+2009,"Fraser (spring, 5127)",977.0033475
+2010,"Fraser (spring, 5127)",6706.811763
+2011,"Fraser (spring, 5127)",2524.561384
+2012,"Fraser (spring, 5127)",7593.311453
+2013,"Fraser (spring, 5127)",3081.213403
+2014,"Fraser (spring, 5127)",9471.262362
+1975,Fraser (spring),8830.981891
+1976,Fraser (spring),10896.15902
+1977,Fraser (spring),13740.54043
+1978,Fraser (spring),16066.72241
+1979,Fraser (spring),15272.27697
+1980,Fraser (spring),17076.44923
+1981,Fraser (spring),12648.25732
+1982,Fraser (spring),15232.90397
+1983,Fraser (spring),24568.11422
+1984,Fraser (spring),30529.31277
+1985,Fraser (spring),42983.88036
+1986,Fraser (spring),48425.60938
+1987,Fraser (spring),48412.90842
+1988,Fraser (spring),41645.83355
+1989,Fraser (spring),31761.94155
+1990,Fraser (spring),41617.89143
+1991,Fraser (spring),27318.50848
+1992,Fraser (spring),33280.97713
+1993,Fraser (spring),33007.2713
+1994,Fraser (spring),51434.46831
+1995,Fraser (spring),45188.13306
+1996,Fraser (spring),38421.0582
+1997,Fraser (spring),44382.25675
+1998,Fraser (spring),38395.65627
+1999,Fraser (spring),20720.99152
+2000,Fraser (spring),26682.19007
+2001,Fraser (spring),30823.97519
+2002,Fraser (spring),41459.12935
+2003,Fraser (spring),46899.58828
+2004,Fraser (spring),31562.53638
+2005,Fraser (spring),21679.91448
+2006,Fraser (spring),21406.20866
+2007,Fraser (spring),12041.78618
+2008,Fraser (spring),15665.37187
+2009,Fraser (spring),26301.79613
+2010,Fraser (spring),17976.3127
+2011,Fraser (spring),12250.71708
+2012,Fraser (spring),10939.3423
+2013,Fraser (spring),16896.73056
+2014,Fraser (spring),32987.58481
+1975,"Fraser (summer, 5227)",17161.01695
+1976,"Fraser (summer, 5227)",13983.05085
+1977,"Fraser (summer, 5227)",17584.74576
+1978,"Fraser (summer, 5227)",19491.52542
+1979,"Fraser (summer, 5227)",10593.22034
+1980,"Fraser (summer, 5227)",13983.05085
+1981,"Fraser (summer, 5227)",12711.86441
+1982,"Fraser (summer, 5227)",15466.10169
+1983,"Fraser (summer, 5227)",17161.01695
+1984,"Fraser (summer, 5227)",13771.18644
+1985,"Fraser (summer, 5227)",19703.38983
+1986,"Fraser (summer, 5227)",32203.38983
+1987,"Fraser (summer, 5227)",27966.10169
+1988,"Fraser (summer, 5227)",31991.52542
+1989,"Fraser (summer, 5227)",16737.28814
+1990,"Fraser (summer, 5227)",33898.30508
+1991,"Fraser (summer, 5227)",27966.10169
+1992,"Fraser (summer, 5227)",37923.72881
+1993,"Fraser (summer, 5227)",21398.30508
+1994,"Fraser (summer, 5227)",23728.81356
+1995,"Fraser (summer, 5227)",26271.18644
+1996,"Fraser (summer, 5227)",43008.47458
+1997,"Fraser (summer, 5227)",40677.9661
+1998,"Fraser (summer, 5227)",36652.54237
+1999,"Fraser (summer, 5227)",25423.72881
+2000,"Fraser (summer, 5227)",26271.18644
+2001,"Fraser (summer, 5227)",34533.89831
+2002,"Fraser (summer, 5227)",35805.08475
+2003,"Fraser (summer, 5227)",44491.52542
+2004,"Fraser (summer, 5227)",31355.9322
+2005,"Fraser (summer, 5227)",19067.79661
+2006,"Fraser (summer, 5227)",20974.57627
+2007,"Fraser (summer, 5227)",10805.08475
+2008,"Fraser (summer, 5227)",15466.10169
+2009,"Fraser (summer, 5227)",20550.84746
+2010,"Fraser (summer, 5227)",18432.20339
+2011,"Fraser (summer, 5227)",18644.0678
+2012,"Fraser (summer, 5227)",10381.35593
+2013,"Fraser (summer, 5227)",13347.45763
+2014,"Fraser (summer, 5227)",21610.16949
+1975,Fraser (summer),26377.6834
+1976,Fraser (summer),4634.252248
+1977,Fraser (summer),20132.59481
+1978,Fraser (summer),16232.27392
+1979,Fraser (summer),18542.72794
+1980,Fraser (summer),8433.538439
+1981,Fraser (summer),13845.56729
+1982,Fraser (summer),7621.448164
+1983,Fraser (summer),10702.05353
+1984,Fraser (summer),16114.08237
+1985,Fraser (summer),20750.24094
+1986,Fraser (summer),23051.16338
+1987,Fraser (summer),23035.91286
+1988,Fraser (summer),29999.68228
+1989,Fraser (summer),25327.30373
+1990,Fraser (summer),25302.52163
+1991,Fraser (summer),26061.23508
+1992,Fraser (summer),31471.35761
+1993,Fraser (summer),13605.37157
+1994,Fraser (summer),25228.17534
+1995,Fraser (summer),21325.94813
+1996,Fraser (summer),50789.95584
+1997,Fraser (summer),47663.59891
+1998,Fraser (summer),67819.06951
+1999,Fraser (summer),54612.11781
+2000,Fraser (summer),44502.92831
+2001,Fraser (summer),74742.80631
+2002,Fraser (summer),84808.15056
+2003,Fraser (summer),69271.68169
+2004,Fraser (summer),60716.13908
+2005,Fraser (summer),88630.31253
+2006,Fraser (summer),148349.4488
+2007,Fraser (summer),85482.98614
+2008,Fraser (summer),106412.4207
+2009,Fraser (summer),86222.63643
+2010,Fraser (summer),155250.3098
+2011,Fraser (summer),126524.046
+2012,Fraser (summer),46592.24977
+2013,Fraser (summer),127263.6963
+2014,Fraser (summer),85345.73144
+1976,"GraysHarbor (fall, 437)",600
+1977,"GraysHarbor (fall, 437)",600
+1978,"GraysHarbor (fall, 437)",600
+1979,"GraysHarbor (fall, 437)",600
+1980,"GraysHarbor (fall, 437)",600
+1981,"GraysHarbor (fall, 437)",924
+1982,"GraysHarbor (fall, 437)",924
+1983,"GraysHarbor (fall, 437)",924
+1984,"GraysHarbor (fall, 437)",924
+1985,"GraysHarbor (fall, 437)",924
+1986,"GraysHarbor (fall, 437)",1875
+1987,"GraysHarbor (fall, 437)",1875
+1988,"GraysHarbor (fall, 437)",1875
+1989,"GraysHarbor (fall, 437)",1875
+1990,"GraysHarbor (fall, 437)",1875
+1991,"GraysHarbor (fall, 437)",1566
+1992,"GraysHarbor (fall, 437)",1566
+1993,"GraysHarbor (fall, 437)",1566
+1994,"GraysHarbor (fall, 437)",1566
+1995,"GraysHarbor (fall, 437)",1566
+1996,"GraysHarbor (fall, 437)",4462
+1997,"GraysHarbor (fall, 437)",4460
+1998,"GraysHarbor (fall, 437)",2388
+1999,"GraysHarbor (fall, 437)",1285
+2000,"GraysHarbor (fall, 437)",3135
+2001,"GraysHarbor (fall, 437)",2860
+2002,"GraysHarbor (fall, 437)",2598
+2003,"GraysHarbor (fall, 437)",1904
+2004,"GraysHarbor (fall, 437)",5034
+2005,"GraysHarbor (fall, 437)",2129
+2006,"GraysHarbor (fall, 437)",2481
+2007,"GraysHarbor (fall, 437)",651
+2008,"GraysHarbor (fall, 437)",995
+2009,"GraysHarbor (fall, 437)",1132
+2010,"GraysHarbor (fall, 437)",3495
+2011,"GraysHarbor (fall, 437)",2563
+2012,"GraysHarbor (fall, 437)",878
+2013,"GraysHarbor (fall, 437)",2459
+2014,"GraysHarbor (fall, 437)",1583
+2015,"GraysHarbor (fall, 437)",1828.641026
+1976,Hoh (spring/summer 428),1040
+1977,Hoh (spring/summer 428),1040
+1978,Hoh (spring/summer 428),1040
+1979,Hoh (spring/summer 428),1040
+1980,Hoh (spring/summer 428),1040
+1981,Hoh (spring/summer 428),1481
+1982,Hoh (spring/summer 428),1481
+1983,Hoh (spring/summer 428),1481
+1984,Hoh (spring/summer 428),1481
+1985,Hoh (spring/summer 428),1481
+1986,Hoh (spring/summer 428),2863
+1987,Hoh (spring/summer 428),2863
+1988,Hoh (spring/summer 428),2863
+1989,Hoh (spring/summer 428),2863
+1990,Hoh (spring/summer 428),2863
+1991,Hoh (spring/summer 428),1268
+1992,Hoh (spring/summer 428),1268
+1993,Hoh (spring/summer 428),1268
+1994,Hoh (spring/summer 428),1268
+1995,Hoh (spring/summer 428),1268
+1996,Hoh (spring/summer 428),1387
+1997,Hoh (spring/summer 428),1826
+1998,Hoh (spring/summer 428),1287
+1999,Hoh (spring/summer 428),1027
+2000,Hoh (spring/summer 428),492
+2001,Hoh (spring/summer 428),1159
+2002,Hoh (spring/summer 428),2464
+2003,Hoh (spring/summer 428),1228
+2004,Hoh (spring/summer 428),1786
+2005,Hoh (spring/summer 428),1193
+2006,Hoh (spring/summer 428),904
+2007,Hoh (spring/summer 428),810
+2008,Hoh (spring/summer 428),671
+2009,Hoh (spring/summer 428),882
+2010,Hoh (spring/summer 428),828
+2011,Hoh (spring/summer 428),827
+2012,Hoh (spring/summer 428),916
+2013,Hoh (spring/summer 428),750
+2014,Hoh (spring/summer 428),744
+2015,Hoh (spring/summer 428),1070
+1976,"Hoh (fall, 438)",2960
+1977,"Hoh (fall, 438)",2960
+1978,"Hoh (fall, 438)",2960
+1979,"Hoh (fall, 438)",2960
+1980,"Hoh (fall, 438)",2960
+1981,"Hoh (fall, 438)",3684
+1982,"Hoh (fall, 438)",3684
+1983,"Hoh (fall, 438)",3684
+1984,"Hoh (fall, 438)",3684
+1985,"Hoh (fall, 438)",3684
+1986,"Hoh (fall, 438)",6819
+1987,"Hoh (fall, 438)",6819
+1988,"Hoh (fall, 438)",6819
+1989,"Hoh (fall, 438)",6819
+1990,"Hoh (fall, 438)",6819
+1991,"Hoh (fall, 438)",3590
+1992,"Hoh (fall, 438)",3590
+1993,"Hoh (fall, 438)",3590
+1994,"Hoh (fall, 438)",3590
+1995,"Hoh (fall, 438)",3590
+1996,"Hoh (fall, 438)",4061
+1997,"Hoh (fall, 438)",3034
+1998,"Hoh (fall, 438)",5388
+1999,"Hoh (fall, 438)",2941
+2000,"Hoh (fall, 438)",2632
+2001,"Hoh (fall, 438)",4116
+2002,"Hoh (fall, 438)",5716
+2003,"Hoh (fall, 438)",2345
+2004,"Hoh (fall, 438)",4410
+2005,"Hoh (fall, 438)",5323
+2006,"Hoh (fall, 438)",2336
+2007,"Hoh (fall, 438)",2427
+2008,"Hoh (fall, 438)",3911
+2009,"Hoh (fall, 438)",2747
+2010,"Hoh (fall, 438)",3204
+2011,"Hoh (fall, 438)",2163
+2012,"Hoh (fall, 438)",2770
+2013,"Hoh (fall, 438)",3287
+2014,"Hoh (fall, 438)",2628
+2015,"Hoh (fall, 438)",2095
+1976,"Queets (spring/summer, 4216)",1176
+1977,"Queets (spring/summer, 4216)",1176
+1978,"Queets (spring/summer, 4216)",1176
+1979,"Queets (spring/summer, 4216)",1176
+1980,"Queets (spring/summer, 4216)",1176
+1981,"Queets (spring/summer, 4216)",956
+1982,"Queets (spring/summer, 4216)",956
+1983,"Queets (spring/summer, 4216)",956
+1984,"Queets (spring/summer, 4216)",956
+1985,"Queets (spring/summer, 4216)",956
+1986,"Queets (spring/summer, 4216)",2287
+1987,"Queets (spring/summer, 4216)",2287
+1988,"Queets (spring/summer, 4216)",2287
+1989,"Queets (spring/summer, 4216)",2287
+1990,"Queets (spring/summer, 4216)",2287
+1991,"Queets (spring/summer, 4216)",689
+1992,"Queets (spring/summer, 4216)",689
+1993,"Queets (spring/summer, 4216)",689
+1994,"Queets (spring/summer, 4216)",689
+1995,"Queets (spring/summer, 4216)",689
+1996,"Queets (spring/summer, 4216)",891
+1997,"Queets (spring/summer, 4216)",693
+1998,"Queets (spring/summer, 4216)",537
+1999,"Queets (spring/summer, 4216)",426
+2000,"Queets (spring/summer, 4216)",250
+2001,"Queets (spring/summer, 4216)",565
+2002,"Queets (spring/summer, 4216)",755
+2003,"Queets (spring/summer, 4216)",195
+2004,"Queets (spring/summer, 4216)",619
+2005,"Queets (spring/summer, 4216)",306
+2006,"Queets (spring/summer, 4216)",336
+2007,"Queets (spring/summer, 4216)",358
+2008,"Queets (spring/summer, 4216)",305
+2009,"Queets (spring/summer, 4216)",495
+2010,"Queets (spring/summer, 4216)",259
+2011,"Queets (spring/summer, 4216)",373
+2012,"Queets (spring/summer, 4216)",760
+2013,"Queets (spring/summer, 4216)",520
+2014,"Queets (spring/summer, 4216)",452
+1976,"Queets (fall, 4316)",4320
+1977,"Queets (fall, 4316)",4320
+1978,"Queets (fall, 4316)",4320
+1979,"Queets (fall, 4316)",4320
+1980,"Queets (fall, 4316)",4320
+1981,"Queets (fall, 4316)",5691
+1982,"Queets (fall, 4316)",5691
+1983,"Queets (fall, 4316)",5691
+1984,"Queets (fall, 4316)",5691
+1985,"Queets (fall, 4316)",5691
+1986,"Queets (fall, 4316)",10677
+1987,"Queets (fall, 4316)",10677
+1988,"Queets (fall, 4316)",10677
+1989,"Queets (fall, 4316)",10677
+1990,"Queets (fall, 4316)",10677
+1991,"Queets (fall, 4316)",5511
+1992,"Queets (fall, 4316)",5511
+1993,"Queets (fall, 4316)",5511
+1994,"Queets (fall, 4316)",5511
+1995,"Queets (fall, 4316)",5511
+1996,"Queets (fall, 4316)",4693
+1997,"Queets (fall, 4316)",4122
+1998,"Queets (fall, 4316)",5009
+1999,"Queets (fall, 4316)",2885
+2000,"Queets (fall, 4316)",3752
+2001,"Queets (fall, 4316)",3571
+2002,"Queets (fall, 4316)",4385
+2003,"Queets (fall, 4316)",5183
+2004,"Queets (fall, 4316)",4846
+2005,"Queets (fall, 4316)",4542
+2006,"Queets (fall, 4316)",3262
+2007,"Queets (fall, 4316)",1288
+2008,"Queets (fall, 4316)",3510
+2009,"Queets (fall, 4316)",4062
+2010,"Queets (fall, 4316)",4250
+2011,"Queets (fall, 4316)",4877
+2012,"Queets (fall, 4316)",5835
+2013,"Queets (fall, 4316)",4077
+2014,"Queets (fall, 4316)",3353
+1976,"Quillayute (spring, 4217)",2893
+1977,"Quillayute (spring, 4217)",2893
+1978,"Quillayute (spring, 4217)",2893
+1979,"Quillayute (spring, 4217)",2893
+1980,"Quillayute (spring, 4217)",2893
+1981,"Quillayute (spring, 4217)",991
+1982,"Quillayute (spring, 4217)",991
+1983,"Quillayute (spring, 4217)",991
+1984,"Quillayute (spring, 4217)",991
+1985,"Quillayute (spring, 4217)",991
+1986,"Quillayute (spring, 4217)",2605
+1987,"Quillayute (spring, 4217)",2605
+1988,"Quillayute (spring, 4217)",2605
+1989,"Quillayute (spring, 4217)",2605
+1990,"Quillayute (spring, 4217)",2605
+1991,"Quillayute (spring, 4217)",1991
+1992,"Quillayute (spring, 4217)",1991
+1993,"Quillayute (spring, 4217)",1991
+1994,"Quillayute (spring, 4217)",1991
+1995,"Quillayute (spring, 4217)",1991
+1996,"Quillayute (spring, 4217)",1396
+1997,"Quillayute (spring, 4217)",1088
+1998,"Quillayute (spring, 4217)",1846
+1999,"Quillayute (spring, 4217)",1309
+2000,"Quillayute (spring, 4217)",1216
+2001,"Quillayute (spring, 4217)",2198
+2002,"Quillayute (spring, 4217)",1838
+2003,"Quillayute (spring, 4217)",2469
+2004,"Quillayute (spring, 4217)",1856
+2005,"Quillayute (spring, 4217)",1677
+2006,"Quillayute (spring, 4217)",1585
+2007,"Quillayute (spring, 4217)",1509
+2008,"Quillayute (spring, 4217)",1745
+2009,"Quillayute (spring, 4217)",1277
+2010,"Quillayute (spring, 4217)",1652
+2011,"Quillayute (spring, 4217)",1265
+2012,"Quillayute (spring, 4217)",1166
+2013,"Quillayute (spring, 4217)",1485
+2014,"Quillayute (spring, 4217)",950
+2015,"Quillayute (spring, 4217)",1329
+1976,"Quillayute (fall, 4317)",4364
+1977,"Quillayute (fall, 4317)",4364
+1978,"Quillayute (fall, 4317)",4364
+1979,"Quillayute (fall, 4317)",4364
+1980,"Quillayute (fall, 4317)",4364
+1981,"Quillayute (fall, 4317)",6359
+1982,"Quillayute (fall, 4317)",6359
+1983,"Quillayute (fall, 4317)",6359
+1984,"Quillayute (fall, 4317)",6359
+1985,"Quillayute (fall, 4317)",6359
+1986,"Quillayute (fall, 4317)",12350
+1987,"Quillayute (fall, 4317)",12350
+1988,"Quillayute (fall, 4317)",12350
+1989,"Quillayute (fall, 4317)",12350
+1990,"Quillayute (fall, 4317)",12350
+1991,"Quillayute (fall, 4317)",5681
+1992,"Quillayute (fall, 4317)",5681
+1993,"Quillayute (fall, 4317)",5681
+1994,"Quillayute (fall, 4317)",5681
+1995,"Quillayute (fall, 4317)",5681
+1996,"Quillayute (fall, 4317)",7316
+1997,"Quillayute (fall, 4317)",5405
+1998,"Quillayute (fall, 4317)",6752
+1999,"Quillayute (fall, 4317)",3334
+2000,"Quillayute (fall, 4317)",3730
+2001,"Quillayute (fall, 4317)",5136
+2002,"Quillayute (fall, 4317)",6067
+2003,"Quillayute (fall, 4317)",7398
+2004,"Quillayute (fall, 4317)",3831
+2005,"Quillayute (fall, 4317)",6406
+2006,"Quillayute (fall, 4317)",5642
+2007,"Quillayute (fall, 4317)",3066
+2008,"Quillayute (fall, 4317)",3612
+2009,"Quillayute (fall, 4317)",3130
+2010,"Quillayute (fall, 4317)",4635
+2011,"Quillayute (fall, 4317)",3963
+2012,"Quillayute (fall, 4317)",3518
+2013,"Quillayute (fall, 4317)",4017
+2014,"Quillayute (fall, 4317)",2782
+2015,"Quillayute (fall, 4317)",3098
+1976,"Quinalt (fall, 4318)",4320
+1977,"Quinalt (fall, 4318)",4320
+1978,"Quinalt (fall, 4318)",4320
+1979,"Quinalt (fall, 4318)",4320
+1980,"Quinalt (fall, 4318)",4320
+1981,"Quinalt (fall, 4318)",5100
+1982,"Quinalt (fall, 4318)",5100
+1983,"Quinalt (fall, 4318)",5100
+1984,"Quinalt (fall, 4318)",5100
+1985,"Quinalt (fall, 4318)",5100
+1986,"Quinalt (fall, 4318)",8822
+1987,"Quinalt (fall, 4318)",8822
+1988,"Quinalt (fall, 4318)",8822
+1989,"Quinalt (fall, 4318)",8822
+1990,"Quinalt (fall, 4318)",8822
+1991,"Quinalt (fall, 4318)",6293
+1992,"Quinalt (fall, 4318)",6293
+1993,"Quinalt (fall, 4318)",6293
+1994,"Quinalt (fall, 4318)",6293
+1995,"Quinalt (fall, 4318)",6293
+1996,"Quinalt (fall, 4318)",5221
+1997,"Quinalt (fall, 4318)",2625
+1998,"Quinalt (fall, 4318)",6124
+1999,"Quinalt (fall, 4318)",4840
+2000,"Quinalt (fall, 4318)",3421
+2001,"Quinalt (fall, 4318)",4047
+2002,"Quinalt (fall, 4318)",4542
+2003,"Quinalt (fall, 4318)",7343
+2004,"Quinalt (fall, 4318)",10662
+2005,"Quinalt (fall, 4318)",7648
+2006,"Quinalt (fall, 4318)",7044
+2007,"Quinalt (fall, 4318)",2126
+2008,"Quinalt (fall, 4318)",3682
+2009,"Quinalt (fall, 4318)",5455
+2010,"Quinalt (fall, 4318)",4521
+2011,"Quinalt (fall, 4318)",5998
+2012,"Quinalt (fall, 4318)",5090
+2013,"Quinalt (fall, 4318)",7148
+2014,"Quinalt (fall, 4318)",12349
+2015,"Quinalt (fall, 4318)",11574
+1976,"Quinalt (spring, 4118)",149
+1977,"Quinalt (spring, 4118)",149
+1978,"Quinalt (spring, 4118)",149
+1979,"Quinalt (spring, 4118)",149
+1980,"Quinalt (spring, 4118)",149
+1981,"Quinalt (spring, 4118)",114
+1982,"Quinalt (spring, 4118)",114
+1983,"Quinalt (spring, 4118)",114
+1984,"Quinalt (spring, 4118)",114
+1985,"Quinalt (spring, 4118)",114
+1986,"Quinalt (spring, 4118)",338
+1987,"Quinalt (spring, 4118)",338
+1988,"Quinalt (spring, 4118)",338
+1989,"Quinalt (spring, 4118)",338
+1990,"Quinalt (spring, 4118)",338
+1991,"Quinalt (spring, 4118)",98
+1992,"Quinalt (spring, 4118)",98
+1993,"Quinalt (spring, 4118)",98
+1994,"Quinalt (spring, 4118)",98
+1995,"Quinalt (spring, 4118)",98
+1996,"Quinalt (spring, 4118)",41
+1997,"Quinalt (spring, 4118)",19
+1998,"Quinalt (spring, 4118)",75
+1999,"Quinalt (spring, 4118)",10
+2000,"Quinalt (spring, 4118)",0
+2001,"Quinalt (spring, 4118)",5
+2002,"Quinalt (spring, 4118)",36
+2003,"Quinalt (spring, 4118)",92
+2004,"Quinalt (spring, 4118)",142
+2005,"Quinalt (spring, 4118)",24
+2006,"Quinalt (spring, 4118)",16
+2007,"Quinalt (spring, 4118)",20
+2008,"Quinalt (spring, 4118)",10
+2009,"Quinalt (spring, 4118)",43
+2010,"Quinalt (spring, 4118)",8
+2011,"Quinalt (spring, 4118)",26
+2012,"Quinalt (spring, 4118)",15
+2013,"Quinalt (spring, 4118)",20
+2014,"Quinalt (spring, 4118)",11
+1976,"WillappaBay (fall, 4329)",6524
+1977,"WillappaBay (fall, 4329)",6524
+1978,"WillappaBay (fall, 4329)",6524
+1979,"WillappaBay (fall, 4329)",6524
+1980,"WillappaBay (fall, 4329)",6524
+1981,"WillappaBay (fall, 4329)",6986
+1982,"WillappaBay (fall, 4329)",6986
+1983,"WillappaBay (fall, 4329)",6986
+1984,"WillappaBay (fall, 4329)",6986
+1985,"WillappaBay (fall, 4329)",6986
+1986,"WillappaBay (fall, 4329)",28034
+1987,"WillappaBay (fall, 4329)",28034
+1988,"WillappaBay (fall, 4329)",28034
+1989,"WillappaBay (fall, 4329)",28034
+1990,"WillappaBay (fall, 4329)",28034
+1991,"WillappaBay (fall, 4329)",19905
+1992,"WillappaBay (fall, 4329)",19905
+1993,"WillappaBay (fall, 4329)",19905
+1994,"WillappaBay (fall, 4329)",19905
+1995,"WillappaBay (fall, 4329)",19905
+1996,"WillappaBay (fall, 4329)",14232
+1997,"WillappaBay (fall, 4329)",17620
+1998,"WillappaBay (fall, 4329)",7791
+1999,"WillappaBay (fall, 4329)",6260
+2000,"WillappaBay (fall, 4329)",12758
+2001,"WillappaBay (fall, 4329)",12260
+2002,"WillappaBay (fall, 4329)",15409
+2003,"WillappaBay (fall, 4329)",17360
+2004,"WillappaBay (fall, 4329)",24282
+2005,"WillappaBay (fall, 4329)",20066
+2006,"WillappaBay (fall, 4329)",27948
+2007,"WillappaBay (fall, 4329)",15307
+2008,"WillappaBay (fall, 4329)",16435
+2009,"WillappaBay (fall, 4329)",22176
+2010,"WillappaBay (fall, 4329)",26100
+2011,"WillappaBay (fall, 4329)",25680
+2012,"WillappaBay (fall, 4329)",16843
+2013,"WillappaBay (fall, 4329)",16434
+2014,"WillappaBay (fall, 4329)",20523
