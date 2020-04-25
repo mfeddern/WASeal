@@ -27,45 +27,6 @@ library(glinternet)
 #data(swiss)
 
 ########################     Calculating TEFs                      ############################
-
-ger <- read.csv("Data/Compiled/GermainData2.csv")
-ger.sealAA <- ger[1:7,7:19]
-TEF.JN<- read.csv("Data/Compiled/TEFJN.csv")
-Beta.JN<- read.csv("Data/Compiled/Nielsen_Beta.csv")
-
-find.numeric <- sapply(ger.sealAA, is.numeric)
-meanAA <- colMeans(ger.sealAA[, find.numeric])
-herring <- ger[8,7:19]
-find.numeric <- sapply(herring, is.numeric)
-herring <- herring[, find.numeric]
-PHE <- rep(meanAA[10]-herring[10], length(meanAA))
-TEF <- (meanAA-herring) - PHE
-
-
-TP.GLU <- (((data$GLU.mean-data$PHE.mean)-2.9)/TEF$Glu)+1
-plot(TP.GLU, ylim = c(0,6))
-
-TP.ALA <- (((data$GLU.mean-data$PHE.mean)-Beta.JN$ALA[1])/TEF$Ala)+1
-plot(TP.ALA, ylim = c(0,10))
-
-#TP.ILE <- (((data$GLU.mean-data$PHE.mean)-Beta.JN$ILE-TEF$Glu)/6.6)+2
-#plot(TP.GLU, ylim = c(0,6))
-
-#TP.PRO <- (((data$PRO.mean-data$PHE.mean)-Beta.JN$PRO[1])/TEF$Pro)+1
-#plot(TP.PRO, ylim = c(0,6))
-
-#TP.LEU <- (((data$LEU.mean-data$PHE.mean)-Beta.JN$LEU[1])/TEF$Leu)+1
-#plot(TP.LEU, ylim = c(0,6))
-
-TP.ASP <- (((data$ASP.mean-data$PHE.mean)-Beta.JN$ASP[1])/TEF$Asp)+1
-plot(TP.ASP, ylim = c(0,6))
-
-TP.VAL <- (((data$VAL.mean-data$PHE.mean)-Beta.JN$VAL[1])/TEF$Val)+1
-plot(TP.VAL, ylim = c(0,6))
-
-data<-cbind(data, TP.ALA, TP.ASP, TP.GLU, #TP.PRO,
-            TP.VAL)
-
 ########################     Summary Statistics                      ############################
 
 
@@ -217,7 +178,7 @@ dev.off()
 
 data.hier <- rbind(data.hGLU, data.hASP)
 data.hier <- rbind(data.hier, data.hPRO)
-#data.hier <- rbind(data.hier, data.hVAL)
+data.hier <- rbind(data.hier, data.hVAL)
 data.hier <- rbind(data.hier, data.hALA)
 data.hier<- subset(data.hier, Location.2=="Coastal"|Location.2=="Inland")
 lag <- 1
@@ -233,22 +194,22 @@ write.csv(data2, 'Data/Compiled/Env.norm.csv')
 
 ModelSelection.WA <- function(dataframe,n, y) {
   
-  aic.output <- rbind(AIC(lmer(y~Location.2+(1|AA), data=dataframe)), 
-                      AIC(lmer(y~Climate.DFA1.x+Location.2+(1|AA), data=dataframe)),
-                      AIC(lmer(y~SST.DFA1+Location.2+(1|AA), data=dataframe)),
-                      AIC(lmer(y~Up.DFA1+Location.2+(1|AA), data=dataframe)),
-                      AIC(lmer(y~Dis.DFA1+Location.2+(1|AA), data=dataframe)),
-                      AIC(lmer(y~Climate.DFA1.x+SST.DFA1+Location.2+(1|AA), data=dataframe)),#1
-                      AIC(lmer(y~Climate.DFA1.x+Dis.DFA1+Location.2+(1|AA), data=dataframe)),#2
-                      AIC(lmer(y~Climate.DFA1.x+Up.DFA1+Location.2+(1|AA), data=dataframe)),#3
-                      AIC(lmer(y~Dis.DFA1+SST.DFA1+Location.2+(1|AA), data=dataframe)),#4
-                      AIC(lmer(y~Up.DFA1+SST.DFA1+Location.2+(1|AA), data=dataframe)),#5
-                      AIC(lmer(y~Up.DFA1+Dis.DFA1+Location.2+(1|AA), data=dataframe)),#6
-                      AIC(lmer(y~Up.DFA1+SST.DFA1+Dis.DFA1+Location.2+(1|AA), data=dataframe)),#7
-                      AIC(lmer(y~Climate.DFA1.x+Up.DFA1+Dis.DFA1+Location.2+(1|AA), data=dataframe)),#8
-                      AIC(lmer(y~Climate.DFA1.x+Up.DFA1+SST.DFA1+Location.2+(1|AA), data=dataframe)),#9
-                      AIC(lmer(y~Climate.DFA1.x+Up.DFA1+Dis.DFA1+SST.DFA1+Location.2+(1|AA), data=dataframe)),#10
-                      AIC(lmer(y~Climate.DFA1.x+SST.DFA1+Dis.DFA1+Location.2+(1|AA), data=dataframe))
+  aic.output <- rbind(AIC(lmer(y~Location.2+(1|AA)+(1|Sample.ID), data=dataframe)), 
+                      AIC(lmer(y~Climate.DFA1.x+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),
+                      AIC(lmer(y~SST.DFA1+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),
+                      AIC(lmer(y~Up.DFA1+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),
+                      AIC(lmer(y~Dis.DFA1+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),
+                      AIC(lmer(y~Climate.DFA1.x+SST.DFA1+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#1
+                      AIC(lmer(y~Climate.DFA1.x+Dis.DFA1+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#2
+                      AIC(lmer(y~Climate.DFA1.x+Up.DFA1+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#3
+                      AIC(lmer(y~Dis.DFA1+SST.DFA1+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#4
+                      AIC(lmer(y~Up.DFA1+SST.DFA1+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#5
+                      AIC(lmer(y~Up.DFA1+Dis.DFA1+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#6
+                      AIC(lmer(y~Up.DFA1+SST.DFA1+Dis.DFA1+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#7
+                      AIC(lmer(y~Climate.DFA1.x+Up.DFA1+Dis.DFA1+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#8
+                      AIC(lmer(y~Climate.DFA1.x+Up.DFA1+SST.DFA1+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#9
+                      AIC(lmer(y~Climate.DFA1.x+Up.DFA1+Dis.DFA1+SST.DFA1+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#10
+                      AIC(lmer(y~Climate.DFA1.x+SST.DFA1+Dis.DFA1+Location.2+(1|AA)+(1|Sample.ID), data=dataframe))
   )
   
  
@@ -272,18 +233,20 @@ ModelSelection.WA <- function(dataframe,n, y) {
 
 
 n<- 17
-model.selectionENV <- ModelSelection.WA(data2, n, data2$TP.norm)
+model.selectionENV <- ModelSelection.WA(data2, n, data2$TP)
 model.selectionENV
 length(model.selectionENV[,1])
 
 
 
-modelENV<- lmer(TP~Climate.DFA1.x+Location.2+(1|AA), data=data2)
+modelENV<- lmer(TP~Location.2+(1|AA), data=data2)
 summary(modelENV)
 summary(lmer(TP~Climate.DFA1.x+Location.2+(1|AA), data=data2))
 
 coef(modelENV)
 plot(modelENV)
+
+subset()
 ########################     Hierarchical PREY Models       ############################
 
 prey <- read.csv("Data/Compiled/WA.Prey2.tot.csv")
@@ -296,62 +259,62 @@ data3 <- subset(data3, Year>=1973&Year<=2008)
 
 ModelSelection.WA2 <- function(dataframe,n, y) {
   
-  aic.output <- rbind(AIC(lmer(y~Location.2+(1|AA), data=dataframe)), 
-                      AIC(lmer(y~Herring.Biomass+Location.2+(1|AA), data=dataframe)),
-                      AIC(lmer(y~Chinook+Location.2+(1|AA), data=dataframe)),
-                      AIC(lmer(y~allSmolt+Location.2+(1|AA), data=dataframe)),
-                      AIC(lmer(y~HakeBiomass+Location.2+(1|AA), data=dataframe)),
-                      AIC(lmer(y~Herring.Biomass+Chinook+Location.2+(1|AA), data=dataframe)),#1
-                      AIC(lmer(y~Herring.Biomass+HakeBiomass+Location.2+(1|AA), data=dataframe)),#2
-                      AIC(lmer(y~Herring.Biomass+allSmolt+Location.2+(1|AA), data=dataframe)),#3
-                      AIC(lmer(y~HakeBiomass+Chinook+Location.2+(1|AA), data=dataframe)),#4
-                      AIC(lmer(y~allSmolt+Chinook+Location.2+(1|AA), data=dataframe)),#5
-                      AIC(lmer(y~allSmolt+HakeBiomass+Location.2+(1|AA), data=dataframe)),#6
-                      AIC(lmer(y~allSmolt+Chinook+HakeBiomass+Location.2+(1|AA), data=dataframe)),#7
-                      AIC(lmer(y~Herring.Biomass+allSmolt+HakeBiomass+Location.2+(1|AA), data=dataframe)),#8
-                      AIC(lmer(y~Herring.Biomass+allSmolt+Chinook+Location.2+(1|AA), data=dataframe)),#9
-                      AIC(lmer(y~Herring.Biomass+Chinook+HakeBiomass+Location.2+(1|AA), data=dataframe)),
+  aic.output <- rbind(AIC(lmer(y~Location.2+(1|AA)+(1|Sample.ID), data=dataframe)), 
+                      AIC(lmer(y~Herring.Biomass+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),
+                      AIC(lmer(y~Chinook+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),
+                      AIC(lmer(y~allSmolt+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),
+                      AIC(lmer(y~HakeBiomass+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),
+                      AIC(lmer(y~Herring.Biomass+Chinook+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#1
+                      AIC(lmer(y~Herring.Biomass+HakeBiomass+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#2
+                      AIC(lmer(y~Herring.Biomass+allSmolt+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#3
+                      AIC(lmer(y~HakeBiomass+Chinook+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#4
+                      AIC(lmer(y~allSmolt+Chinook+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#5
+                      AIC(lmer(y~allSmolt+HakeBiomass+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#6
+                      AIC(lmer(y~allSmolt+Chinook+HakeBiomass+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#7
+                      AIC(lmer(y~Herring.Biomass+allSmolt+HakeBiomass+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#8
+                      AIC(lmer(y~Herring.Biomass+allSmolt+Chinook+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#9
+                      AIC(lmer(y~Herring.Biomass+Chinook+HakeBiomass+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),
                       
-                      AIC(lmer(y~Location.2+Chum+(1|AA), data=dataframe)), 
-                      AIC(lmer(y~Chum+Herring.Biomass+Location.2+(1|AA), data=dataframe)),
-                      AIC(lmer(y~Chum+Chinook+Location.2+(1|AA), data=dataframe)),
-                      AIC(lmer(y~Chum+allSmolt+Location.2+(1|AA), data=dataframe)),
-                      AIC(lmer(y~Chum+HakeBiomass+Location.2+(1|AA), data=dataframe)),
-                      AIC(lmer(y~Chum+Herring.Biomass+Chinook+Location.2+(1|AA), data=dataframe)),#1
-                      AIC(lmer(y~Chum+Herring.Biomass+HakeBiomass+Location.2+(1|AA), data=dataframe)),#2
-                      AIC(lmer(y~Chum+Herring.Biomass+allSmolt+Location.2+(1|AA), data=dataframe)),#3
-                      AIC(lmer(y~Chum+HakeBiomass+Chinook+Location.2+(1|AA), data=dataframe)),#4
-                      AIC(lmer(y~Chum+allSmolt+Chinook+Location.2+(1|AA), data=dataframe)),#5
-                      AIC(lmer(y~Chum+allSmolt+HakeBiomass+Location.2+(1|AA), data=dataframe)),#6
+                      AIC(lmer(y~Location.2+Chum+(1|AA)+(1|Sample.ID), data=dataframe)), 
+                      AIC(lmer(y~Chum+Herring.Biomass+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),
+                      AIC(lmer(y~Chum+Chinook+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),
+                      AIC(lmer(y~Chum+allSmolt+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),
+                      AIC(lmer(y~Chum+HakeBiomass+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),
+                      AIC(lmer(y~Chum+Herring.Biomass+Chinook+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#1
+                      AIC(lmer(y~Chum+Herring.Biomass+HakeBiomass+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#2
+                      AIC(lmer(y~Chum+Herring.Biomass+allSmolt+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#3
+                      AIC(lmer(y~Chum+HakeBiomass+Chinook+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#4
+                      AIC(lmer(y~Chum+allSmolt+Chinook+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#5
+                      AIC(lmer(y~Chum+allSmolt+HakeBiomass+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#6
                       
-                      AIC(lmer(y~Location.2+Coho+(1|AA), data=dataframe)), 
-                      AIC(lmer(y~Coho+Herring.Biomass+Location.2+(1|AA), data=dataframe)),
-                      AIC(lmer(y~Coho+Chinook+Location.2+(1|AA), data=dataframe)),
-                      AIC(lmer(y~Coho+allSmolt+Location.2+(1|AA), data=dataframe)),
-                      AIC(lmer(y~Coho+HakeBiomass+Location.2+(1|AA), data=dataframe)),
-                      AIC(lmer(y~Coho+Herring.Biomass+Chinook+Location.2+(1|AA), data=dataframe)),#1
-                      AIC(lmer(y~Coho+Herring.Biomass+HakeBiomass+Location.2+(1|AA), data=dataframe)),#2
-                      AIC(lmer(y~Coho+Herring.Biomass+allSmolt+Location.2+(1|AA), data=dataframe)),#3
-                      AIC(lmer(y~Coho+HakeBiomass+Chinook+Location.2+(1|AA), data=dataframe)),#4
-                      AIC(lmer(y~Coho+allSmolt+Chinook+Location.2+(1|AA), data=dataframe)),#5
-                      AIC(lmer(y~Coho+allSmolt+HakeBiomass+Location.2+(1|AA), data=dataframe)),#6
+                      AIC(lmer(y~Location.2+Coho+(1|AA)+(1|Sample.ID), data=dataframe)), 
+                      AIC(lmer(y~Coho+Herring.Biomass+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),
+                      AIC(lmer(y~Coho+Chinook+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),
+                      AIC(lmer(y~Coho+allSmolt+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),
+                      AIC(lmer(y~Coho+HakeBiomass+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),
+                      AIC(lmer(y~Coho+Herring.Biomass+Chinook+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#1
+                      AIC(lmer(y~Coho+Herring.Biomass+HakeBiomass+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#2
+                      AIC(lmer(y~Coho+Herring.Biomass+allSmolt+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#3
+                      AIC(lmer(y~Coho+HakeBiomass+Chinook+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#4
+                      AIC(lmer(y~Coho+allSmolt+Chinook+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#5
+                      AIC(lmer(y~Coho+allSmolt+HakeBiomass+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#6
                       
-                      AIC(lmer(y~Location.2+HarborSeal+(1|AA), data=dataframe)), 
-                      AIC(lmer(y~HarborSeal+Herring.Biomass+Location.2+(1|AA), data=dataframe)),
-                      AIC(lmer(y~HarborSeal+Chinook+Location.2+(1|AA), data=dataframe)),
-                      AIC(lmer(y~HarborSeal+allSmolt+Location.2+(1|AA), data=dataframe)),
-                      AIC(lmer(y~HarborSeal+HakeBiomass+Location.2+(1|AA), data=dataframe)),
-                      AIC(lmer(y~HarborSeal+Herring.Biomass+Chinook+Location.2+(1|AA), data=dataframe)),#1
-                      AIC(lmer(y~HarborSeal+Herring.Biomass+HakeBiomass+Location.2+(1|AA), data=dataframe)),#2
-                      AIC(lmer(y~HarborSeal+Herring.Biomass+allSmolt+Location.2+(1|AA), data=dataframe)),#3
-                      AIC(lmer(y~HarborSeal+HakeBiomass+Chinook+Location.2+(1|AA), data=dataframe)),#4
-                      AIC(lmer(y~HarborSeal+allSmolt+Chinook+Location.2+(1|AA), data=dataframe)),#5
-                      AIC(lmer(y~HarborSeal+allSmolt+HakeBiomass+Location.2+(1|AA), data=dataframe)),#6
+                      AIC(lmer(y~Location.2+HarborSeal+(1|AA)+(1|Sample.ID), data=dataframe)), 
+                      AIC(lmer(y~HarborSeal+Herring.Biomass+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),
+                      AIC(lmer(y~HarborSeal+Chinook+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),
+                      AIC(lmer(y~HarborSeal+allSmolt+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),
+                      AIC(lmer(y~HarborSeal+HakeBiomass+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),
+                      AIC(lmer(y~HarborSeal+Herring.Biomass+Chinook+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#1
+                      AIC(lmer(y~HarborSeal+Herring.Biomass+HakeBiomass+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#2
+                      AIC(lmer(y~HarborSeal+Herring.Biomass+allSmolt+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#3
+                      AIC(lmer(y~HarborSeal+HakeBiomass+Chinook+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#4
+                      AIC(lmer(y~HarborSeal+allSmolt+Chinook+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#5
+                      AIC(lmer(y~HarborSeal+allSmolt+HakeBiomass+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#6
                       
-                      AIC(lmer(y~HarborSeal+Chum+Location.2+(1|AA), data=dataframe)),#4
-                      AIC(lmer(y~HarborSeal+Coho+Location.2+(1|AA), data=dataframe)),#5
-                      AIC(lmer(y~Chum+Coho+Location.2+(1|AA), data=dataframe)),#6
-                      AIC(lmer(y~Chum+Coho+HarborSeal+Location.2+(1|AA), data=dataframe))#6
+                      AIC(lmer(y~HarborSeal+Chum+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#4
+                      AIC(lmer(y~HarborSeal+Coho+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#5
+                      AIC(lmer(y~Chum+Coho+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#6
+                      AIC(lmer(y~Chum+Coho+HarborSeal+Location.2+(1|AA)+(1|Sample.ID), data=dataframe))#6
                       
                       
 
@@ -386,15 +349,14 @@ ModelSelection.WA2 <- function(dataframe,n, y) {
 }
 n<- 16
 
-model.selectionPREY <- ModelSelection.WA2(data3, n, data3$TP.norm)
+model.selectionPREY <- ModelSelection.WA2(data3, n, data3$TP)
 length(model.selectionPREY[,1])
 model.selectionPREY
-modelPREY<-lmer(TP.norm~Herring.Biomass+HarborSeal+Location.2+(1|AA), data=data3)
+modelPREY<-lmer(TP~HarborSeal+Location.2+(1|AA)+(1|Sample.ID), data=data3)
 summary(modelPREY)
 coef(modelPREY)
 
-modelPREY2<-lmer(TP.norm~Chinook+Herring.Biomass+HarborSeal+Location.2+(1|AA), data=data3)
-summary(modelPREY2)
+
 
 ########################     Hierarchical Nutrient Models       ############################
 
@@ -403,9 +365,9 @@ ModelSelection.WA3 <- function(dataframe,n, y) {
   
   aic.output <- rbind(
     AIC(lmer(TP~Location.2+(1|AA), data=dataframe)),
-                      AIC(lmer(y~PHE.norm+d13C.norm+Location.2+(1|AA), data=dataframe)),
-                      AIC(lmer(y~PHE.norm+Location.2+(1|AA), data=dataframe)),
-                      AIC(lmer(y~d13C.norm+Location.2+(1|AA), data=dataframe))
+                      AIC(lmer(y~PHE.norm+d13C.norm+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),
+                      AIC(lmer(y~PHE.norm+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),
+                      AIC(lmer(y~d13C.norm+Location.2+(1|AA)+(1|Sample.ID), data=dataframe))
                        )
   
   names <- seq(1,n,1)
@@ -423,18 +385,12 @@ ModelSelection.WA3 <- function(dataframe,n, y) {
 }
 
 n<-4
-model.selectionNUTRIENT <- ModelSelection.WA3(data2, n, data2$TP.norm)
+model.selectionNUTRIENT <- ModelSelection.WA3(data2, n, data2$TP)
 model.selectionNUTRIENT
 length(model.selectionNUTRIENT[,1])
-modelNUTRIENT<-lmer(TP~PHE.norm+d13C.norm+Location.2+(1|AA),data=data3)
-summary(modelNUTRIENT)
-summary(lmer(TP.norm~PHE.mean+d13C.s+Location.2+(1|AA),data=data3))
-summary(lmer(TP~PHE.mean+d13C.s+Location.2+(1+Location.2|AA),data=data3))
-summary(lmer(TP~PHE.mean+d13C.s+Location.2+(1+Location.2+PHE.norm|AA),data=data3))
 
-coef(modelNUTRIENT)
-AIC(lmer(TP~PHE.norm*Location.2+d13C.norm+(1|AA),data=data3))#10
-AIC(lmer(TP~PHE.norm+Location.2+d13C.norm+(1|AA),data=data3))#10
+modelNUTRIENT<-lmer(TP~PHE.norm+d13C.norm+Location.2+(1|AA)+(1|Sample.ID),data=data3)
+summary(modelNUTRIENT)
 
 
 ########################     Hierarchical FULL Models       ############################
@@ -443,41 +399,41 @@ AIC(lmer(TP~PHE.norm+Location.2+d13C.norm+(1|AA),data=data3))#10
 ModelSelection.WAFULL <- function(dataframe,n, y) {
   
   aic.output <- rbind(
-    AIC(lmer(y~Location.2+(1|AA), data=dataframe)),#1
-    AIC(lmer(y~PHE.norm+Location.2+(1|AA), data=dataframe)),#2
-    AIC(lmer(y~PHE.norm+Climate.DFA1.x+Location.2+(1|AA), data=dataframe)),#3
-    AIC(lmer(y~PHE.norm+d13C.norm+Location.2+(1|AA), data=dataframe)),#4
-    AIC(lmer(y~PHE.norm+HarborSeal+Location.2+(1|AA), data=dataframe)),#5
-    AIC(lmer(y~PHE.norm+Herring.Biomass+Location.2+(1|AA), data=dataframe)),#6
+    AIC(lmer(y~Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#1
+    AIC(lmer(y~PHE.norm+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#2
+    AIC(lmer(y~PHE.norm+Climate.DFA1.x+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#3
+    AIC(lmer(y~PHE.norm+d13C.norm+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#4
+    AIC(lmer(y~PHE.norm+HarborSeal+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#5
+    AIC(lmer(y~PHE.norm+Herring.Biomass+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#6
     
-    AIC(lmer(y~d13C.norm+Location.2+(1|AA), data=dataframe)),#7
-    AIC(lmer(y~d13C.norm+Climate.DFA1.x+Location.2+(1|AA), data=dataframe)),#8
-    AIC(lmer(y~d13C.norm+HarborSeal+Location.2+(1|AA), data=dataframe)),#9
-    AIC(lmer(y~d13C.norm+Herring.Biomass+Location.2+(1|AA), data=dataframe)),#10
+    AIC(lmer(y~d13C.norm+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#7
+    AIC(lmer(y~d13C.norm+Climate.DFA1.x+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#8
+    AIC(lmer(y~d13C.norm+HarborSeal+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#9
+    AIC(lmer(y~d13C.norm+Herring.Biomass+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#10
     
-    AIC(lmer(y~Climate.DFA1.x+Location.2+(1|AA), data=dataframe)),#11
-    AIC(lmer(y~Climate.DFA1.x+HarborSeal+Location.2+(1|AA), data=dataframe)),#12
-    AIC(lmer(y~Climate.DFA1.x+Herring.Biomass+Location.2+(1|AA), data=dataframe)),#13
+    AIC(lmer(y~Climate.DFA1.x+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#11
+    AIC(lmer(y~Climate.DFA1.x+HarborSeal+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#12
+    AIC(lmer(y~Climate.DFA1.x+Herring.Biomass+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#13
     
-    AIC(lmer(y~HarborSeal+Location.2+(1|AA), data=dataframe)),#14
-    AIC(lmer(y~HarborSeal+Herring.Biomass+Location.2+(1|AA), data=dataframe)),#15
-    AIC(lmer(y~Herring.Biomass+Location.2+(1|AA), data=dataframe)),#16
+    AIC(lmer(y~HarborSeal+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#14
+    AIC(lmer(y~HarborSeal+Herring.Biomass+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#15
+    AIC(lmer(y~Herring.Biomass+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#16
     
-    AIC(lmer(y~PHE.norm+Climate.DFA1.x+d13C.norm+Location.2+(1|AA), data=dataframe)),#17
-    AIC(lmer(y~PHE.norm+Climate.DFA1.x+HarborSeal+Location.2+(1|AA), data=dataframe)),#18
-    AIC(lmer(y~PHE.norm+Climate.DFA1.x+Herring.Biomass+Location.2+(1|AA), data=dataframe)),#19
-    AIC(lmer(y~PHE.norm+d13C.norm+HarborSeal+Location.2+(1|AA), data=dataframe)),#20
-    AIC(lmer(y~PHE.norm+Herring.Biomass+HarborSeal+Location.2+(1|AA), data=dataframe)),#21
+    AIC(lmer(y~PHE.norm+Climate.DFA1.x+d13C.norm+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#17
+    AIC(lmer(y~PHE.norm+Climate.DFA1.x+HarborSeal+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#18
+    AIC(lmer(y~PHE.norm+Climate.DFA1.x+Herring.Biomass+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#19
+    AIC(lmer(y~PHE.norm+d13C.norm+HarborSeal+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#20
+    AIC(lmer(y~PHE.norm+Herring.Biomass+HarborSeal+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#21
     
-    AIC(lmer(y~Climate.DFA1.x+d13C.norm+HarborSeal+Location.2+(1|AA), data=dataframe)),#22
-    AIC(lmer(y~Climate.DFA1.x+d13C.norm+Herring.Biomass+Location.2+(1|AA), data=dataframe)),#23
-    AIC(lmer(y~Climate.DFA1.x+Herring.Biomass+HarborSeal+Location.2+(1|AA), data=dataframe)),#24
+    AIC(lmer(y~Climate.DFA1.x+d13C.norm+HarborSeal+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#22
+    AIC(lmer(y~Climate.DFA1.x+d13C.norm+Herring.Biomass+Location.2+(1|AA)+(1|Sample.ID)+(1|Sample.ID), data=dataframe)),#23
+    AIC(lmer(y~Climate.DFA1.x+Herring.Biomass+HarborSeal+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#24
    
-    AIC(lmer(y~Herring.Biomass+HarborSeal+d13C.s+Location.2+(1|AA), data=dataframe)),#25
+    AIC(lmer(y~Herring.Biomass+HarborSeal+d13C.s+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#25
     
-    AIC(lmer(y~Herring.Biomass+HarborSeal+d13C.s+PHE.norm+Location.2+(1|AA), data=dataframe)),#26
-    AIC(lmer(y~Herring.Biomass+HarborSeal+d13C.s+Climate.DFA1.x+Location.2+(1|AA), data=dataframe)),#27
-    AIC(lmer(y~Herring.Biomass+HarborSeal+d13C.s+Climate.DFA1.x+PHE.norm+Location.2+(1|AA), data=dataframe))#28
+    AIC(lmer(y~Herring.Biomass+HarborSeal+d13C.s+PHE.norm+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#26
+    AIC(lmer(y~Herring.Biomass+HarborSeal+d13C.s+Climate.DFA1.x+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#27
+    AIC(lmer(y~Herring.Biomass+HarborSeal+d13C.s+Climate.DFA1.x+PHE.norm+Location.2+(1|AA)+(1|Sample.ID), data=dataframe))#28
     
   )
   
@@ -503,12 +459,12 @@ ModelSelection.WAFULL <- function(dataframe,n, y) {
 }
 
 n<-4
-model.selectionFULL <- ModelSelection.WAFULL(data3, n, data3$TP.norm)
+model.selectionFULL <- ModelSelection.WAFULL(data3, n, data3$TP)
 model.selectionFULL
 
 
 
-modelFULL<-lmer(TP~PHE.norm+d13C.norm+HarborSeal+Location.2+(1|AA), data=data3)
+modelFULL<-lmer(TP~PHE.norm+d13C.norm+HarborSeal+Location.2+(1|AA)+(1|Sample.ID), data=data3)
 vif(modelFULL)
 
 summary(modelFULL)
@@ -534,6 +490,145 @@ vif(modelFULL)
 
 
 
+
+########################    Mechanistic Models       ############################
+
+
+ModelSelection.WAHake <- function(dataframe,n) {
+  
+  aic.output <- rbind(
+    AIC(lm(HakeBiomass~PHE.norm, data=dataframe)),
+    AIC(lm(HakeBiomass~Climate.DFA1.x, data=dataframe)),
+    AIC(lm(HakeBiomass~Climate.DFA1.x+PHE.norm, data=dataframe)),
+    AIC(lm(HakeBiomass~Climate.DFA1.x*PHE.norm, data=dataframe)),
+    
+    AIC(lm(HakeBiomass~TP.norm, data=dataframe)),
+    AIC(lm(HakeBiomass~TP.norm+PHE.norm, data=dataframe)),
+    AIC(lm(HakeBiomass~TP.norm+Climate.DFA1.x, data=dataframe)),
+    
+    AIC(lm(HakeBiomass~HarborSeal, data=dataframe)),
+    AIC(lm(HakeBiomass~HarborSeal+PHE.norm, data=dataframe)),
+    AIC(lm(HakeBiomass~HarborSeal+Climate.DFA1.x, data=dataframe))
+  )
+  
+  names <- seq(1,n,1)
+  model.names <- c( "PHE", "Climate", "Climate, PHE","Climate*PHE", "TP", "TP, PHE", "TP, Climate", "Seal", "Seal, PHE", "Seal, Climate")
+  
+  row.names(aic.output) <- model.names
+  delaic <- aic.output-min(aic.output)
+  aic.weight1 <- exp(-0.5*delaic)
+  aic.weight <- aic.weight1/sum(aic.weight1)
+  #dev.ex <- model.summary[,14]
+  aic.output <- cbind(aic.output, delaic, aic.weight)
+  
+  colnames(aic.output)<- c("AICc", "delAICc", "AICc Weight")
+  return(aic.output)
+}
+
+n<-4
+model.selectionHAKE <- ModelSelection.WAHake(data4, n)
+model.selectionHAKE
+
+ModelSelection.WAHerring <- function(dataframe,n) {
+  
+  aic.output <- rbind(
+    AIC(lm(Herring.Biomass~PHE.norm, data=dataframe)),
+    AIC(lm(Herring.Biomass~Climate.DFA1.x, data=dataframe)),
+    AIC(lm(Herring.Biomass~Climate.DFA1.x+PHE.norm, data=dataframe)),
+    AIC(lm(Herring.Biomass~Climate.DFA1.x*PHE.norm, data=dataframe)),
+    
+    AIC(lm(Herring.Biomass~d13C.norm, data=dataframe)),
+    AIC(lm(Herring.Biomass~Climate.DFA1.x+d13C.norm, data=dataframe)),
+    AIC(lm(Herring.Biomass~d13C.norm+Climate.DFA1.x*PHE.norm, data=dataframe)),
+    
+    AIC(lm(Herring.Biomass~TP.norm, data=dataframe)),
+    AIC(lm(Herring.Biomass~TP.norm+PHE.norm, data=dataframe)),
+    AIC(lm(Herring.Biomass~TP.norm+Climate.DFA1.x, data=dataframe)),
+    AIC(lm(Herring.Biomass~TP.norm+PHE.norm+Climate.DFA1.x, data=dataframe)),
+    AIC(lm(Herring.Biomass~HarborSeal, data=dataframe)),
+    AIC(lm(Herring.Biomass~HarborSeal+PHE.norm, data=dataframe)),
+    AIC(lm(Herring.Biomass~HarborSeal+Climate.DFA1.x+HakeBiomass, data=dataframe)),
+    AIC(lm(Herring.Biomass~HarborSeal+Climate.DFA1.x*PHE.norm+HakeBiomass, data=dataframe)),
+    AIC(lm(Herring.Biomass~HarborSeal+Climate.DFA1.x+PHE.norm+HakeBiomass, data=dataframe))
+    
+  )
+  
+  names <- seq(1,n,1)
+  model.names <- c( "PHE", "Climate", "Climate, PHE", "PHE*Climate", "d13C", "Climate, d13C", 
+                    "climate*d13c", "TP", "TP, PHE", "TP, Climate", "TP, Climate, PHE", "Seal", "Seal, PHE", "Seal, Climate",
+                    "Seal, climate*phe", "Seal, climate, phe")
+  
+  row.names(aic.output) <- model.names
+  delaic <- aic.output-min(aic.output)
+  aic.weight1 <- exp(-0.5*delaic)
+  aic.weight <- aic.weight1/sum(aic.weight1)
+  #dev.ex <- model.summary[,14]
+  aic.output <- cbind(aic.output, delaic, aic.weight)
+  
+  colnames(aic.output)<- c("AICc", "delAICc", "AICc Weight")
+  return(aic.output)
+}
+
+n<-4
+model.selectionHERRING <- ModelSelection.WAHerring(data4, n)
+model.selectionHERRING
+
+summary(lm(HakeBiomass~PHE.norm, data=data4))
+summary(lm(HakeBiomass~Climate.DFA1.x, data=data4))
+summary(lm(HakeBiomass~Climate.DFA1.x*PHE.norm, data=data4))
+
+
+summary(lm(Herring.Biomass~PHE.norm, data=data4))
+summary(lm(Herring.Biomass~Climate.DFA1.x, data=data4))
+summary(lm(Herring.Biomass~Climate.DFA1.x*PHE.norm, data=data4))
+summary(lm(Herring.Biomass~HakeBiomass, data=data4))
+
+
+
+ModelSelection.WA4 <- function(dataframe,n) {
+  
+  aic.output <- rbind(AIC(lmer(TP.norm~Location.2+(1|AA), data=dataframe)), #1
+                      AIC(lmer(TP.norm~PHE.norm+Location.2+(1|AA), data=dataframe)), #2
+                      AIC(lmer(TP.norm~PHE.norm+Climate.DFA1.x+Location.2+(1|AA), data=dataframe)),#3
+                      AIC(lmer(TP.norm~PHE.norm+HakeBiomass+Location.2+(1|AA), data=dataframe)),#4
+                      AIC(lmer(TP.norm~PHE.norm+Herring.Biomass+Location.2+(1|AA), data=dataframe)),#5
+                      AIC(lmer(TP.norm~PHE.norm+Herring.Biomass+HakeBiomass+Location.2+(1|AA), data=dataframe)),#6
+                      AIC(lmer(TP.norm~PHE.norm+Herring.Biomass+Climate.DFA1.x+Location.2+(1|AA), data=dataframe)),#7
+                      AIC(lmer(TP.norm~PHE.norm+Climate.DFA1.x+HakeBiomass+Location.2+(1|AA), data=dataframe)),#8
+                      
+                      AIC(lmer(TP.norm~Climate.DFA1.x+Location.2+(1|AA), data=dataframe)),#9
+                      AIC(lmer(TP.norm~Climate.DFA1.x+HakeBiomass+Location.2+(1|AA), data=dataframe)),#10
+                      AIC(lmer(TP.norm~Climate.DFA1.x+Herring.Biomass+Location.2+(1|AA), data=dataframe)),#11
+                      AIC(lmer(TP.norm~Climate.DFA1.x+Herring.Biomass+HakeBiomass+Location.2+(1|AA), data=dataframe)),#12
+                      
+                      AIC(lmer(TP.norm~HakeBiomass+Location.2+(1|AA), data=dataframe)),#13
+                      AIC(lmer(TP.norm~Herring.Biomass+Location.2+(1|AA), data=dataframe)),#14
+                      AIC(lmer(TP.norm~Herring.Biomass+HakeBiomass+Location.2+(1|AA), data=dataframe)),#15
+                      AIC(lmer(TP.norm~Climate.DFA1.x+Herring.Biomass+HakeBiomass+PHE.norm+Location.2+(1|AA), data=dataframe))#16
+                      
+                      
+                      
+  )
+  
+  names <- seq(1,n,1)
+  model.names <- c("1. Location", "2. Phe", "3. Phe, Climate", "4. Phe, Hake", "5. Phe, Herring", "6. Phe, Hake, Herring", 
+                   "7. PHE, Climate, Herring", "8. Phe, Climate, Hake", "9. Climate", "10. Climate, Hake", "11. Climate, Herring",
+                   "12. Climate, Herring, Hake", "13. Hake", "14. Herring", "15. Herring, Hake", "16. Herring, Climate, Phe, Hake")
+  
+  row.names(aic.output) <- model.names
+  delaic <- aic.output-min(aic.output)
+  aic.weight1 <- exp(-0.5*delaic)
+  aic.weight <- aic.weight1/sum(aic.weight1)
+  #dev.ex <- model.summary[,14]
+  aic.output <- cbind(aic.output, delaic, aic.weight)
+  
+  colnames(aic.output)<- c("AICc", "delAICc", "AICc Weight")
+  return(aic.output)
+}
+
+n<-4
+model.selectionFULL <- ModelSelection.WA4(data3, n)
+model.selectionFULL
 
 ########################     Lasso Regression       ############################
 library(dplyr)
@@ -647,7 +742,8 @@ library(broom)
 library(dplyr)
 library(colorspace)
 library(ggpubr)
-modelENV<- lmer(TP~Climate.DFA1.x+Location.2+(1|AA), data=data2)
+
+
 ENV <- tidy(modelENV)
 x <- data.frame("term" = c('Intercept',  'Climate', 'Location'), "estimate" = fixef(modelENV), "std.error" = c(ENV[1:3,3]), "group" = c(rep('fixed', 3)), model="fixed")
 ENV.fixed <- as_tibble(x)

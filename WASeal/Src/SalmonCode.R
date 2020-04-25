@@ -49,16 +49,16 @@ eulachon.norm <- cbind(Year=eulachon[,1], Total=transform_to_log_scale(eulachon[
 wildproduction.norm <- cbind(Year=wildproduction[,1], Total=transform_to_log_scale(wildproduction[,2]-mean(na.omit(wildproduction[,2]))))
 allsmolt.norm <- cbind(Year=allsmolt[,1], Total=transform_to_log_scale(allsmolt[,2]-mean(na.omit(allsmolt[,2]))))
 
-herring.norm2 <- cbind(Year=herring$yr, Total=transform_to_log_scale(herring$value)-mean(transform_to_log_scale(herring$value)))
-chinook.norm2 <- cbind(Year=chinook$Year, Total=transform_to_log_scale(chinook$Count)-mean(transform_to_log_scale(chinook$Count)))
-chum.norm2 <- cbind(Year=chum$Year, Total=transform_to_log_scale(chum$Count)-mean(transform_to_log_scale(chum$Count)))
-coho.norm2 <- cbind(Year=coho$yr, Total=transform_to_log_scale(coho$value)-mean(transform_to_log_scale(coho$value)))
-seal.norm2 <- cbind(Year=seal[,2], Total=transform_to_log_scale(seal[,3])-mean(transform_to_log_scale(seal[,3])))
-hatch.norm2 <- cbind(Year=hatch$Year, Total=transform_to_log_scale(hatch$Smolts)-mean(transform_to_log_scale(hatch$Smolts)))
-hake.norm2 <- cbind(Year=hake[,1], Total=transform_to_log_scale(hake[,4])-mean(transform_to_log_scale(hake[,4])))
-eulachon.norm2 <- cbind(Year=eulachon[,1], Total=transform_to_log_scale(eulachon[,2])-mean(transform_to_log_scale(eulachon[,2])))
-wildproduction.norm2 <- cbind(Year=wildproduction[,1], Total=transform_to_log_scale(wildproduction[,2])-mean(transform_to_log_scale(wildproduction[,2])))
-allsmolt.norm2 <- cbind(Year=allsmolt[,1], Total=transform_to_log_scale(allsmolt[,2])-mean(transform_to_log_scale(allsmolt[,2])))
+herring.norm2 <- cbind(Year=herring$yr, Total=(herring$value-mean(herring$value))/sd(herring$value))
+chinook.norm2 <- cbind(Year=chinook$Year, Total=(chinook$Count-mean(chinook$Count))/sd(chinook$Count))
+chum.norm2 <- cbind(Year=chum$Year, Total=(chum$Count-mean(chum$Count))/sd(chum$Count))
+coho.norm2 <- cbind(Year=coho$yr, Total=(coho$value-mean(coho$value))/sd(coho$value))
+seal.norm2 <- cbind(Year=seal[,2], Total=(seal[,3]-mean(seal[,3]))/sd(seal[,3]))
+hatch.norm2 <- cbind(Year=hatch$Year, Total=(hatch$Smolts-mean(hatch$Smolts))/sd(hatch$Smolts))
+hake.norm2 <- cbind(Year=hake[,1], Total=(hake[,4]-mean(hake[,4]))/sd(hake[,4]))
+eulachon.norm2 <- cbind(Year=eulachon[,1], Total=(eulachon[,2]-mean(eulachon[,2]))/sd(eulachon[,2]))
+wildproduction.norm2 <- cbind(Year=wildproduction[,1], Total=(wildproduction[,2]-mean(wildproduction[,2]))/sd(wildproduction[,2]))
+allsmolt.norm2 <- cbind(Year=allsmolt[,1], Total=(allsmolt[,2]-mean(allsmolt[,2]))/sd(allsmolt[,2]))
 
 
 
