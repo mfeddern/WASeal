@@ -1,19 +1,19 @@
 library(lme4)
 
-data <-  read.csv("Data/Compiled/HierarchicalData.csv")
+data <-  read.csv("Data/Compiled/HierarchicalData2.csv")
 
 ########################    Hier Clim Models       ############################
 
-dataCLIM <- subset(data, Year>=1960&Year<=2008 & AA=="Glu"|AA=="PRO"|AA=="ALA")
+dataCLIM <- subset(data, Year>=1950&Year<=2008 & AA=="Glu"|AA=="PRO"|AA=="ALA")
 #dataCLIM <- subset(data, Year>=1960&Year<=2008)# & AA=="Glu"|AA=="PRO"|AA=="ALA")
 
 dataCLIM <-dataCLIM %>% select(MEI, 
                             PDO,
                             NPGO,
                             WA.SST.Su, 
-                            TUMI.45,
-                            Col.Dis.high,
                             UpInAn.45.Spring,
+                            Col.Dis.high,
+                            UpInAn.45.Summer,
                             TP.norm,
                             TP,
                             Year,
@@ -54,17 +54,17 @@ ModelSelection.CLIM<- function(dataframe,n, y) {
                       AIC(lmer(y~WA.SST.Su+MEI+NPGO+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#5
                       AIC(lmer(y~WA.SST.Su+MEI+UpInAn.45.Spring+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#6
                       
-                      AIC(lmer(y~Location.2+(1|AA)+(1|Sample.ID)+TUMI.45, data=dataframe)), 
-                      AIC(lmer(y~TUMI.45+PDO+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),
-                      AIC(lmer(y~TUMI.45+NPGO+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),
-                      AIC(lmer(y~TUMI.45+MEI+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),
-                      AIC(lmer(y~TUMI.45+UpInAn.45.Spring+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),
-                      AIC(lmer(y~TUMI.45+PDO+NPGO+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#1
-                      AIC(lmer(y~TUMI.45+PDO+UpInAn.45.Spring+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#2
-                      AIC(lmer(y~TUMI.45+PDO+MEI+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#3
-                      AIC(lmer(y~TUMI.45+UpInAn.45.Spring+NPGO+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#4
-                      AIC(lmer(y~TUMI.45+MEI+NPGO+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#5
-                      AIC(lmer(y~TUMI.45+MEI+UpInAn.45.Spring+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#6
+                      AIC(lmer(y~Location.2+(1|AA)+(1|Sample.ID)+UpInAn.45.Summer, data=dataframe)), 
+                      AIC(lmer(y~UpInAn.45.Summer+PDO+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),
+                      AIC(lmer(y~UpInAn.45.Summer+NPGO+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),
+                      AIC(lmer(y~UpInAn.45.Summer+MEI+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),
+                      AIC(lmer(y~UpInAn.45.Summer+UpInAn.45.Spring+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),
+                      AIC(lmer(y~UpInAn.45.Summer+PDO+NPGO+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#1
+                      AIC(lmer(y~UpInAn.45.Summer+PDO+UpInAn.45.Spring+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#2
+                      AIC(lmer(y~UpInAn.45.Summer+PDO+MEI+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#3
+                      AIC(lmer(y~UpInAn.45.Summer+UpInAn.45.Spring+NPGO+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#4
+                      AIC(lmer(y~UpInAn.45.Summer+MEI+NPGO+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#5
+                      AIC(lmer(y~UpInAn.45.Summer+MEI+UpInAn.45.Spring+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#6
                       
                       AIC(lmer(y~Location.2+(1|AA)+(1|Sample.ID)+Col.Dis.high, data=dataframe)), 
                       AIC(lmer(y~Col.Dis.high+PDO+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),
@@ -79,9 +79,9 @@ ModelSelection.CLIM<- function(dataframe,n, y) {
                       AIC(lmer(y~Col.Dis.high+MEI+UpInAn.45.Spring+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#6
                       
                       AIC(lmer(y~Col.Dis.high+WA.SST.Su+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#4
-                      AIC(lmer(y~Col.Dis.high+TUMI.45+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#5
-                      AIC(lmer(y~WA.SST.Su+TUMI.45+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#6
-                      AIC(lmer(y~WA.SST.Su+TUMI.45+Col.Dis.high+Location.2+(1|AA)+(1|Sample.ID), data=dataframe))#6
+                      AIC(lmer(y~Col.Dis.high+UpInAn.45.Summer+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#5
+                      AIC(lmer(y~WA.SST.Su+UpInAn.45.Summer+Location.2+(1|AA)+(1|Sample.ID), data=dataframe)),#6
+                      AIC(lmer(y~WA.SST.Su+UpInAn.45.Summer+Col.Dis.high+Location.2+(1|AA)+(1|Sample.ID), data=dataframe))#6
                       
                       
                       
@@ -95,14 +95,14 @@ ModelSelection.CLIM<- function(dataframe,n, y) {
                    "WA.SST.Su, Location", "WA.SST.Su, PDO", "WA.SST.Su, NPGO", "WA.SST.Su, MEI", "WA.SST.Su, Upwelling (Sp)","1. WA.SST.Su,  PDO, NPGO", "2. WA.SST.Su, PDO, Upwelling (Sp)", 
                    "3. WA.SST.Su, PDO, MEI", "4. WA.SST.Su, NPGO, Upwelling (Sp)","5. WA.SST.Su, NPGO, MEI", "6. WA.SST.Su, MEI, Upwelling (Sp)",
                    
-                   "TUMI.45, Location", "TUMI.45, PDO", "TUMI.45, NPGO", "TUMI.45, MEI", "TUMI.45, Upwelling (Sp)","1. TUMI.45, PDO, NPGO", "2.TUMI.45,  PDO, Upwelling (Sp)",
-                   "3. TUMI.45, PDO, MEI", "4.TUMI.45,  NPGO, Upwelling (Sp)","5.TUMI.45,  NPGO, MEI", "6. TUMI.45, MEI, Upwelling (Sp)",
+                   "UpInAn.45.Summer, Location", "UpInAn.45.Summer, PDO", "UpInAn.45.Summer, NPGO", "UpInAn.45.Summer, MEI", "UpInAn.45.Summer, Upwelling (Sp)","1. UpInAn.45.Summer, PDO, NPGO", "2.UpInAn.45.Summer,  PDO, Upwelling (Sp)",
+                   "3. UpInAn.45.Summer, PDO, MEI", "4.UpInAn.45.Summer,  NPGO, Upwelling (Sp)","5.UpInAn.45.Summer,  NPGO, MEI", "6. UpInAn.45.Summer, MEI, Upwelling (Sp)",
                    
                    "Col.Dis.high, Location", "Col.Dis.high, PDO", "Col.Dis.high, NPGO", "Col.Dis.high, MEI", "Upwelling (Sp)","1. Col.Dis.high, PDO, NPGO",
                    "2.Col.Dis.high,  PDO, Upwelling (Sp)", "3.Col.Dis.high,  PDO, MEI", "4.Col.Dis.high,  NPGO, Upwelling (Sp)","5. Col.Dis.high, NPGO, MEI", 
                    "6. Col.Dis.high, MEI, Upwelling (Sp)",
                    
-                   "Col.Dis.high, WA.SST.Su", " Col.Dis.high TUMI.45", "WA.SST.Su, TUMI.45", "WA.SST.Su, TUMI.45, Col.Dis.high")
+                   "Col.Dis.high, WA.SST.Su", " Col.Dis.high UpInAn.45.Summer", "WA.SST.Su, UpInAn.45.Summer", "WA.SST.Su, UpInAn.45.Summer, Col.Dis.high")
   
   row.names(aic.output) <- model.names
   delaic <- aic.output-min(aic.output)
@@ -120,7 +120,7 @@ model.selectionCLIM
 length(model.selectionCLIM[,1])
 x<-data.frame(model.selectionCLIM)
 subset(x, delAICc<=1.97)
-modelENV<- lmer(TP~Location.2+TUMI.45+(1|AA)+(1|Sample.ID)+(1|AA), data=dataCLIM)
+modelENV<- lmer(TP~Location.2+Col.Dis.high+(1|AA)+(1|Sample.ID), data=dataCLIM)
 summary(modelENV)
 
 
@@ -156,17 +156,17 @@ ModelSelection.CLIM2<- function(dataframe,n, y) {
                       AIC(lmer(y~WA.SST.Su+MEI+NPGO+Location.2+(1|AA), data=dataframe)),#5
                       AIC(lmer(y~WA.SST.Su+MEI+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#6
                       
-                      AIC(lmer(y~Location.2+(1|AA)+TUMI.45, data=dataframe)), 
-                      AIC(lmer(y~TUMI.45+PDO+Location.2+(1|AA), data=dataframe)),
-                      AIC(lmer(y~TUMI.45+NPGO+Location.2+(1|AA), data=dataframe)),
-                      AIC(lmer(y~TUMI.45+MEI+Location.2+(1|AA), data=dataframe)),
-                      AIC(lmer(y~TUMI.45+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),
-                      AIC(lmer(y~TUMI.45+PDO+NPGO+Location.2+(1|AA), data=dataframe)),#1
-                      AIC(lmer(y~TUMI.45+PDO+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#2
-                      AIC(lmer(y~TUMI.45+PDO+MEI+Location.2+(1|AA), data=dataframe)),#3
-                      AIC(lmer(y~TUMI.45+UpInAn.45.Spring+NPGO+Location.2+(1|AA), data=dataframe)),#4
-                      AIC(lmer(y~TUMI.45+MEI+NPGO+Location.2+(1|AA), data=dataframe)),#5
-                      AIC(lmer(y~TUMI.45+MEI+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#6
+                      AIC(lmer(y~Location.2+(1|AA)+UpInAn.45.Summer, data=dataframe)), 
+                      AIC(lmer(y~UpInAn.45.Summer+PDO+Location.2+(1|AA), data=dataframe)),
+                      AIC(lmer(y~UpInAn.45.Summer+NPGO+Location.2+(1|AA), data=dataframe)),
+                      AIC(lmer(y~UpInAn.45.Summer+MEI+Location.2+(1|AA), data=dataframe)),
+                      AIC(lmer(y~UpInAn.45.Summer+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),
+                      AIC(lmer(y~UpInAn.45.Summer+PDO+NPGO+Location.2+(1|AA), data=dataframe)),#1
+                      AIC(lmer(y~UpInAn.45.Summer+PDO+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#2
+                      AIC(lmer(y~UpInAn.45.Summer+PDO+MEI+Location.2+(1|AA), data=dataframe)),#3
+                      AIC(lmer(y~UpInAn.45.Summer+UpInAn.45.Spring+NPGO+Location.2+(1|AA), data=dataframe)),#4
+                      AIC(lmer(y~UpInAn.45.Summer+MEI+NPGO+Location.2+(1|AA), data=dataframe)),#5
+                      AIC(lmer(y~UpInAn.45.Summer+MEI+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#6
                       
                       AIC(lmer(y~Location.2+(1|AA)+Col.Dis.high, data=dataframe)), 
                       AIC(lmer(y~Col.Dis.high+PDO+Location.2+(1|AA), data=dataframe)),
@@ -181,9 +181,9 @@ ModelSelection.CLIM2<- function(dataframe,n, y) {
                       AIC(lmer(y~Col.Dis.high+MEI+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#6
                       
                       AIC(lmer(y~Col.Dis.high+WA.SST.Su+Location.2+(1|AA), data=dataframe)),#4
-                      AIC(lmer(y~Col.Dis.high+TUMI.45+Location.2+(1|AA), data=dataframe)),#5
-                      AIC(lmer(y~WA.SST.Su+TUMI.45+Location.2+(1|AA), data=dataframe)),#6
-                      AIC(lmer(y~WA.SST.Su+TUMI.45+Col.Dis.high+Location.2+(1|AA), data=dataframe))#6
+                      AIC(lmer(y~Col.Dis.high+UpInAn.45.Summer+Location.2+(1|AA), data=dataframe)),#5
+                      AIC(lmer(y~WA.SST.Su+UpInAn.45.Summer+Location.2+(1|AA), data=dataframe)),#6
+                      AIC(lmer(y~WA.SST.Su+UpInAn.45.Summer+Col.Dis.high+Location.2+(1|AA), data=dataframe))#6
                       
                       
                       
@@ -197,14 +197,14 @@ ModelSelection.CLIM2<- function(dataframe,n, y) {
                    "WA.SST.Su, Location", "WA.SST.Su, PDO", "WA.SST.Su, NPGO", "WA.SST.Su, MEI", "WA.SST.Su, Upwelling (Sp)","1. WA.SST.Su,  PDO, NPGO", "2. WA.SST.Su, PDO, Upwelling (Sp)", 
                    "3. WA.SST.Su, PDO, MEI", "4. WA.SST.Su, NPGO, Upwelling (Sp)","5. WA.SST.Su, NPGO, MEI", "6. WA.SST.Su, MEI, Upwelling (Sp)",
                    
-                   "TUMI.45, Location", "TUMI.45, PDO", "TUMI.45, NPGO", "TUMI.45, MEI", "TUMI.45, Upwelling (Sp)","1. TUMI.45, PDO, NPGO", "2.TUMI.45,  PDO, Upwelling (Sp)",
-                   "3. TUMI.45, PDO, MEI", "4.TUMI.45,  NPGO, Upwelling (Sp)","5.TUMI.45,  NPGO, MEI", "6. TUMI.45, MEI, Upwelling (Sp)",
+                   "UpInAn.45.Summer, Location", "UpInAn.45.Summer, PDO", "UpInAn.45.Summer, NPGO", "UpInAn.45.Summer, MEI", "UpInAn.45.Summer, Upwelling (Sp)","1. UpInAn.45.Summer, PDO, NPGO", "2.UpInAn.45.Summer,  PDO, Upwelling (Sp)",
+                   "3. UpInAn.45.Summer, PDO, MEI", "4.UpInAn.45.Summer,  NPGO, Upwelling (Sp)","5.UpInAn.45.Summer,  NPGO, MEI", "6. UpInAn.45.Summer, MEI, Upwelling (Sp)",
                    
                    "Col.Dis.high, Location", "Col.Dis.high, PDO", "Col.Dis.high, NPGO", "Col.Dis.high, MEI", "Upwelling (Sp)","1. Col.Dis.high, PDO, NPGO",
                    "2.Col.Dis.high,  PDO, Upwelling (Sp)", "3.Col.Dis.high,  PDO, MEI", "4.Col.Dis.high,  NPGO, Upwelling (Sp)","5. Col.Dis.high, NPGO, MEI", 
                    "6. Col.Dis.high, MEI, Upwelling (Sp)",
                    
-                   "Col.Dis.high, WA.SST.Su", " Col.Dis.high TUMI.45", "WA.SST.Su, TUMI.45", "WA.SST.Su, TUMI.45, Col.Dis.high")
+                   "Col.Dis.high, WA.SST.Su", " Col.Dis.high UpInAn.45.Summer", "WA.SST.Su, UpInAn.45.Summer", "WA.SST.Su, UpInAn.45.Summer, Col.Dis.high")
   
   row.names(aic.output) <- model.names
   delaic <- aic.output-min(aic.output)
@@ -220,14 +220,14 @@ n<- 17
 model.selectionCLIM2 <- ModelSelection.CLIM2(dataCLIM, n, dataCLIM$TP.norm)
 model.selectionCLIM2
 x<-data.frame(model.selectionCLIM)
-subset(x, delAICc<=1.97)
-length(model.selectionENV[,1])
+modelENV<- lmer(TP~Location.2+Col.Dis.high+(1|AA)+(1|Sample.ID), data=dataCLIM)
+summary(modelENV)
 
 
 ########################    Hier PREY Models       ############################
 
-#data2 <- subset(data, Year>=1973&Year<=2008&AA=="Glu"|AA=="PRO"|AA=="ALA")
-data2 <- subset(data, Year>=1973&Year<=2008)#&AA=="Glu"|AA=="PRO"|AA=="ALA")
+data2 <- subset(data, Year>=1973&Year<=2008&AA=="Glu"|AA=="PRO"|AA=="ALA")
+#data2 <- subset(data, Year>=1973&Year<=2008)#&AA=="Glu"|AA=="PRO"|AA=="ALA")
 dataPrey <-data2 %>% select(allSmolt, 
                             HakeBiomass,
                             Herring.Biomass,
@@ -341,7 +341,8 @@ length(model.selectionPREY[,1])
 model.selectionPREY
 x<-data.frame(model.selectionPREY)
 subset(x, delAICc<=1.97)
-summary(lmer(TP~HarborSeal+Location.2+(1|AA)+(1|Sample.ID), data=dataPrey))
+summary(lmer(TP~Location.2+Coho+(1|AA)+(1|Sample.ID), data=dataPrey))
+summary(lmer(TP~Location.2+allSmolt+(1|AA)+(1|Sample.ID), data=dataPrey))
 
 
 
@@ -440,6 +441,8 @@ n<- 16
 model.selectionPREY <- ModelSelection.WAPREY2(dataPrey, n, dataPrey$TP)
 length(model.selectionPREY[,1])
 model.selectionPREY
+x<-data.frame(model.selectionPREY)
+subset(x, delAICc<=1.97)
 
 summary(lmer(TP~HarborSeal+Location.2+(1|AA), data=dataPrey))
 
@@ -483,9 +486,9 @@ ModelSelection.WANut <- function(dataframe,n, y) {
 }
 
 n<-4
-model.selectionNUTRIENT <- ModelSelection.WA3(dataNut, n, dataNut$TP.norm)
+model.selectionNUTRIENT <- ModelSelection.WANut(dataNut, n, dataNut$TP.norm)
 model.selectionNUTRIENT
-lmer(TP.norm~d13C.norm+PHE.norm+Location.2+(1|AA)+(1|Sample.ID), data=dataNut)
+summary(lmer(TP.norm~PHE.norm+Location.2+(1|AA)+(1|Sample.ID), data=dataNut))
 
 
 
