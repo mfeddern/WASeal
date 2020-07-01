@@ -126,6 +126,8 @@ summary(modelENV)
 
 
 
+
+
 ModelSelection.CLIM2<- function(dataframe,n, y) {
   
   aic.output <- rbind(AIC(lmer(y~Location.2+(1|AA), data=dataframe)), 
@@ -524,6 +526,14 @@ x<-data.frame(model.selectionPREY)
 subset(x, delAICc<=1.97)
 summary(lmer(TP~Location.2+Herring.Biomass+(1|Sample.ID/AA), data=dataPrey))
 lmer(TP~Location.2+Herring.Biomass+(1|AA), data=dataPrey)
+
+
+lmer(TP.norm ~ AA:(Herring.Biomass) +(1|Location.2)+ (AA|Sample.ID),
+    data=dataPrey,
+    control=lmerControl(optCtrl=list(ftol_abs=1e-10),
+                        optimizer="bobyqa",
+                        check.nobs.vs.nlev="ignore",
+                        check.nobs.vs.nRE="ignore"))
 
 
 

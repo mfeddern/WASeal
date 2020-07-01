@@ -14,7 +14,8 @@ data <- read.csv("Data/Compiled/HierarchicalData2.csv")
 
 
 ########################     GLU Climate Models       ############################
-dataCLIM <- subset(data, Year>=1960&Year<=2008 & AA=="PRO")
+dataCLIM <- subset(data, 
+                   AA=="Glu")
 dataCLIM <-dataCLIM %>% select(MEI, 
                                PDO,
                                NPGO,
@@ -227,23 +228,16 @@ subset(x, delAICc<=1.96)
 summary(lmer(TP~PDO+(1|Location.2), data=dataCLIM))
 
 
-CLIM.mod.2 <- lm(TP~PDO+Location.2, data=dataCLIM)
-CLIM.mod.6 <- lm(TP~PDO+UpInAn.45.Spring+Location.2, data=dataCLIM)
-CLIM.mod.4 <- lm(TP~PDO+WA.SST.Su+Location.2, data=dataCLIM)
-CLIM.mod.1 <- lm(TP~PDO+UpInAn.45.Summer+Location.2, data=dataCLIM)
-CLIM.mod.5 <- lm(TP~PDO+UpInAn.45.Summer+NPGO+Location.2, data=dataCLIM)
-CLIM.mod.3 <- lm(TP~PDO+UpInAn.45.Summer+MEI+Location.2, data=dataCLIM)
-CLIM.mod.7 <- lm(TP~PDO+UpInAn.45.Spring+Col.Dis.high+Location.2, data=dataCLIM)
+CLIM.mod.1 <- lm(TP~PDO+Location.2, data=dataCLIM)
+CLIM.mod.2 <- lm(TP~PDO+Col.Dis.high+Location.2, data=dataCLIM)
 
 summary(lm(TP~PDO+NPGO+UpInAn.45.Summer+Location.2, data=dataCLIM))
 vif(lm(TP~PDO+NPGO+UpInAn.45.Summer+Location.2, data=dataCLIM))
 vif(CLIM.mod.1)
 
 legend.size <- 12
-CLIM <- list(CLIM.mod.1, CLIM.mod.2, CLIM.mod.3, CLIM.mod.4,
-             CLIM.mod.5, CLIM.mod.6, CLIM.mod.7)
-CLIM.aic <- c(AICc(CLIM.mod.1), AICc(CLIM.mod.2), AICc(CLIM.mod.3),AICc(CLIM.mod.4),
-                 AICc(CLIM.mod.5), AICc(CLIM.mod.6),AICc(CLIM.mod.7))
+CLIM <- list(CLIM.mod.1, CLIM.mod.2)
+CLIM.aic <- c(AICc(CLIM.mod.1), AICc(CLIM.mod.2))
 w.CLIM <- round(akaike.weights(CLIM.aic)$weights, digits=2)
 phe.CLIM.Best <-  CLIM.mod.1
 
@@ -257,9 +251,9 @@ CLIM.plot <-dwplot(CLIM,
   theme_bw() + xlab("") + ylab("") +
   geom_vline(xintercept = 0, colour = "grey60", linetype = 2) +
   ggtitle("Trophic Position", subtitle="Environmental") +
-  scale_color_manual(name="Model Weights", labels = w.CLIM, values=hcl.colors(7, palette = "Teal", alpha = NULL, rev = FALSE, fixup = TRUE))+
+  scale_color_manual(name="Model Weights", labels = w.CLIM, values=hcl.colors(3, palette = "Teal", alpha = NULL, rev = FALSE, fixup = TRUE))+
   theme(plot.title = element_text(face="bold", hjust=0.5, size=legend.size+2),
-        plot.margin = margin(0.25, 2, 0, 0, "cm"),
+        plot.margin = margin(0.25, 0.5, 0, 0, "cm"),
         panel.grid.minor = element_blank(),
         panel.grid.major = element_blank(),
         legend.title.align = .5,
@@ -271,8 +265,8 @@ CLIM.plot <-dwplot(CLIM,
 
 ########################    GLU PREY Models       ############################
 
-dataPrey <- subset(data, Year>=1973&Year<=2008 & AA=="ALA")
-dataPrey <- subset(data, Year>=1973&Year<=2008 )
+dataPrey <- subset(data, AA=="Glu")
+#dataPrey <- subset(data, Year>=1973&Year<=2008 )
 dataPrey <-dataPrey %>% select(allSmolt, 
                             HakeBiomass,
                             Herring.Biomass,
@@ -380,8 +374,6 @@ ModelSelection.PREY <- function(dataframe,n,y) {
   return(aic.output)
 }
 n<- 16
-
-
 ModelSelection.PREY <- function(dataframe,n,y) {
   
   aic.output <- rbind(AICc(lm(y~Location.2, data=dataframe)), 
@@ -390,15 +382,15 @@ ModelSelection.PREY <- function(dataframe,n,y) {
                       AICc(lm(y~allSmolt+Location.2, data=dataframe)),
                       AICc(lm(y~HakeBiomass+Location.2, data=dataframe)),
                       AICc(lm(y~Herring.Biomass+Chinook+Location.2, data=dataframe)),#1
-                      AICc(lm(y~Herring.Biomass+HakeBiomass+Location.2, data=dataframe)),#2
+                      AICc(lm(y~Herring.Biomass*HakeBiomass+Location.2, data=dataframe)),#2
                       AICc(lm(y~Herring.Biomass+allSmolt+Location.2, data=dataframe)),#3
                       AICc(lm(y~HakeBiomass+Chinook+Location.2, data=dataframe)),#4
                       AICc(lm(y~allSmolt+Chinook+Location.2, data=dataframe)),#5
                       AICc(lm(y~allSmolt+HakeBiomass+Location.2, data=dataframe)),#6
                       AICc(lm(y~allSmolt+Chinook+HakeBiomass+Location.2, data=dataframe)),#7
-                      AICc(lm(y~Herring.Biomass+allSmolt+HakeBiomass+Location.2, data=dataframe)),#8
+                      AICc(lm(y~Herring.Biomass*HakeBiomass+allSmolt+Location.2, data=dataframe)),#8
                       AICc(lm(y~Herring.Biomass+allSmolt+Chinook+Location.2, data=dataframe)),#9
-                      AICc(lm(y~Herring.Biomass+Chinook+HakeBiomass+Location.2, data=dataframe)),
+                      AICc(lm(y~Herring.Biomass*HakeBiomass+Chinook+Location.2, data=dataframe)),
                       
                       AICc(lm(y~Location.2+Chum, data=dataframe)), 
                       AICc(lm(y~Chum+Herring.Biomass+Location.2, data=dataframe)),
@@ -406,7 +398,7 @@ ModelSelection.PREY <- function(dataframe,n,y) {
                       AICc(lm(y~Chum+allSmolt+Location.2, data=dataframe)),
                       AICc(lm(y~Chum+HakeBiomass+Location.2, data=dataframe)),
                       AICc(lm(y~Chum+Herring.Biomass+Chinook+Location.2, data=dataframe)),#1
-                      AICc(lm(y~Chum+Herring.Biomass+HakeBiomass+Location.2, data=dataframe)),#2
+                      AICc(lm(y~Chum+Herring.Biomass*HakeBiomass+Location.2, data=dataframe)),#2
                       AICc(lm(y~Chum+Herring.Biomass+allSmolt+Location.2, data=dataframe)),#3
                       AICc(lm(y~Chum+HakeBiomass+Chinook+Location.2, data=dataframe)),#4
                       AICc(lm(y~Chum+allSmolt+Chinook+Location.2, data=dataframe)),#5
@@ -418,7 +410,7 @@ ModelSelection.PREY <- function(dataframe,n,y) {
                       AICc(lm(y~Coho+allSmolt+Location.2, data=dataframe)),
                       AICc(lm(y~Coho+HakeBiomass+Location.2, data=dataframe)),
                       AICc(lm(y~Coho+Herring.Biomass+Chinook+Location.2, data=dataframe)),#1
-                      AICc(lm(y~Coho+Herring.Biomass+HakeBiomass+Location.2, data=dataframe)),#2
+                      AICc(lm(y~Coho+Herring.Biomass*HakeBiomass+Location.2, data=dataframe)),#2
                       AICc(lm(y~Coho+Herring.Biomass+allSmolt+Location.2, data=dataframe)),#3
                       AICc(lm(y~Coho+HakeBiomass+Chinook+Location.2, data=dataframe)),#4
                       AICc(lm(y~Coho+allSmolt+Chinook+Location.2, data=dataframe)),#5
@@ -430,7 +422,7 @@ ModelSelection.PREY <- function(dataframe,n,y) {
                       AICc(lm(y~HarborSeal+allSmolt+Location.2, data=dataframe)),
                       AICc(lm(y~HarborSeal+HakeBiomass+Location.2, data=dataframe)),
                       AICc(lm(y~HarborSeal+Herring.Biomass+Chinook+Location.2, data=dataframe)),#1
-                      AICc(lm(y~HarborSeal+Herring.Biomass+HakeBiomass+Location.2, data=dataframe)),#2
+                      AICc(lm(y~HarborSeal+Herring.Biomass*HakeBiomass+Location.2, data=dataframe)),#2
                       AICc(lm(y~HarborSeal+Herring.Biomass+allSmolt+Location.2, data=dataframe)),#3
                       AICc(lm(y~HarborSeal+HakeBiomass+Chinook+Location.2, data=dataframe)),#4
                       AICc(lm(y~HarborSeal+allSmolt+Chinook+Location.2, data=dataframe)),#5
@@ -477,9 +469,8 @@ ModelSelection.PREY <- function(dataframe,n,y) {
 
 model.selectionPREY <- ModelSelection.PREY(dataPrey, n, dataPrey$TP)
 x<-data.frame(model.selectionPREY)
-subset(x, delAICc<=2)
+subset(x, delAICc<=1.97)
 
-summary(lm(TP~HarborSeal+Herring.Biomass+Location.2, data=dataPrey))
 
 
 
@@ -487,21 +478,39 @@ summary(lm(TP~Herring.Biomass+Location.2, data=dataPrey))
 vif(lm(TP~HarborSeal+Herring.Biomass+Chinook+Location.2, data=dataPrey))
 head(dataPrey)
 
+dataPrey$Year
 
-PREY.mod.1 <- lm(TP~Herring.Biomass+Location.2, data=dataPrey)
-PREY.mod.4 <- lm(TP~HakeBiomass+Location.2, data=dataPrey)
-PREY.mod.5 <- lm(TP~Herring.Biomass+Chinook+Location.2, data=dataPrey)
-PREY.mod.6 <- lm(TP~Herring.Biomass+allSmolt+Location.2, data=dataPrey)
-PREY.mod.2 <- lm(TP~Herring.Biomass+Coho+Location.2, data=dataPrey)
-PREY.mod.3 <- lm(TP~Herring.Biomass+HarborSeal+Location.2, data=dataPrey)
+PREY.mod.1 <-lm(TP~HakeBiomass*Herring.Biomass+allSmolt+Location.2, data=dataPrey)
+summary(PREY.mod.1)
 
-legend.size <- 12
-PREY <- list(PREY.mod.1, PREY.mod.2, PREY.mod.3, PREY.mod.4,
-             PREY.mod.5, PREY.mod.6)
-PREY.aic <- c(AICc(PREY.mod.1), AICc(PREY.mod.2), AICc(PREY.mod.3),AICc(PREY.mod.4),
-              AICc(PREY.mod.5), AICc(PREY.mod.6))
+
+PREY <- list(PREY.mod.1)
+PREY.aic <- c(AICc(PREY.mod.1))
+              
 w.PREY <- round(akaike.weights(PREY.aic)$weights, digits=2)
 phe.PREY.Best <-  PREY.mod.1
+col<-c('#CCA65A','#7EBA68','#00C1B2','#6FB1E7','#D494E1')
+legend.size<-12
+
+
+ INT.Plot<- sjPlot::plot_model(PREY.mod.1, type = "int", col=c(col[1], col[2]))+
+  theme_bw() + xlab("Hake Biomass") + ylab("Trophic Position") +
+  geom_vline(xintercept = 0, colour = "grey60", linetype = 2) +
+  ggtitle("Food Web", subtitle="Interactions")+
+  labs(fill="Herring Biomass")+
+ # scale_color_manual(values= c("#CCA65A", "#7EBA68"),name="Herring Biomass", labels = c("Low", "High"))+
+  theme(plot.title = element_text(face="bold", hjust=0.5, size=legend.size+2),
+        plot.margin = margin(0.25, 0.5, 0, 0, "cm"),
+        panel.grid.minor = element_blank(),
+        panel.grid.major = element_blank(),
+        legend.title.align = 0,
+        legend.title=element_text(size=legend.size),
+        legend.text=element_text(size=legend.size),
+        axis.text.x=element_text(size=legend.size),
+        axis.text.y=element_text(size=legend.size),
+        plot.subtitle = element_text(hjust = 0.5, size=13))
+
+
 
 PREY.plot <-dwplot(PREY, 
                    vline = geom_vline(xintercept = 0, colour = "grey60", linetype = 2)) %>% # plot line at zero _behind_ coefs
@@ -509,13 +518,13 @@ PREY.plot <-dwplot(PREY,
                        Location.2Inland = "Subregion (Salish Sea)",
                        HarborSeal="Harbor Seal",
                        allSmolt="Smolts",
-                       TUMI.45="TUMI")) +
+                       HakeBiomass="Hake")) +
   theme_bw() + xlab("") + ylab("") +
   geom_vline(xintercept = 0, colour = "grey60", linetype = 2) +
   ggtitle("Trophic Position", subtitle="Food Web") +
   scale_color_manual(name="Model Weights", labels = w.PREY, values=hcl.colors(7, palette = "Teal", alpha = NULL, rev = FALSE, fixup = TRUE))+
   theme(plot.title = element_text(face="bold", hjust=0.5, size=legend.size+2),
-        plot.margin = margin(0.25, 2, 0, 0, "cm"),
+        plot.margin = margin(0.25, 0.5, 0, 0, "cm"),
         panel.grid.minor = element_blank(),
         panel.grid.major = element_blank(),
         legend.title.align = .5,
@@ -527,7 +536,7 @@ PREY.plot <-dwplot(PREY,
 
 
 ########################     GLU Nutrient Models       ############################
-dataNutrient <- subset(data, Year>=1928&Year<=2008 & AA=="Glu")
+dataNutrient <- subset(data,  AA=="Glu")
 dataNut <-dataNutrient %>% select(PHE.mean,
                              PHE.norm,
                              AA,
@@ -543,10 +552,10 @@ dataNut <- dataNut[complete.cases(dataNut), ]
 ModelSelection.WA3 <- function(dataframe,n, y) {
   
   aic.output <- rbind(
-    AIC(lmer(y~(1|Location.2), data=dataframe)),
-    AIC(lmer(y~PHE.norm+d13C.norm+(1|Location.2), data=dataframe)),
-    AIC(lmer(y~PHE.norm+(1|Location.2), data=dataframe)),
-    AIC(lmer(y~d13C.norm+(1|Location.2), data=dataframe))
+    AICc(lm(y~Location.2, data=dataframe)),
+    AICc(lm(y~PHE.norm+d13C.norm+Location.2, data=dataframe)),
+    AICc(lm(y~PHE.norm+Location.2, data=dataframe)),
+    AICc(lm(y~d13C.norm+Location.2, data=dataframe))
   )
   
   names <- seq(1,n,1)
@@ -565,16 +574,15 @@ ModelSelection.WA3 <- function(dataframe,n, y) {
 model.selectionNUTRIENT <- ModelSelection.WA3(dataNut, n, dataNut$TP.norm)
 model.selectionNUTRIENT
 
-summary(lmer(TP~PHE.norm+(1|Location.2), data=dataNut))
 vif(lm(TP~PHE.norm+d13C.norm+Location.2, data=dataNut))
 
 
-NUTR.mod.2 <- lm(TP~d13C.s+PHE.mean+Location.2, data=dataNut)
+#NUTR.mod.2 <- lm(TP~d13C.s+PHE.mean+Location.2, data=dataNut)
 NUTR.mod.1<- lm(TP~PHE.mean+Location.2, data=dataNut)
 
 legend.size <- 12
-NUTR <- list(NUTR.mod.1, NUTR.mod.2)
-NUTR.aic <- c(AICc(NUTR.mod.1), AICc(NUTR.mod.2))
+NUTR <- list(NUTR.mod.1)
+NUTR.aic <- c(AICc(NUTR.mod.1))
 w.NUTR <- round(akaike.weights(NUTR.aic)$weights, digits=2)
 NUTR.Best <-  NUTR.mod.1
 
@@ -588,7 +596,7 @@ NUTR.plot <-dwplot(NUTR,
   ggtitle("Trophic Position", subtitle="Nutrient") +
   scale_color_manual(name="Model Weights", labels = w.NUTR, values=hcl.colors(3, palette = "Teal", alpha = NULL, rev = FALSE, fixup = TRUE))+
   theme(plot.title = element_text(face="bold", hjust=0.5, size=legend.size+2),
-        plot.margin = margin(0.25, 2, 0, 0, "cm"),
+        plot.margin = margin(0.25, 0.5, 0, 0, "cm"),
         panel.grid.minor = element_blank(),
         panel.grid.major = element_blank(),
         legend.title.align = .5,
@@ -598,13 +606,33 @@ NUTR.plot <-dwplot(NUTR,
         plot.subtitle = element_text(hjust = 0.5, size=13))
 
 
+###############Save plots  ##############
+
+pdf(file="Results/Presentation Figures/GLUNutrientDRAFT.pdf", width=5, height=5)
+NUTR.plot
+dev.off()
+
+pdf(file="Results/Presentation Figures/PreyDRAFT.pdf", width=5, height=5)
+PREY.plot
+dev.off()
+
+pdf(file="Results/Presentation Figures/EnvDRAFT.pdf", width=5, height=5)
+CLIM.plot
+dev.off()
+
+pdf(file="Results/Presentation Figures/FullDRAFT.pdf", width=5, height=5)
+INT.Plot
+dev.off()
+
 
 ###############Compile plots  ##############
 
-pdf(file="Results/Figures/CoefPlot.Glu.pdf", width=11, height=12)
-ggarrange(CLIM.plot, NUTR.plot,PREY.plot + rremove("x.text"), 
+pdf(file="Results/Figures/CoefPlot.Glu2.pdf", width=14, height=8)
+ggarrange(CLIM.plot, PREY.plot,NUTR.plot, INT.Plot + rremove("x.text"), 
           #labels = c("A", "B", "C", "D", "E", "F"),
-          ncol = 1, nrow = 3, align="hv")
+          ncol = 2, nrow = 2, align="hv",
+          heights =c(5,5))
+
 
 dev.off()
 
