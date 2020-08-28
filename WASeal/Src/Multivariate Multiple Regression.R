@@ -18,7 +18,7 @@ library(ggpubr)
 library(mvtnorm)
 library(lme4)
 library(corrplot)
-
+library(MARSS)
 
 data2<- subset(data, AA=='Glu')
 #df <- tibble(x = 1:3, TP = 3:1)
@@ -146,9 +146,8 @@ dataCLIM <- dataCLIM[complete.cases(dataCLIM), ]
 
   Clim.mod.1 <- lm(cbind(TP, TP.ALA, TP.PRO, TP.VAL) ~ PDO+MEI+WA.SST.Su+Location.2, data = dataCLIM)
   summary(Clim.mod.1)
-  diag(vcov(fit6))
-  cov2cor(vcov(fit6))
-  corrplot(cov2cor(vcov(fit6)), method="ellipse")
+acf(Clim.mod.1)
+durbinWatsonTest(Clim.mod.1)
   ########################     Prey Models       ############################
 
 
@@ -263,13 +262,14 @@ Prey.aic.output <- rbind(extractAIC(lm(cbind(TP, TP.ALA, TP.PRO,   TP.VAL) ~Loca
 
   subset(x, delAIC<=2)
 Prey.mod.1 <- lm(cbind(TP, TP.ALA, TP.PRO,TP.VAL) ~ Herring.Biomass*HakeBiomass+allSmolt+Location.2, data = Prey)
-
+acf(Prey.mod.1)
 
 summary(fit6)
 vcov(fit6)
 Manova(fit6)
 Anova(fit6)$aic
 vif(fit6)
+
 
 
 fit6 <- lm(cbind(TP, TP.ALA, TP.PRO) ~ Location.2, data = Prey)
@@ -326,6 +326,11 @@ aic.output <- rbind(
   NUTR.mod.1<- lm(cbind(TP, TP.ALA, TP.PRO,TP.VAL) ~ PHE.norm+d13C.s++Location.2, data =dataNut )
 summary(NUTR.mod.1)  
 
+
+
+
+
+########################     Full Models       ############################
 
 
 ########## Predict! #########

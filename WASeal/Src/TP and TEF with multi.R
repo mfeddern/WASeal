@@ -179,37 +179,37 @@ transform_to_log <- function(x){
   y 
 }
 
-data.hGLU = data[,c("years","Location.2","TP.GLU", "Sample.ID")]
+data.hGLU = data[,c("years","Location.2","TP.GLU", "Sample.ID", "Sex", "Length")]
 #data.hGLU =cbind(data.hGLU, AA=rep('Glu',length(data.hGLU$TP.GLU)), TP.norm=data.hGLU$TP.GLU-mean(na.omit(data.hGLU$TP.GLU)))
 data.hGLU =cbind(data.hGLU, AA=rep('Glu',length(data.hGLU$TP.GLU)), TP.norm=((data.hGLU$TP.GLU)-mean(na.omit(data.hGLU$TP.GLU)))/sd(na.omit(data.hGLU$TP.GLU)))
 data.hGLU =dplyr::rename(data.hGLU, TP = TP.GLU)
 
-data.hASP = data[,c("years","Location.2","TP.ASP", "Sample.ID")]
+data.hASP = data[,c("years","Location.2","TP.ASP", "Sample.ID","Sex", "Length")]
 #data.hASP =cbind(data.hASP, AA=rep('Asp',length(data.hASP$TP.ASP)), TP.norm=data.hASP$TP.ASP-mean(na.omit(data.hASP$TP.ASP)))
 data.hASP =cbind(data.hASP, AA=rep('ASP',length(data.hASP$TP.ASP)), TP.norm=((data.hASP$TP.ASP)-mean(na.omit(data.hASP$TP.ASP)))/sd(na.omit(data.hASP$TP.ASP)))
 data.hASP =dplyr::rename(data.hASP, TP = TP.ASP)
 
-data.hPRO = data[,c("years","Location.2","TP.PRO", "Sample.ID")]
+data.hPRO = data[,c("years","Location.2","TP.PRO", "Sample.ID","Sex", "Length")]
 #data.hPRO =cbind(data.hPRO, AA=rep('Pro',length(data.hPRO$TP.PRO)), TP.norm=data.hPRO$TP.PRO-mean(na.omit(data.hPRO$TP.PRO)))
 data.hPRO =cbind(data.hPRO, AA=rep('PRO',length(data.hPRO$TP.PRO)), TP.norm=((data.hPRO$TP.PRO)-mean(na.omit(data.hPRO$TP.PRO)))/sd(na.omit(data.hPRO$TP.PRO)))
 data.hPRO =dplyr::rename(data.hPRO, TP = TP.PRO)
 
-data.hVAL = data[,c("years","Location.2","TP.VAL", "Sample.ID")]
+data.hVAL = data[,c("years","Location.2","TP.VAL", "Sample.ID", "Sex", "Length")]
 #data.hVAL =cbind(data.hVAL, AA=rep('Val',length(data.hVAL$TP.VAL)), TP.norm=data.hVAL$TP.VAL-mean(na.omit(data.hVAL$TP.VAL)))
 data.hVAL =cbind(data.hVAL, AA=rep('VAL',length(data.hVAL$TP.VAL)), TP.norm=((data.hVAL$TP.VAL)-mean(na.omit(data.hVAL$TP.VAL)))/sd(na.omit(data.hVAL$TP.VAL)))
 data.hVAL =dplyr::rename(data.hVAL, TP = TP.VAL)
 
-data.hALA = data[,c("years","Location.2","TP.ALA", "Sample.ID")]
+data.hALA = data[,c("years","Location.2","TP.ALA", "Sample.ID","Sex", "Length")]
 #data.hALA =cbind(data.hALA, AA=rep('Ala',length(data.hALA$TP.ALA)), TP.norm=data.hALA$TP.ALA-mean(na.omit(data.hALA$TP.ALA)))
 data.hALA =cbind(data.hALA, AA=rep('ALA',length(data.hALA$TP.ALA)), TP.norm=((data.hALA$TP.ALA)-mean(na.omit(data.hALA$TP.ALA)))/sd(na.omit(data.hALA$TP.ALA)))
 data.hALA =dplyr::rename(data.hALA, TP = TP.ALA)
 
-data.hPHE = data[,c("years","PHE.mean", "Sample.ID")]
+data.hPHE = data[,c("years","PHE.mean", "Sample.ID","Sex", "Length")]
 #data.hPHE =cbind(data.hPHE,PHE.norm=data.hPHE$PHE.mean-mean(na.omit(data.hPHE$PHE.mean)))
 data.hPHE =cbind(data.hPHE,PHE.norm=(data.hPHE$PHE.mean-mean(na.omit(data.hPHE$PHE.mean)))/sd(na.omit(data.hPHE$PHE.mean)))
 
 
-data.d13C = data[,c("years","d13C.s", "Sample.ID")]
+data.d13C = data[,c("years","d13C.s", "Sample.ID","Sex", "Length")]
 #data.d13C =cbind(data.d13C,d13C.norm=data.d13C$d13C.s-mean(na.omit(data.d13C$d13C.s)))
 data.d13C =cbind(data.d13C,d13C.norm=(data.d13C$d13C.s-mean(na.omit(data.d13C$d13C.s)))/sd(na.omit(data.d13C$d13C.s)))
 

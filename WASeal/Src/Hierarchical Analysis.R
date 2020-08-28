@@ -4,8 +4,7 @@ data <-  read.csv("Data/Compiled/HierarchicalData2.csv")
 
 ########################    Hier Clim Models       ############################
 
-dataCLIM <- subset(data, Year>=1950&Year<=2008 & AA=="Glu"|AA=="PRO"|AA=="ALA")
-#dataCLIM <- subset(data, Year>=1960&Year<=2008)# & AA=="Glu"|AA=="PRO"|AA=="ALA")
+dataCLIM <- subset(data, Year>=1950&Year<=2008 & AA=="Glu"|AA=="PRO"|AA=="ALA"|AA=="VAL")
 
 dataCLIM <-dataCLIM %>% select(MEI, 
                             PDO,
