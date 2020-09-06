@@ -58,7 +58,7 @@ gg <- ggplot(dataSum, aes(x = Year, y = TP, group = AA)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 print(gg)
 
-year <- dataSum$Year
+ year <- dataSum$Year
 x.tilde=1
 n.sims<- 1000
 coef.hat<- as.matrix(coef(Best)$AA)[2,]
