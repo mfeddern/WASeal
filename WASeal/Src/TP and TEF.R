@@ -48,11 +48,11 @@ herring <- colMeans(herring[, find.numeric])
 phe<- herring['Phe']
 TEF <- (meanAA-rep(meanAA[10],length(meanAA)))-herring+rep(herring[10],length(herring))
 
-herringtp <- (((herring['Glu']-herring['Phe'])-Beta.JN$GLU[1])/4.3)+1
-herringtp.VAL <- (((herring['Val']-herring['Phe'])-Beta.JN$VAL [1])/TEF['Val'])+1
-herringtp.Pro <- (((herring['Pro']-herring['Phe'])-Beta.JN$PRO [1])/TEF['Pro'])+1
-herringtp.Asp <- (((herring['Asp']-herring['Phe'])-Beta.JN$ASP [1])/TEF['Asp'])+1
-herringtp.Ala <- (((herring['Ala']-herring['Phe'])-Beta.JN$ALA [1])/TEF['Ala'])+1
+herringtp <- (((herring['Glu']-herring['Phe'])-Beta.JN$GLU[1])/TEF.JN$GLU[1])+1
+herringtp.VAL <- (((herring['Val']-herring['Phe'])-Beta.JN$VAL [1])/TEF.JN$VAL[1])+1
+herringtp.Pro <- (((herring['Pro']-herring['Phe'])-Beta.JN$PRO [1])/TEF.JN$PRO[1])+1
+herringtp.Asp <- (((herring['Asp']-herring['Phe'])-Beta.JN$ASP [1])/TEF.JN$ASP[1])+1
+herringtp.Ala <- (((herring['Ala']-herring['Phe'])-Beta.JN$ALA [1])/TEF.JN$ALA[1])+1
 
 HerringTP<-cbind(herringtp, herringtp.VAL, herringtp.Pro, herringtp.Asp, herringtp.Ala)
 colnames(HerringTP)<- c("Glu", "Val", "Pro","Asp", "Ala")
@@ -60,26 +60,28 @@ colnames(HerringTP)<- c("Glu", "Val", "Pro","Asp", "Ala")
 
 
 
-TP.GLU <- (((data$GLU.mean-data$PHE.mean)-Beta.JN$GLU[1])/4.3)+1
-plot(TP.GLU, ylim = c(0,6))
+TP.GLU <- (((data$GLU.mean-data$PHE.mean)-Beta.JN$GLU[1])/TEF.JN$GLU[1])+1
+mean(na.omit(TP.GLU))
 
-TP.ALA <- (((data$ALA.mean-data$PHE.mean)-Beta.JN$ALA[1])/TEF['Ala'])+1
-plot(TP.ALA, ylim = c(0,10))
+TP.ALA <- (((data$ALA.mean-data$PHE.mean)-Beta.JN$ALA[1])/TEF.JN$ALA[1])+1
+mean(na.omit(TP.ALA))
 
 #TP.ILE <- (((data$GLU.mean-data$PHE.mean)-Beta.JN$ILE-TEF$Glu)/6.6)+2
 #plot(TP.GLU, ylim = c(0,6))
 
-TP.PRO <- (((data$PRO.mean-data$PHE.mean)-Beta.JN$PRO[1])/TEF['Pro'])+1
-plot(TP.PRO, ylim = c(0,6))
+TP.PRO <- (((data$PRO.mean-data$PHE.mean)-Beta.JN$PRO[1])/TEF.JN$PRO[1])+1
+mean(na.omit(TP.PRO))
 
 #TP.LEU <- (((data$LEU.mean-data$PHE.mean)-Beta.JN$LEU[1])/TEF$Leu)+1
 #plot(TP.LEU, ylim = c(0,6))
 
 TP.ASP <- (((data$ASP.mean-data$PHE.mean)-Beta.JN$ASP[1])/TEF['Asp'])+1
-plot(TP.ASP, ylim = c(0,6))
+mean(na.omit(TP.ASP))
+
 
 TP.VAL <- (((data$VAL.mean-data$PHE.mean)-Beta.JN$VAL[1])/TEF['Val'])+1
-plot(TP.VAL, ylim = c(0,6))
+mean(na.omit(TP.VAL))
+
 
 data<-cbind(data, TP.ALA, TP.ASP, TP.GLU, TP.PRO,
             TP.VAL)
@@ -174,41 +176,41 @@ transform_to_log_scale <- function(x){
 
 transform_to_log <- function(x){
   
-    y <- (sign(x)) * (log(abs(x)))
+  y <- (sign(x)) * (log(abs(x)))
   y 
 }
 
-data.hGLU = data[,c("years","Location.2","TP.GLU", "Sample.ID")]
+data.hGLU = data[,c("years","Location.2","TP.GLU", "Sample.ID", "Sex", "Length")]
 #data.hGLU =cbind(data.hGLU, AA=rep('Glu',length(data.hGLU$TP.GLU)), TP.norm=data.hGLU$TP.GLU-mean(na.omit(data.hGLU$TP.GLU)))
 data.hGLU =cbind(data.hGLU, AA=rep('Glu',length(data.hGLU$TP.GLU)), TP.norm=((data.hGLU$TP.GLU)-mean(na.omit(data.hGLU$TP.GLU)))/sd(na.omit(data.hGLU$TP.GLU)))
 data.hGLU =dplyr::rename(data.hGLU, TP = TP.GLU)
 
-data.hASP = data[,c("years","Location.2","TP.ASP", "Sample.ID")]
+data.hASP = data[,c("years","Location.2","TP.ASP", "Sample.ID","Sex", "Length")]
 #data.hASP =cbind(data.hASP, AA=rep('Asp',length(data.hASP$TP.ASP)), TP.norm=data.hASP$TP.ASP-mean(na.omit(data.hASP$TP.ASP)))
 data.hASP =cbind(data.hASP, AA=rep('ASP',length(data.hASP$TP.ASP)), TP.norm=((data.hASP$TP.ASP)-mean(na.omit(data.hASP$TP.ASP)))/sd(na.omit(data.hASP$TP.ASP)))
 data.hASP =dplyr::rename(data.hASP, TP = TP.ASP)
 
-data.hPRO = data[,c("years","Location.2","TP.PRO", "Sample.ID")]
+data.hPRO = data[,c("years","Location.2","TP.PRO", "Sample.ID","Sex", "Length")]
 #data.hPRO =cbind(data.hPRO, AA=rep('Pro',length(data.hPRO$TP.PRO)), TP.norm=data.hPRO$TP.PRO-mean(na.omit(data.hPRO$TP.PRO)))
 data.hPRO =cbind(data.hPRO, AA=rep('PRO',length(data.hPRO$TP.PRO)), TP.norm=((data.hPRO$TP.PRO)-mean(na.omit(data.hPRO$TP.PRO)))/sd(na.omit(data.hPRO$TP.PRO)))
 data.hPRO =dplyr::rename(data.hPRO, TP = TP.PRO)
 
-data.hVAL = data[,c("years","Location.2","TP.VAL", "Sample.ID")]
+data.hVAL = data[,c("years","Location.2","TP.VAL", "Sample.ID", "Sex", "Length")]
 #data.hVAL =cbind(data.hVAL, AA=rep('Val',length(data.hVAL$TP.VAL)), TP.norm=data.hVAL$TP.VAL-mean(na.omit(data.hVAL$TP.VAL)))
 data.hVAL =cbind(data.hVAL, AA=rep('VAL',length(data.hVAL$TP.VAL)), TP.norm=((data.hVAL$TP.VAL)-mean(na.omit(data.hVAL$TP.VAL)))/sd(na.omit(data.hVAL$TP.VAL)))
 data.hVAL =dplyr::rename(data.hVAL, TP = TP.VAL)
 
-data.hALA = data[,c("years","Location.2","TP.ALA", "Sample.ID")]
+data.hALA = data[,c("years","Location.2","TP.ALA", "Sample.ID","Sex", "Length")]
 #data.hALA =cbind(data.hALA, AA=rep('Ala',length(data.hALA$TP.ALA)), TP.norm=data.hALA$TP.ALA-mean(na.omit(data.hALA$TP.ALA)))
 data.hALA =cbind(data.hALA, AA=rep('ALA',length(data.hALA$TP.ALA)), TP.norm=((data.hALA$TP.ALA)-mean(na.omit(data.hALA$TP.ALA)))/sd(na.omit(data.hALA$TP.ALA)))
 data.hALA =dplyr::rename(data.hALA, TP = TP.ALA)
 
-data.hPHE = data[,c("years","PHE.mean", "Sample.ID")]
+data.hPHE = data[,c("years","PHE.mean", "Sample.ID","Sex", "Length")]
 #data.hPHE =cbind(data.hPHE,PHE.norm=data.hPHE$PHE.mean-mean(na.omit(data.hPHE$PHE.mean)))
 data.hPHE =cbind(data.hPHE,PHE.norm=(data.hPHE$PHE.mean-mean(na.omit(data.hPHE$PHE.mean)))/sd(na.omit(data.hPHE$PHE.mean)))
 
 
-data.d13C = data[,c("years","d13C.s", "Sample.ID")]
+data.d13C = data[,c("years","d13C.s", "Sample.ID","Sex", "Length")]
 #data.d13C =cbind(data.d13C,d13C.norm=data.d13C$d13C.s-mean(na.omit(data.d13C$d13C.s)))
 data.d13C =cbind(data.d13C,d13C.norm=(data.d13C$d13C.s-mean(na.omit(data.d13C$d13C.s)))/sd(na.omit(data.d13C$d13C.s)))
 
@@ -220,6 +222,7 @@ data.hier <- rbind(data.hier, data.hVAL)
 data.hier <- rbind(data.hier, data.hALA)
 data.hier<- subset(data.hier, Location.2=="Coastal"|Location.2=="Inland")
 lag <- 1
+data.hier <-cbind(Year=data.hier$years+lag, data.hier)
 total3 <- left_join(data.hier, data.d13C, by="Sample.ID")
 total3 <- left_join(total3,data.hPHE, by="Sample.ID")
 
@@ -228,7 +231,34 @@ Env <- read.csv("Data/Compiled/Washington.Environmental.Standardized.csv")
 total1 <- left_join(total3, Env, by="Year")
 total2 <- left_join(total1, prey, by="Year")
 
-write.csv(total2, 'Data/Compiled/HierarchicalData.csv')
+write.csv(total2, 'Data/Compiled/HierarchicalData3.csv')
+
+########################     basic GAMS      ############################
+
+#lets relationship be non linear, 
+data.GLU.WA<- subset(data.hGLU, Location.2=='Inland'|Location.2=="Coastal")
+summary(gam(TP~s(years, by=Location.2, k=3), data=data.GLU.WA)) #gam with a smooth term to year, two level factors with a plus after year
+fit.1 <- gam(TP~Location.2+s(years, by=Location.2, k=3), data=data.GLU.WA) #gam with a smooth term to year, two level factors with a plus after year
+AIC(fit.1)
+AIC(gam(TP~s(years, by=Location.2, k=4), data=data.GLU.WA))
+
+b<-getViz(fit.1)
+pdf(file="Results/Presentation Figures/SmCoastDRAFT.pdf", width=5, height=5)
+plot(sm(b,1)) +l_ciPoly(fill = "grey95")+ l_fitLine(colour ='#CCA65A',lwd=1) + 
+  l_ciLine(colour = '#CCA65A', linetype = 2) + l_rug() +  l_points(shape = 19, size = 1, alpha = 0.1) + theme_classic()
+dev.off()
+
+pdf(file="Results/Presentation Figures/SmSalishDRAFT.pdf", width=5, height=5)
+plot(sm(b,2)) +l_ciPoly(fill = "grey95")+ l_fitLine(colour ='#CCA65A',lwd=1) + 
+  l_ciLine(colour = '#CCA65A', linetype = 2) + l_rug() +  l_points(shape = 19, size = 1, alpha = 0.1) + theme_classic()
+dev.off()
+
+pdf(file="Results/Presentation Figures/IntDRAFT.pdf", width=5, height=5)
+plot(pterm(b, 1)) + l_ciBar(colour = c('#6FB1E7','#CCA65A'), lwd=1) + 
+  l_fitPoints(colour=c("skyblue4",'#CCA65A'), cex=3)+
+  l_points(shape = 19, size = 1, alpha = 0.1)
+dev.off()
+
 
 ########################     basic GAMS      ############################
 

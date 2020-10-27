@@ -1,6 +1,6 @@
 library(lme4)
 library(AICcmodavg)
-data <-  read.csv("Data/Compiled/HierarchicalData2.csv")
+data <-  read.csv("Data/Compiled/HierarchicalData3.csv")
 
 
 ########################    Hier Clim Models       ############################
@@ -710,60 +710,307 @@ HLMresid(modelFULL, level=1)
 pdf(file="Results/Figures/ResidualsDiagnostics.pdf", width=16, height=12)
 par(mfrow=c(3,4))
 
-y<- na.omit(cbind(subset(data3, Year>1975 & Year<2012)$TP, subset(data3, Year>1975& Year<2012)$Year))
-plot(predict(modelFULL), y[,1], pch=19, cex=0.5, ylab = "Observed", xlab = "Predicted",
-     main=expression(paste("WA ",delta^15, "N Phenylalanine")))
-abline(0, 1)
 
-plot(predict(phe.WA.Best), residuals(phe.WA.Best), ylab = "Residuals", xlab = "Predicted",
-     main=expression(paste("WA ",delta^15, "N Phenylalanine")),  pch=19, cex=0.5)
-abline(0, 0)
 
-y<- na.omit(cbind(subset(data.wa, Year>1950 & Year<2010)$d13C.s, subset(data.wa, Year>1950& Year<2010)$Year))
-plot(predict(d13C.WA.Best), y[,1], pch=19, cex=0.5, ylab = "Observed", xlab = "Predicted",
-     main=expression(paste("WA ",delta^13, "C")))
-abline(0, 1)
-plot(predict(d13C.WA.Best), residuals(d13C.WA.Best), ylab = "Residuals", xlab = "Predicted",
-     main=expression(paste("WA ",delta^13, "C")),  pch=19, cex=0.5)
-abline(0, 0)
+############### Time Series #################
+
+
+dataTS<-data %>% select(
+  TP,
+  AA,
+  Location.2,
+  Year)
 
 
 
 
-y<- na.omit(cbind(subset(data.goa, Year>1950 & Year<2010)$PHE.mean, subset(data.goa, Year>1950& Year<2010)$Year))
-plot(predict(phe.GOA.Best), y[,1], pch=19, cex=0.5, ylab = "Observed", xlab = "Predicted",
-     main=expression(paste("GOA ",delta^15, "N Phenylalanine")))
-abline(0, 1)
-plot(predict(phe.GOA.Best), residuals(phe.GOA.Best), ylab = "Residuals", xlab = "Predicted",
-     main=expression(paste("GOA ",delta^15, "N Phenylalanine")),  pch=19, cex=0.5)
-abline(0, 0)
+dataTS.coastal<- subset(dataTS, Location.2=="Coastal")
+dataTS.coastal<- subset(dataTS.coastal, AA=="VAL"|AA=="Glu"|AA=="ALA"|AA=="PRO")
 
-y<- na.omit(cbind(subset(data.goa, Year>1950 & Year<2010)$d13C.s, subset(data.goa, Year>1950& Year<2010)$Year))
-plot(predict(d13C.GOA.Best), y[,1], pch=19, cex=0.5, ylab = "Observed", xlab = "Predicted",
-     main=expression(paste("GOA ",delta^13, "C")))
-abline(0, 1)
-plot(predict(d13C.GOA.Best), residuals(d13C.GOA.Best), ylab = "Residuals", xlab = "Predicted",
-     main=expression(paste("GOA ",delta^13, "C")),  pch=19, cex=0.5)
-abline(0, 0)
+dataTS.coastal <- dataTS.coastal[complete.cases(dataTS.coastal), ]
+dataTS.coastal$AA<- factor(dataTS.coastal$AA, levels = c("Glu","ALA",
+                                                             "PRO","VAL"),
+                             labels = c("Glutamic Acid", "Alanine", "Proline", "Valine")
+)
 
 
+col<-c('#CCA65A','#7EBA68','#00C1B2','#6FB1E7')
+TS.coastal <- ggplot(dataTS.coastal, aes(x = Year, y = TP)) + 
+  #stat_smooth(fullrange=TRUE,aes(color = Location.2)) +
+  labs(y="Trophic Position")+
+  geom_point(aes(color = AA, alpha=0.5), pch=16, size=2.5) +
+  geom_smooth(method="gam",aes(color = AA, alpha=0.5))+
+  scale_colour_manual(name = "AA",values = col)+
+  facet_grid(AA~.,labeller = labeller(dataTS.coastal$AA))+
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))+
+  guides(colour=FALSE, alpha=FALSE)
+TS.coastal
 
 
-y<- na.omit(cbind(subset(data.ebs, Year>1950 & Year<2010)$PHE.mean, subset(data.ebs, Year>1950& Year<2010)$Year))
-plot(predict(phe.EBS.Best), y[,1], pch=19, cex=0.5, ylab = "Observed", xlab = "Predicted",
-     main=expression(paste("EBS ",delta^15, "N Phenylalanine")))
-abline(0, 1)
-plot(predict(phe.EBS.Best), residuals(phe.EBS.Best), ylab = "Residuals", xlab = "Predicted",
-     main=expression(paste("EBS ",delta^15, "N Phenylalanine")),  pch=19, cex=0.5)
-abline(0, 0)
 
-y<- na.omit(cbind(subset(data.ebs, Year>1950 & Year<2010)$d13C.s, subset(data.ebs, Year>1950& Year<2010)$Year))
-plot(predict(d13C.EBS.Best), y[,1], pch=19, cex=0.5, ylab = "Observed", xlab = "Predicted",
-     main=expression(paste("EBS ",delta^13, "C")))
-abline(0, 1)
-plot(predict(d13C.EBS.Best), residuals(d13C.EBS.Best), ylab = "Residuals", xlab = "Predicted",
-     main=expression(paste("EBS ",delta^13, "C")),  pch=19, cex=0.5)
-abline(0, 0)
+
+dataTS.ss<- subset(dataTS, Location.2=="Inland")
+dataTS.ss<- subset(dataTS.ss, AA=="VAL"|AA=="Glu"|AA=="ALA"|AA=="PRO")
+
+dataTS.ss <- dataTS.ss[complete.cases(dataTS.ss), ]
+dataTS.ss$AA<- factor(dataTS.ss$AA, levels = c("Glu","ALA",
+                                                         "PRO","VAL"),
+                           labels = c("Glutamic Acid", "Alanine", "Proline", "Valine")
+)
+
+
+
+TS.ss <- ggplot(dataTS.ss, aes(x = Year, y = TP)) + 
+  #stat_smooth(fullrange=TRUE,aes(color = Location.2)) +
+  labs(y="Trophic Position")+
+  geom_point(aes(color = AA, alpha=0.5), pch=16, size=2.5) +
+  geom_smooth(method="gam",aes(color = AA, alpha=0.5))+
+  scale_colour_manual(name = "AA",values = col)+
+  facet_grid(AA~.,labeller = labeller(dataTS.ss$AA))+
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))+
+  guides(colour=FALSE, alpha=FALSE)
+TS.ss
+
+
+
+
+
+
+
+
+resid<-cbind(dataFull,resid=resid(modelFULL))
+dataresid<-resid %>% select(
+  TP,
+  AA,
+  Location.2,
+  Year,
+  resid)
+
+
+
+
+dataresid.coastal<- subset(dataresid, Location.2=="Coastal")
+dataresid.coastal<- subset(dataresid.coastal, AA=="VAL"|AA=="Glu"|AA=="ALA"|AA=="PRO")
+
+dataresid.coastal <- dataresid.coastal[complete.cases(dataresid.coastal), ]
+dataresid.coastal$AA<- factor(dataresid.coastal$AA, levels = c("Glu","ALA",
+                                                         "PRO","VAL"),
+                           labels = c("Glutamic Acid", "Alanine", "Proline", "Valine")
+)
+
+
+resid.coastal <- ggplot(dataresid.coastal, aes(x = Year, y = resid)) + 
+  #stat_smooth(fullrange=TRUE,aes(color = Location.2)) +
+  labs(y="Residuals")+
+  geom_point(aes(color = AA, alpha=0.5), pch=16, size=2.5) +
+  geom_smooth(method = "gam", formula = y ~ s(x, bs = "cs", k=4),aes(color = AA, alpha=0.5))+
+  scale_colour_manual(name = "AA",values = col)+
+  facet_grid(AA~.,labeller = labeller(dataresid.coastal$AA))+
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))+
+  guides(colour=FALSE, alpha=FALSE)
+resid.coastal
+
+
+
+
+
+
+dataresid.ss<- subset(dataresid, Location.2=="Inland")
+dataresid.ss<- subset(dataresid.ss, AA=="VAL"|AA=="Glu"|AA=="ALA"|AA=="PRO")
+
+dataresid.ss <- dataresid.ss[complete.cases(dataresid.ss), ]
+dataresid.ss$AA<- factor(dataresid.ss$AA, levels = c("Glu","ALA",
+                                                               "PRO","VAL"),
+                              labels = c("Glutamic Acid", "Alanine", "Proline", "Valine")
+)
+
+
+resid.ss <- ggplot(dataresid.ss, aes(x = Year, y = resid)) + 
+  #stat_smooth(fullrange=TRUE,aes(color = Location.2)) +
+  labs(y="Residuals")+
+  geom_point(aes(color = AA, alpha=0.5), pch=16, size=2.5) +
+  geom_smooth(method="gam", aes(color = AA, alpha=0.5))+
+  scale_colour_manual(name = "AA",values = col)+
+  facet_grid(AA~.,labeller = labeller(dataresid.ss$AA))+
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))+
+  guides(colour=FALSE, alpha=FALSE)
+resid.ss
+
+TS.coastal
+resid.coastal
+
+TS.ss
+resid.ss
+
+############### Location By Sex ###########
+males <- subset(data, Sex=='M' &TP>2)
+length(males$Sex) #92
+females <- subset(data, Sex=='F'&TP>2)
+length(females$Sex) #105
+
+Sex <-  subset(data, Sex=='M'|Sex=='F')
+summary(lm(TP~Sex, data=Sex))
+
+Sex.c<-subset(Sex, Location.2=="Coastal" & AA!="ASP")
+Sex.ss<-subset(Sex, Location.2=="Inland"& AA!="ASP")
+sex.GLU.c <- subset(Sex.c, AA=="Glu")
+summary(lm(TP~Sex, data=sex.GLU.c))
+
+mean(na.omit(subset(Sex.c, AA=="VAL")$TP)) #2.68
+sd(na.omit(subset(Sex.c, AA=="VAL")$TP)) #0.36
+max(na.omit(subset(Sex.c, AA=="VAL")$TP)) #3.45
+min(na.omit(subset(Sex.c, AA=="VAL")$TP)) #1.66
+
+
+mean(na.omit(subset(Sex.c, AA=="Glu")$TP)) #5.08
+sd(na.omit(subset(Sex.c, AA=="Glu")$TP)) #0.81
+max(na.omit(subset(Sex.c, AA=="Glu")$TP)) #6.6
+min(na.omit(subset(Sex.c, AA=="Glu")$TP)) #3.0
+
+
+sex.GLU.ss <- subset(Sex.ss, AA=="Glu")
+summary(lm(TP~Sex, data=sex.GLU.ss))
+mean(na.omit(sex.GLU.ss$TP))
+sd(na.omit(sex.GLU.ss$TP))
+
+
+col.f <-hcl.colors(5, palette = "Set 3", alpha = NULL, rev = FALSE, fixup = TRUE)
+col.m <-hcl.colors(5, palette = "Dark 3", alpha = NULL, rev = FALSE, fixup = TRUE)
+
+
+male.PRO <- subset(males, AA=='PRO'&Location.2=="Coastal")
+females.PRO <- subset(females, AA=="PRO"&Location.2=="Coastal")
+male.ALA <- subset(males, AA=='ALA'&Location.2=="Coastal")
+females.ALA <- subset(females, AA=="ALA"&Location.2=="Coastal")
+male.GLU <- subset(males, AA=='Glu'&Location.2=="Coastal")
+females.GLU <- subset(females, AA=="Glu"&Location.2=="Coastal")
+male.VAL <- subset(males, AA=='VAL'&Location.2=="Coastal")
+females.VAL <- subset(females, AA=="VAL"&Location.2=="Coastal")
+
+male.PRO.s <- subset(males, AA=='PRO'&Location.2=="Inland")
+females.PRO.s <- subset(females, AA=="PRO"&Location.2=="Inland")
+male.ALA.s <- subset(males, AA=='ALA'&Location.2=="Inland")
+females.ALA.s <- subset(females, AA=="ALA"&Location.2=="Inland")
+male.GLU.s <- subset(males, AA=='Glu'&Location.2=="Inland")
+females.GLU.s <- subset(females, AA=="Glu"&Location.2=="Inland")
+male.VAL.s <- subset(males, AA=='VAL'&Location.2=="Inland")
+females.VAL.s <- subset(females, AA=="VAL"&Location.2=="Inland")
+
+
+col.f <-hcl.colors(6, palette = "Set 3", alpha = NULL, rev = FALSE, fixup = TRUE)
+col.m <-hcl.colors(6, palette = "Dark 3", alpha = NULL, rev = FALSE, fixup = TRUE)
+
+length(male.GLU$TP)#24
+length(females.GLU$TP)#36
+length(male.GLU.s$TP)#27
+length(females.GLU.s$TP)#22
+
+pdf(file="Results/Figures/IsotopesbySex.pdf", width=10, height=8)
+
+par(mfrow=c(2,1), mar=c(3,5,2,2))
+boxplot(list(male.GLU$TP, females.GLU$TP, male.ALA$TP, females.ALA$TP,male.PRO$TP, females.PRO$TP,  male.VAL$TP, females.VAL$TP),
+        data=data, at = c(1,2, 4,5, 7,8, 10,11),
+        names = c("M", "F", "M", "F","M", "F","M", "F"),
+        col=(c(col.m[2], col.f[2], col.m[3], col.f[3], col.m[4], col.f[4],  col.m[5], col.f[5])),
+        main="A. Coastal", pch=16, ylim=c(1, 7), ylab= "Trophic Position")
+text(1.5,1.5, labels = "Glutamic")
+text(1.5,1, labels = "Acid")
+text(4.5,1.5, labels = "Alanine")
+text(7.5,1.5, labels = "Proline")
+text(10.5,1.5, labels = "Valine")
+
+boxplot(list(male.GLU.s$TP, females.GLU.s$TP, male.ALA.s$TP, females.ALA.s$TP,male.PRO.s$TP, females.PRO.s$TP,  male.VAL.s$TP, females.VAL.s$TP),
+        data=data, at = c(1,2, 4,5, 7,8, 10,11),
+        names = c("M", "F", "M", "F","M", "F","M", "F"),
+        col=(c(col.m[2], col.f[2], col.m[3], col.f[3], col.m[4], col.f[4],  col.m[5], col.f[5])),
+        main="B. Salish Sea",pch=16, ylim=c(1, 7), ylab= "Trophic Position")
+text(1.5,1.5, labels = "Glutamic")
+text(1.5,1, labels = "Acid")
+text(4.5,1.5, labels = "Alanine")
+text(7.5,1.5, labels = "Proline")
+text(10.5,1.5, labels = "Valine")
+#text(10.5,4, labels = "*", cex=2
+
+
+dev.off()
+
+
+
+
+pairwise.t.test(Sex.c$TP, pool.sd=FALSE, Sex.c$AA, p.adj = "bonf")
+pairwise.t.test(Sex.ss$TP, pool.sd=FALSE, Sex.ss$AA, p.adj = "bonf")
+summary(lm(TP~AA*Sex, data=Sex.c))
+summary(lm(TP~AA*Sex, data=Sex.ss))
+
+############### Location By Length ###########
+Length <-data %>% select(TP,
+                              AA,
+                               Length,
+                               Location.2)
+
+Length <- Length[complete.cases(Length), ]
+
+
+
+Length.c <- Length%>% filter(Location.2 == "Coastal"&AA!="ASP")
+Length.c$AA<- factor(Length.c$AA, levels = c("Glu","ALA",
+                                                         "PRO","VAL"),
+                           labels = c("Glutamic Acid", "Alanine", "Proline", "Valine")
+)
+summary(lm(TP~AA*Length, data=Length.c))
+fit.c<-lm(TP~AA*Length, data=Length.c)
+
+Coastal.Length <- qplot(Length, TP, data=Length.c, colour=AA)+
+  ggtitle("A. Coastal")+
+  theme_bw()+
+  labs(y="Trophic Position", x="Standard Length (cm)")+
+  geom_point(aes(color = AA, alpha=0.5), pch=16, size=2.5) +
+  #geom_smooth(method="lm", aes(color = AA, alpha=0.5))+
+  geom_line(data = fortify(fit.c), aes(x = Length, y = .fitted))+
+  scale_colour_manual(name = "AA",values = col)+
+  facet_grid(AA~.,labeller = labeller(Length.c$AA))+
+  theme(plot.title = element_text(hjust = 0.5),strip.background =element_blank(),
+        strip.text.y = element_blank(),
+        panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"
+        ))+
+  guides(colour=FALSE, alpha=FALSE)
+Coastal.Length 
+
+
+Length.ss <- Length%>% filter(Location.2 == "Inland"&AA!="ASP")
+Length.ss$AA<- factor(Length.ss$AA, levels = c("Glu","ALA",
+                                             "PRO","VAL"),
+                     labels = c("Glutamic Acid", "Alanine", "Proline", "Valine")
+)
+summary(lm(TP~AA*Length, data=Length.ss))
+fit.ss<-lm(TP~AA*Length, data=Length.ss)
+
+SalishSea.Length <- qplot(Length, TP, data=Length.ss, colour=AA)+
+  ggtitle("B. Salish Sea")+
+  theme_bw()+
+  labs(y="", x="Standard Length (cm)")+
+  geom_point(aes(color = AA, alpha=0.5), pch=16, size=2.5) +
+  #geom_smooth(method="lm", aes(color = AA, alpha=0.5))+
+  geom_line(data = fortify(fit.ss), aes(x = Length, y = .fitted))+
+  scale_colour_manual(name = "AA",values = col)+
+  facet_grid(AA~.,labeller = labeller(Length.ss$AA))+
+  theme(plot.title = element_text(hjust = 0.5), strip.background =element_blank(),
+        panel.border = element_blank(), 
+        panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+        axis.line = element_line(colour = "black"
+        ))+
+  guides(colour=FALSE, alpha=FALSE)
+SalishSea.Length 
+
+pdf(file="Results/Figures/Lengthplot.pdf", width=8, height=4)
+ggarrange(Coastal.Length, SalishSea.Length, rremove("x.text"), 
+          #labels = c("A", "B", "C", "D", "E", "F"),
+          ncol = 2, nrow = 1, align= 'hv')
 
 dev.off()
 
