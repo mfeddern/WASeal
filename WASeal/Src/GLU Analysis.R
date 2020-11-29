@@ -10,7 +10,7 @@ library(qpcR)
 library(dotwhisker)
 library(ggpubr)
 
-data <- read.csv("Data/Compiled/HierarchicalData2.csv")
+data <- read.csv("Data/Compiled/HierarchicalFiles/HierarchicalData_beta1.csv")
 
 
 ########################     GLU Climate Models       ############################
@@ -126,7 +126,7 @@ ModelSelection.CLIM<- function(dataframe,n, y) {
   return(aic.output)
 }
 
-ModelSelection.CLIM<- function(dataframe,n, y) {
+ModelSelection.CLIM.hier<- function(dataframe,n, y) {
   
   aic.output <- rbind(AICc(lmer(y~(1|Location.2), data=dataframe)), 
                       AICc(lmer(y~PDO+(1|Location.2), data=dataframe)),
@@ -225,15 +225,12 @@ length(model.selectionCLIM[,1])
 x<-data.frame(model.selectionCLIM)
 subset(x, delAICc<=1.96)
 
-summary(lmer(TP~PDO+(1|Location.2), data=dataCLIM))
+summary(lm(TP~PDO+Location.2, data=dataCLIM))
 
 
 CLIM.mod.1 <- lm(TP~PDO+Location.2, data=dataCLIM)
 CLIM.mod.2 <- lm(TP~PDO+Col.Dis.high+Location.2, data=dataCLIM)
 
-summary(lm(TP~PDO+NPGO+UpInAn.45.Summer+Location.2, data=dataCLIM))
-vif(lm(TP~PDO+NPGO+UpInAn.45.Summer+Location.2, data=dataCLIM))
-vif(CLIM.mod.1)
 
 legend.size <- 12
 CLIM <- list(CLIM.mod.1, CLIM.mod.2)
@@ -241,6 +238,7 @@ CLIM.aic <- c(AICc(CLIM.mod.1), AICc(CLIM.mod.2))
 w.CLIM <- round(akaike.weights(CLIM.aic)$weights, digits=2)
 phe.CLIM.Best <-  CLIM.mod.1
 
+summary(CLIM.mod.1)
 CLIM.plot <-dwplot(CLIM, 
                       vline = geom_vline(xintercept = 0, colour = "grey60", linetype = 2)) %>% # plot line at zero _behind_ coefs
   relabel_predictors(c(Col.Dis.high = "Columbia River Discharge (High)",                       
@@ -282,7 +280,102 @@ dataPrey <-dataPrey %>% select(allSmolt,
                             Location.2)
 dataPrey <- dataPrey[complete.cases(dataPrey), ]
 
+n<- 16
 ModelSelection.PREY <- function(dataframe,n,y) {
+  
+  aic.output <- rbind(AICc(lm(y~Location.2, data=dataframe)), 
+                      AICc(lm(y~Herring.Biomass+Location.2, data=dataframe)),
+                      AICc(lm(y~Chinook+Location.2, data=dataframe)),
+                      AICc(lm(y~allSmolt+Location.2, data=dataframe)),
+                      AICc(lm(y~HakeBiomass+Location.2, data=dataframe)),
+                      AICc(lm(y~Herring.Biomass+Chinook+Location.2, data=dataframe)),#1
+                      AICc(lm(y~Herring.Biomass+HakeBiomass+Location.2, data=dataframe)),#2
+                      AICc(lm(y~Herring.Biomass*HakeBiomass+Location.2, data=dataframe)),#2
+                      
+                      AICc(lm(y~Herring.Biomass+allSmolt+Location.2, data=dataframe)),#3
+                      AICc(lm(y~HakeBiomass+Chinook+Location.2, data=dataframe)),#4
+                      AICc(lm(y~allSmolt+Chinook+Location.2, data=dataframe)),#5
+                      AICc(lm(y~allSmolt+HakeBiomass+Location.2, data=dataframe)),#6
+                      AICc(lm(y~allSmolt+Chinook+HakeBiomass+Location.2, data=dataframe)),#7
+                      AICc(lm(y~Herring.Biomass+HakeBiomass+allSmolt+Location.2, data=dataframe)),#8
+                      AICc(lm(y~Herring.Biomass+allSmolt+Chinook+Location.2, data=dataframe)),#9
+                      AICc(lm(y~Herring.Biomass+HakeBiomass+Chinook+Location.2, data=dataframe)),
+                      
+                      AICc(lm(y~Location.2+Chum, data=dataframe)), 
+                      AICc(lm(y~Chum+Herring.Biomass+Location.2, data=dataframe)),
+                      AICc(lm(y~Chum+Chinook+Location.2, data=dataframe)),
+                      AICc(lm(y~Chum+allSmolt+Location.2, data=dataframe)),
+                      AICc(lm(y~Chum+HakeBiomass+Location.2, data=dataframe)),
+                      AICc(lm(y~Chum+Herring.Biomass+Chinook+Location.2, data=dataframe)),#1
+                      AICc(lm(y~Chum+Herring.Biomass+HakeBiomass+Location.2, data=dataframe)),#2
+                      AICc(lm(y~Chum+Herring.Biomass+allSmolt+Location.2, data=dataframe)),#3
+                      AICc(lm(y~Chum+HakeBiomass+Chinook+Location.2, data=dataframe)),#4
+                      AICc(lm(y~Chum+allSmolt+Chinook+Location.2, data=dataframe)),#5
+                      AICc(lm(y~Chum+allSmolt+HakeBiomass+Location.2, data=dataframe)),#6
+                      
+                      AICc(lm(y~Location.2+Coho, data=dataframe)), 
+                      AICc(lm(y~Coho+Herring.Biomass+Location.2, data=dataframe)),
+                      AICc(lm(y~Coho+Chinook+Location.2, data=dataframe)),
+                      AICc(lm(y~Coho+allSmolt+Location.2, data=dataframe)),
+                      AICc(lm(y~Coho+HakeBiomass+Location.2, data=dataframe)),
+                      AICc(lm(y~Coho+Herring.Biomass+Chinook+Location.2, data=dataframe)),#1
+                      AICc(lm(y~Coho+Herring.Biomass+HakeBiomass+Location.2, data=dataframe)),#2
+                      AICc(lm(y~Coho+Herring.Biomass+allSmolt+Location.2, data=dataframe)),#3
+                      AICc(lm(y~Coho+HakeBiomass+Chinook+Location.2, data=dataframe)),#4
+                      AICc(lm(y~Coho+allSmolt+Chinook+Location.2, data=dataframe)),#5
+                      AICc(lm(y~Coho+allSmolt+HakeBiomass+Location.2, data=dataframe)),#6
+                      
+                      AICc(lm(y~Location.2+HarborSeal, data=dataframe)), 
+                      AICc(lm(y~HarborSeal+Herring.Biomass+Location.2, data=dataframe)),
+                      AICc(lm(y~HarborSeal+Chinook+Location.2, data=dataframe)),
+                      AICc(lm(y~HarborSeal+allSmolt+Location.2, data=dataframe)),
+                      AICc(lm(y~HarborSeal+HakeBiomass+Location.2, data=dataframe)),
+                      AICc(lm(y~HarborSeal+Herring.Biomass+Chinook+Location.2, data=dataframe)),#1
+                      AICc(lm(y~HarborSeal+Herring.Biomass+HakeBiomass+Location.2, data=dataframe)),#2
+                      AICc(lm(y~HarborSeal+Herring.Biomass+allSmolt+Location.2, data=dataframe)),#3
+                      AICc(lm(y~HarborSeal+HakeBiomass+Chinook+Location.2, data=dataframe)),#4
+                      AICc(lm(y~HarborSeal+allSmolt+Chinook+Location.2, data=dataframe)),#5
+                      AICc(lm(y~HarborSeal+allSmolt+HakeBiomass+Location.2, data=dataframe)),#6
+                      
+                      AICc(lm(y~HarborSeal+Chum+Location.2, data=dataframe)),#4
+                      AICc(lm(y~HarborSeal+Coho+Location.2, data=dataframe)),#5
+                      AICc(lm(y~Chum+Coho+Location.2, data=dataframe)),#6
+                      AICc(lm(y~Chum+Coho+HarborSeal+Location.2, data=dataframe))#6
+                      
+                      
+                      
+  )
+  
+  names <- seq(1,n,1)
+  model.names <- c("Location",
+                   "Herring", "Chinook", "Hatch", "Hake","1. Herring, Chinook", "2. Herring, Hake", "Herring*Hake","3. Herring, Hatch", "4. Chinook, Hake",
+                   "5. Chinook, Hatch", "6. Hatch, Hake", "7. Chinook, Hake, Hatch", "8. Herring, Hatch, Hake", "9. Herring, Hatch, Chinook", 
+                   "11. Herring Hake Chinook",
+                   
+                   "Chum, Location", "Chum, Herring", "Chum, Chinook", "Chum, Hatch", "Chum, Hake","1. Chum,  Herring, Chinook", "2. Chum, Herring, Hake", 
+                   "3. Chum, Herring, Hatch", "4. Chum, Chinook, Hake","5. Chum, Chinook, Hatch", "6. Chum, Hatch, Hake",
+                   
+                   "Coho, Location", "Coho, Herring", "Coho, Chinook", "Coho, Hatch", "Coho, Hake","1. Coho, Herring, Chinook", "2.Coho,  Herring, Hake",
+                   "3. Coho, Herring, Hatch", "4.Coho,  Chinook, Hake","5.Coho,  Chinook, Hatch", "6. Coho, Hatch, Hake",
+                   
+                   "Harbor Seal, Location", "Harbor Seal, Herring", "Harbor Seal, Chinook", "Harbor Seal, Hatch", "Harbor Seal Hake","Harbor Seal, Herring, Chinook",
+                   "2.Harbor Seal,  Herring, Hake", "3.Harbor Seal,  Herring, Hatch", "4.Harbor Seal,  Chinook, Hake","5. Harbor Seal, Chinook, Hatch", 
+                   "6. Harbor Seal, Hatch, Hake",
+                   
+                   "Harbor Seal, Chum", " Harbor Seal Coho", "Chum, Coho", "Chum, Coho, Harbor Seal")
+  
+  row.names(aic.output) <- model.names
+  delaic <- aic.output-min(aic.output)
+  aic.weight1 <- exp(-0.5*delaic)
+  aic.weight <- aic.weight1/sum(aic.weight1)
+  #dev.ex <- model.summary[,14]
+  aic.output <- cbind(aic.output, delaic, aic.weight)
+  
+  colnames(aic.output)<- c("AICc", "delAICc", "AICc Weight")
+  return(aic.output)
+}
+
+ModelSelection.PREYhier <- function(dataframe,n,y) {
   
   aic.output <- rbind(AICc(lmer(y~(1|Location.2), data=dataframe)), 
                       AICc(lmer(y~Herring.Biomass+(1|Location.2), data=dataframe)),
@@ -291,14 +384,16 @@ ModelSelection.PREY <- function(dataframe,n,y) {
                       AICc(lmer(y~HakeBiomass+(1|Location.2), data=dataframe)),
                       AICc(lmer(y~Herring.Biomass+Chinook+(1|Location.2), data=dataframe)),#1
                       AICc(lmer(y~Herring.Biomass+HakeBiomass+(1|Location.2), data=dataframe)),#2
+                      AICc(lmer(y~Herring.Biomass*HakeBiomass+(1|Location.2), data=dataframe)),#2
+                      
                       AICc(lmer(y~Herring.Biomass+allSmolt+(1|Location.2), data=dataframe)),#3
                       AICc(lmer(y~HakeBiomass+Chinook+(1|Location.2), data=dataframe)),#4
                       AICc(lmer(y~allSmolt+Chinook+(1|Location.2), data=dataframe)),#5
                       AICc(lmer(y~allSmolt+HakeBiomass+(1|Location.2), data=dataframe)),#6
                       AICc(lmer(y~allSmolt+Chinook+HakeBiomass+(1|Location.2), data=dataframe)),#7
-                      AICc(lmer(y~Herring.Biomass+allSmolt+HakeBiomass+(1|Location.2), data=dataframe)),#8
+                      AICc(lmer(y~Herring.Biomass+HakeBiomass+allSmolt+(1|Location.2), data=dataframe)),#8
                       AICc(lmer(y~Herring.Biomass+allSmolt+Chinook+(1|Location.2), data=dataframe)),#9
-                      AICc(lmer(y~Herring.Biomass+Chinook+HakeBiomass+(1|Location.2), data=dataframe)),
+                      AICc(lmer(y~Herring.Biomass+HakeBiomass+Chinook+(1|Location.2), data=dataframe)),
                       
                       AICc(lmer(y~(1|Location.2)+Chum, data=dataframe)), 
                       AICc(lmer(y~Chum+Herring.Biomass+(1|Location.2), data=dataframe)),
@@ -313,7 +408,7 @@ ModelSelection.PREY <- function(dataframe,n,y) {
                       AICc(lmer(y~Chum+allSmolt+HakeBiomass+(1|Location.2), data=dataframe)),#6
                       
                       AICc(lmer(y~(1|Location.2)+Coho, data=dataframe)), 
-                     AICc(lmer(y~Coho+Herring.Biomass+(1|Location.2), data=dataframe)),
+                      AICc(lmer(y~Coho+Herring.Biomass+(1|Location.2), data=dataframe)),
                       AICc(lmer(y~Coho+Chinook+(1|Location.2), data=dataframe)),
                       AICc(lmer(y~Coho+allSmolt+(1|Location.2), data=dataframe)),
                       AICc(lmer(y~Coho+HakeBiomass+(1|Location.2), data=dataframe)),
@@ -347,99 +442,7 @@ ModelSelection.PREY <- function(dataframe,n,y) {
   
   names <- seq(1,n,1)
   model.names <- c("Location",
-                   "Herring", "Chinook", "Hatch", "Hake","1. Herring, Chinook", "2. Herring, Hake", "3. Herring, Hatch", "4. Chinook, Hake",
-                   "5. Chinook, Hatch", "6. Hatch, Hake", "7. Chinook, Hake, Hatch", "8. Herring, Hatch, Hake", "9. Herring, Hatch, Chinook", 
-                   "11. Herring Hake Chinook",
-                   
-                   "Chum, Location", "Chum, Herring", "Chum, Chinook", "Chum, Hatch", "Chum, Hake","1. Chum,  Herring, Chinook", "2. Chum, Herring, Hake", 
-                  "3. Chum, Herring, Hatch", "4. Chum, Chinook, Hake","5. Chum, Chinook, Hatch", "6. Chum, Hatch, Hake",
-                   
-                  "Coho, Location", "Coho, Herring", "Coho, Chinook", "Coho, Hatch", "Coho, Hake","1. Coho, Herring, Chinook", "2.Coho,  Herring, Hake",
-                   "3. Coho, Herring, Hatch", "4.Coho,  Chinook, Hake","5.Coho,  Chinook, Hatch", "6. Coho, Hatch, Hake",
-                   
-                   "Harbor Seal, Location", "Harbor Seal, Herring", "Harbor Seal, Chinook", "Harbor Seal, Hatch", "Hake","1. Harbor Seal, Herring, Chinook",
-                   "2.Harbor Seal,  Herring, Hake", "3.Harbor Seal,  Herring, Hatch", "4.Harbor Seal,  Chinook, Hake","5. Harbor Seal, Chinook, Hatch", 
-                   "6. Harbor Seal, Hatch, Hake",
-                   
-                   "Harbor Seal, Chum", " Harbor Seal Coho", "Chum, Coho", "Chum, Coho, Harbor Seal")
-  
-  row.names(aic.output) <- model.names
-  delaic <- aic.output-min(aic.output)
-  aic.weight1 <- exp(-0.5*delaic)
-  aic.weight <- aic.weight1/sum(aic.weight1)
-  #dev.ex <- model.summary[,14]
-  aic.output <- cbind(aic.output, delaic, aic.weight)
-  
-  colnames(aic.output)<- c("AICc", "delAICc", "AICc Weight")
-  return(aic.output)
-}
-n<- 16
-ModelSelection.PREY <- function(dataframe,n,y) {
-  
-  aic.output <- rbind(AICc(lm(y~Location.2, data=dataframe)), 
-                      AICc(lm(y~Herring.Biomass+Location.2, data=dataframe)),
-                      AICc(lm(y~Chinook+Location.2, data=dataframe)),
-                      AICc(lm(y~allSmolt+Location.2, data=dataframe)),
-                      AICc(lm(y~HakeBiomass+Location.2, data=dataframe)),
-                      AICc(lm(y~Herring.Biomass+Chinook+Location.2, data=dataframe)),#1
-                      AICc(lm(y~Herring.Biomass*HakeBiomass+Location.2, data=dataframe)),#2
-                      AICc(lm(y~Herring.Biomass+allSmolt+Location.2, data=dataframe)),#3
-                      AICc(lm(y~HakeBiomass+Chinook+Location.2, data=dataframe)),#4
-                      AICc(lm(y~allSmolt+Chinook+Location.2, data=dataframe)),#5
-                      AICc(lm(y~allSmolt+HakeBiomass+Location.2, data=dataframe)),#6
-                      AICc(lm(y~allSmolt+Chinook+HakeBiomass+Location.2, data=dataframe)),#7
-                      AICc(lm(y~Herring.Biomass*HakeBiomass+allSmolt+Location.2, data=dataframe)),#8
-                      AICc(lm(y~Herring.Biomass+allSmolt+Chinook+Location.2, data=dataframe)),#9
-                      AICc(lm(y~Herring.Biomass*HakeBiomass+Chinook+Location.2, data=dataframe)),
-                      
-                      AICc(lm(y~Location.2+Chum, data=dataframe)), 
-                      AICc(lm(y~Chum+Herring.Biomass+Location.2, data=dataframe)),
-                      AICc(lm(y~Chum+Chinook+Location.2, data=dataframe)),
-                      AICc(lm(y~Chum+allSmolt+Location.2, data=dataframe)),
-                      AICc(lm(y~Chum+HakeBiomass+Location.2, data=dataframe)),
-                      AICc(lm(y~Chum+Herring.Biomass+Chinook+Location.2, data=dataframe)),#1
-                      AICc(lm(y~Chum+Herring.Biomass*HakeBiomass+Location.2, data=dataframe)),#2
-                      AICc(lm(y~Chum+Herring.Biomass+allSmolt+Location.2, data=dataframe)),#3
-                      AICc(lm(y~Chum+HakeBiomass+Chinook+Location.2, data=dataframe)),#4
-                      AICc(lm(y~Chum+allSmolt+Chinook+Location.2, data=dataframe)),#5
-                      AICc(lm(y~Chum+allSmolt+HakeBiomass+Location.2, data=dataframe)),#6
-                      
-                      AICc(lm(y~Location.2+Coho, data=dataframe)), 
-                      AICc(lm(y~Coho+Herring.Biomass+Location.2, data=dataframe)),
-                      AICc(lm(y~Coho+Chinook+Location.2, data=dataframe)),
-                      AICc(lm(y~Coho+allSmolt+Location.2, data=dataframe)),
-                      AICc(lm(y~Coho+HakeBiomass+Location.2, data=dataframe)),
-                      AICc(lm(y~Coho+Herring.Biomass+Chinook+Location.2, data=dataframe)),#1
-                      AICc(lm(y~Coho+Herring.Biomass*HakeBiomass+Location.2, data=dataframe)),#2
-                      AICc(lm(y~Coho+Herring.Biomass+allSmolt+Location.2, data=dataframe)),#3
-                      AICc(lm(y~Coho+HakeBiomass+Chinook+Location.2, data=dataframe)),#4
-                      AICc(lm(y~Coho+allSmolt+Chinook+Location.2, data=dataframe)),#5
-                      AICc(lm(y~Coho+allSmolt+HakeBiomass+Location.2, data=dataframe)),#6
-                      
-                      AICc(lm(y~Location.2+HarborSeal, data=dataframe)), 
-                      AICc(lm(y~HarborSeal+Herring.Biomass+Location.2, data=dataframe)),
-                      AICc(lm(y~HarborSeal+Chinook+Location.2, data=dataframe)),
-                      AICc(lm(y~HarborSeal+allSmolt+Location.2, data=dataframe)),
-                      AICc(lm(y~HarborSeal+HakeBiomass+Location.2, data=dataframe)),
-                      AICc(lm(y~HarborSeal+Herring.Biomass+Chinook+Location.2, data=dataframe)),#1
-                      AICc(lm(y~HarborSeal+Herring.Biomass*HakeBiomass+Location.2, data=dataframe)),#2
-                      AICc(lm(y~HarborSeal+Herring.Biomass+allSmolt+Location.2, data=dataframe)),#3
-                      AICc(lm(y~HarborSeal+HakeBiomass+Chinook+Location.2, data=dataframe)),#4
-                      AICc(lm(y~HarborSeal+allSmolt+Chinook+Location.2, data=dataframe)),#5
-                      AICc(lm(y~HarborSeal+allSmolt+HakeBiomass+Location.2, data=dataframe)),#6
-                      
-                      AICc(lm(y~HarborSeal+Chum+Location.2, data=dataframe)),#4
-                      AICc(lm(y~HarborSeal+Coho+Location.2, data=dataframe)),#5
-                      AICc(lm(y~Chum+Coho+Location.2, data=dataframe)),#6
-                      AICc(lm(y~Chum+Coho+HarborSeal+Location.2, data=dataframe))#6
-                      
-                      
-                      
-  )
-  
-  names <- seq(1,n,1)
-  model.names <- c("Location",
-                   "Herring", "Chinook", "Hatch", "Hake","1. Herring, Chinook", "2. Herring, Hake", "3. Herring, Hatch", "4. Chinook, Hake",
+                   "Herring", "Chinook", "Hatch", "Hake","1. Herring, Chinook", "2. Herring, Hake", "Herring*Hake","3. Herring, Hatch", "4. Chinook, Hake",
                    "5. Chinook, Hatch", "6. Hatch, Hake", "7. Chinook, Hake, Hatch", "8. Herring, Hatch, Hake", "9. Herring, Hatch, Chinook", 
                    "11. Herring Hake Chinook",
                    
@@ -449,7 +452,7 @@ ModelSelection.PREY <- function(dataframe,n,y) {
                    "Coho, Location", "Coho, Herring", "Coho, Chinook", "Coho, Hatch", "Coho, Hake","1. Coho, Herring, Chinook", "2.Coho,  Herring, Hake",
                    "3. Coho, Herring, Hatch", "4.Coho,  Chinook, Hake","5.Coho,  Chinook, Hatch", "6. Coho, Hatch, Hake",
                    
-                   "Harbor Seal, Location", "Harbor Seal, Herring", "Harbor Seal, Chinook", "Harbor Seal, Hatch", "Hake","1. Harbor Seal, Herring, Chinook",
+                   "Harbor Seal, Location", "Harbor Seal, Herring", "Harbor Seal, Chinook", "Harbor Seal, Hatch", "Harbor Seal Hake","Harbor Seal, Herring, Chinook",
                    "2.Harbor Seal,  Herring, Hake", "3.Harbor Seal,  Herring, Hatch", "4.Harbor Seal,  Chinook, Hake","5. Harbor Seal, Chinook, Hatch", 
                    "6. Harbor Seal, Hatch, Hake",
                    
@@ -466,22 +469,22 @@ ModelSelection.PREY <- function(dataframe,n,y) {
   return(aic.output)
 }
 
-
-model.selectionPREY <- ModelSelection.PREY(dataPrey, n, dataPrey$TP)
+model.selectionPREY <- ModelSelection.PREYhier(dataPrey, n, dataPrey$TP)
 x<-data.frame(model.selectionPREY)
 subset(x, delAICc<=1.97)
 
 
 
 
-summary(lm(TP~Herring.Biomass+Location.2, data=dataPrey))
+summary(lm(TP~HakeBiomass+Herring.Biomass+Location.2, data=dataPrey))
 vif(lm(TP~HarborSeal+Herring.Biomass+Chinook+Location.2, data=dataPrey))
 head(dataPrey)
 
 dataPrey$Year
 
-PREY.mod.1 <-lm(TP~HakeBiomass*Herring.Biomass+allSmolt+Location.2, data=dataPrey)
-summary(PREY.mod.1)
+PREY.mod.1 <-lm(TP~HakeBiomass+Location.2, data=dataPrey)
+PREY.mod.2 <-lm(TP~HakeBiomass+Herring.Biomass+Location.2, data=dataPrey)
+summary(PREY.mod.2)
 
 
 PREY <- list(PREY.mod.1)

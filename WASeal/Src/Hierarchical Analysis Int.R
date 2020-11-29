@@ -1,11 +1,11 @@
 library(lme4)
 library(AICcmodavg)
-data <-  read.csv("Data/Compiled/HierarchicalData3.csv")
+data <-  read.csv("Data/Compiled/HierarchicalFiles/HierarchicalData_beta2.csv")
 
 
 ########################    Hier Clim Models       ############################
 
-dataCLIM <- subset(data, AA=="VAL"|AA=="Glu"|AA=="PRO"|AA=="ALA")
+dataCLIM <- subset(data, AA=="VAL"|AA=="Glu"|AA=="ALA"|AA=="ASP")
 #dataCLIM <- subset(data, Year>=1960&Year<=2008)# & AA=="Glu"|AA=="PRO"|AA=="ALA")
 
 dataCLIM <-dataCLIM %>% select(MEI, 
@@ -117,12 +117,12 @@ ModelSelection.CLIM<- function(dataframe,n, y) {
   return(aic.output)
 }
 n<- 17
-model.selectionCLIM <- ModelSelection.CLIM(dataCLIM, n, dataCLIM$TP.norm)
+model.selectionCLIM <- ModelSelection.CLIM(dataCLIM, n, dataCLIM$TP)
 model.selectionCLIM
 length(model.selectionCLIM[,1])
 x<-data.frame(model.selectionCLIM)
 subset(x, delAICc<=1.97)
-modelENV<- lmer(TP~Location.2+Col.Dis.high+PDO+(1|AA), data=dataCLIM)
+modelENV<- lmer(TP~Location.2+PDO*Col.Dis.high+(1|AA), data=dataCLIM)
 summary(modelENV)
 
 
@@ -133,7 +133,7 @@ summary(modelENV)
 
 ########################    Hier PREY Models       ############################
 
-data2 <- subset(data, AA=="Glu"|AA=="PRO"|AA=="ALA"|AA=="VAL")
+data2 <- subset(data, AA=="Glu"|AA=="ALA"|AA=="Val")
 dataPrey <-data2 %>% select(allSmolt, 
                             HakeBiomass,
                             Herring.Biomass,
@@ -142,7 +142,7 @@ dataPrey <-data2 %>% select(allSmolt,
                             HarborSeal,
                             Coho,
                             Chum,
-                            TP.norm,
+                           
                             TP,
                             Year,
                             Sample.ID,
@@ -159,7 +159,7 @@ model.selection.PREY <- function(dataframe,n, y) {
                       AICc(lmer(y~allSmolt+Location.2+(1|AA), data=dataframe)),
                       AICc(lmer(y~HakeBiomass+Location.2+(1|AA), data=dataframe)),
                       AICc(lmer(y~Herring.Biomass+Chinook+Location.2+(1|AA), data=dataframe)),#1
-                      AICc(lmer(y~Herring.Biomass+HakeBiomass+Location.2+(1|AA), data=dataframe)),#2
+                      AICc(lmer(y~Herring.Biomass+HakeBiomass+(1|AA), data=dataframe)),#2
                       AICc(lmer(y~Herring.Biomass+allSmolt+Location.2+(1|AA), data=dataframe)),#3
                       AICc(lmer(y~HakeBiomass+Chinook+Location.2+(1|AA), data=dataframe)),#4
                       AICc(lmer(y~allSmolt+Chinook+Location.2+(1|AA), data=dataframe)),#5
@@ -252,12 +252,13 @@ model.selection.PREY <- function(dataframe,n, y) {
 }
 
 
+
 model.selectionPREY <- model.selection.PREY(dataPrey, n, dataPrey$TP)
 length(model.selectionPREY[,1])
 model.selectionPREY
 x<-data.frame(model.selectionPREY)
-subset(x, delAICc<=1.97)
-PREY<-lmer(TP~Location.2+HakeBiomass*Herring.Biomass+allSmolt+(1|AA), data=dataPrey)
+subset(x, delAICc<=5)
+PREY<-lmer(TP~Location.2+HakeBiomass+(1|AA), data=dataPrey)
 summary(PREY)
 vif(PREY)
 
@@ -333,46 +334,28 @@ ModelSelection.WAFull <- function(dataframe,n, y) {
   
   aic.output <- rbind(
     AICc(lmer(y~Location.2+(1|AA), data=dataframe)),
-    AICc(lmer(y~PDO+Col.Dis.high+Location.2+(1|AA), data=dataframe)),
-    AICc(lmer(y~allSmolt+Herring.Biomass*HakeBiomass+Location.2+(1|AA), data=dataframe)),
     AICc(lmer(y~PDO+Location.2+(1|AA), data=dataframe)),
+    AICc(lmer(y~allSmolt+Location.2+(1|AA), data=dataframe)),
+    AICc(lmer(y~Col.Dis.high+Location.2+(1|AA), data=dataframe)),
     
-    AICc(lmer(y~PDO+allSmolt+Herring.Biomass*HakeBiomass+Location.2+(1|AA), data=dataframe)),
-    AICc(lmer(y~PDO+Herring.Biomass*HakeBiomass+Location.2+(1|AA), data=dataframe)),
-    AICc(lmer(y~PDO*allSmolt+Herring.Biomass*HakeBiomass+Location.2+(1|AA), data=dataframe)),
-    
+    AICc(lmer(y~PDO+Col.Dis.high+Location.2+(1|AA), data=dataframe)),
+
+    AICc(lmer(y~allSmolt+Col.Dis.high+Location.2+(1|AA), data=dataframe)),
+    AICc(lmer(y~allSmolt*Col.Dis.high+Location.2+(1|AA), data=dataframe)),
     
     AICc(lmer(y~PDO+allSmolt+Location.2+(1|AA), data=dataframe)),
     AICc(lmer(y~PDO*allSmolt+Location.2+(1|AA), data=dataframe)),
-    AICc(lmer(y~PDO+Herring.Biomass+Location.2+(1|AA), data=dataframe)),
-    AICc(lmer(y~PDO*Herring.Biomass+Location.2+(1|AA), data=dataframe)),
-    AICc(lmer(y~PDO+HakeBiomass+Location.2+(1|AA), data=dataframe)),
-    AICc(lmer(y~PDO*HakeBiomass+Location.2+(1|AA), data=dataframe)),
+    
+    AICc(lmer(y~PDO+Col.Dis.high+allSmolt+Location.2+(1|AA), data=dataframe)),
+    AICc(lmer(y~PDO+Col.Dis.high*allSmolt+Location.2+(1|AA), data=dataframe)),
+    AICc(lmer(y~Col.Dis.high+PDO*allSmolt+Location.2+(1|AA), data=dataframe))
 
-    AICc(lmer(y~Col.Dis.high+Location.2+(1|AA), data=dataframe)),
-    AICc(lmer(y~Col.Dis.high+allSmolt+Herring.Biomass*HakeBiomass+Location.2+(1|AA), data=dataframe)),
-    AICc(lmer(y~Col.Dis.high+Herring.Biomass*HakeBiomass+Location.2+(1|AA), data=dataframe)),
-    AICc(lmer(y~Col.Dis.high*allSmolt+Herring.Biomass*HakeBiomass+Location.2+(1|AA), data=dataframe)),
-    
-    
-    AICc(lmer(y~Col.Dis.high+allSmolt+Location.2+(1|AA), data=dataframe)),
-    AICc(lmer(y~Col.Dis.high*allSmolt+Location.2+(1|AA), data=dataframe)),
-    AICc(lmer(y~Col.Dis.high+Herring.Biomass+Location.2+(1|AA), data=dataframe)),
-    AICc(lmer(y~Col.Dis.high*Herring.Biomass+Location.2+(1|AA), data=dataframe)),
-    AICc(lmer(y~Col.Dis.high+HakeBiomass+Location.2+(1|AA), data=dataframe)),
-    AICc(lmer(y~Col.Dis.high*HakeBiomass+Location.2+(1|AA), data=dataframe))
-    
   )
   
   names <- seq(1,n,1)
-  model.names <- c( "Location","Environment", "Prey","PDO", "PDO, Prey","PDO, Herring*Hake",
-                    "PDO*Smolt Hake*Herring", "PDO, Smolt", "PDO*Smolt", "PDO, Herring", 
-                    "PDO*Herring", "PDO, Hake", "PDO*Hake",
-                    
-                    
-                    "Col", "Col, Prey","Col, Herring*Hake","Col*Smolt Hake*Herring", "Col, Smolt",
-                    "Col*Smolt", "Col, Herring", 
-                    "Col*Herring", "Col, Hake", "Col*Hake")
+  model.names <- c( "Location","PDO", "Smolt","Discharge", "PDO, Dishcarge",
+                    "Dis Smolt", "Dis*Smolt", "PDO, Smolt", "PDO*Smolt", 
+                    "PDO, dis, smolt", "PDO, dis*smolt", "PDO* smolt, dis")
   
   row.names(aic.output) <- model.names
   delaic <- aic.output-min(aic.output)
@@ -391,49 +374,50 @@ model.selectionFULL
 x<-data.frame(model.selectionFULL)
 subset(x, delAICc<=1.97)
 
-modelFULL<- lmer(TP~Location.2+allSmolt+HakeBiomass*Herring.Biomass+Col.Dis.high+(1|AA), data=dataFull)
+modelFULL<- lmer(TP~Location.2+allSmolt*Col.Dis.high+(1|AA), data=dataFull)
+FULL<- lmer(TP~Location.2+Col.Dis.high*allSmolt+(1|AA), data=dataFull)
 
-summary(Full)
+summary(modelFULL)
 vif(Full)
 
 ##########INTERACTION PLOTS#######
 
 new.DATA.low <- data.frame(
   TP=dataFull$TP,
-  HakeBiomass = dataFull$HakeBiomass,
-  Herring.Biomass = rep(-1, 300), allSmolt=dataFull$allSmolt,
+  Col.Dis.high = dataFull$Col.Dis.high,
+  allSmolt = rep(min(dataFull$allSmolt), 300), allSmolt=dataFull$allSmolt,
   Location.2=dataFull$Location.2, Col.Dis.high=dataFull$Col.Dis.high, AA=dataFull$AA
 )
 
 
 new.DATA.high <- data.frame(
   TP=dataFull$TP,
-  HakeBiomass = dataFull$HakeBiomass,
-  Herring.Biomass = rep(2.2, 300), allSmolt=dataFull$allSmolt,
+  Col.Dis.high = dataFull$Col.Dis.high,
+  allSmolt = rep(max(dataFull$allSmolt), 300), allSmolt=dataFull$allSmolt,
   Location.2=dataFull$Location.2, Col.Dis.high=dataFull$Col.Dis.high, AA=dataFull$AA
 )
 
 
 palette(c('#CCA65A','#7EBA68','#00C1B2','#6FB1E7','#D494E1'))
-pred<- predict(PREY, new.DATA.low, interval = "confidence")
+pred<- predict(modelFULL, new.DATA.low, interval = "confidence")
 col<-c('#CCA65A','#7EBA68','#00C1B2','#6FB1E7','#D494E1')
 
-pred.low <-data.frame(predict(PREY, new.DATA.low, interval = "confidence"))
+pred.low <-data.frame(predict(modelFULL, new.DATA.low, interval = "confidence"))
 pred.low.mod<- data.frame(TP=c(pred.low[,1]))
 
-pred.high <-data.frame(predict(PREY, new.DATA.high))
+pred.high <-data.frame(predict(modelFULL, new.DATA.high))
 pred.high.mod<- data.frame(TP=pred.high[,1])
 
-plot(new.DATA.high$HakeBiomass, pred.high.mod$TP, col=as.factor(new.DATA.high$AA), pch=16)
+plot(new.DATA.high$Col.Dis.high, pred.high.mod$TP, col=as.factor(new.DATA.high$AA), pch=16)
 legend('topright', legend = levels(pred.high.mod$AA), col = 1:4, cex = 0.8, pch = 1)
-plot(new.DATA.low$HakeBiomass, pred.low.mod$TP,  col=as.factor(new.DATA.low$AA), pch=16)
+plot(new.DATA.low$Col.Dis.high, pred.low.mod$TP,  col=as.factor(new.DATA.low$AA), pch=16)
 legend.size<-12
 
-Int.Prey <- sjPlot::plot_model(PREY, type = "int", col=c(col[1], col[2]))+
-  theme_bw() + xlab("Hake Biomass") + ylab("Predicted Trophic Position") +
+Int.Full <- sjPlot::plot_model(modelFULL, type = "int", col=c(col[1], col[2]))+
+  theme_bw() + xlab("Smolt Biomass") + ylab("Predicted Trophic Position") +
   geom_vline(xintercept = 0, colour = "grey60", linetype = 2) +
   ggtitle("Food Web", subtitle="Interactions")+
-  labs(fill="Herring Biomass")+
+  labs(fill="Smolt Biomass")+
  # scale_color_manual(values= c("#CCA65A", "#7EBA68"),name="Hake Biomass", labels = c("Low", "High"))+
   theme(plot.title = element_text(face="bold", hjust=0.5, size=legend.size+2),
         plot.margin = margin(0.25, 0.5, 0.25, 0.25, "cm"),
@@ -449,11 +433,11 @@ Int.Prey <- sjPlot::plot_model(PREY, type = "int", col=c(col[1], col[2]))+
 
 
 
-Int.Full <- sjPlot::plot_model(modelFULL, type = "int", col=c(col[1], col[2]))+
-  theme_bw() + xlab("Hake Biomass") + ylab("Predicted Trophic Position") +
+Int.Full2 <- sjPlot::plot_model(FULL, type = "int", col=c(col[1], col[2]))+
+  theme_bw() + xlab("Discharge") + ylab("Predicted Trophic Position") +
   geom_vline(xintercept = 0, colour = "grey60", linetype = 2) +
   ggtitle("Food Web", subtitle="Interactions")+
-  labs(fill="Herring Biomass")+
+  labs(fill="Smolt Biomass")+
   # scale_color_manual(values= c("#CCA65A", "#7EBA68"),name="Hake Biomass", labels = c("Low", "High"))+
   theme(plot.title = element_text(face="bold", hjust=0.5, size=legend.size+2),
         plot.margin = margin(0.25, 0.5, 0.25, 0.25, "cm"),
@@ -505,8 +489,8 @@ color<- rep(c('black','#CCA65A','#7EBA68','#00C1B2','#6FB1E7'), each=4)
 color2<- rep(c('black','#CCA65A','#7EBA68','#00C1B2','#6FB1E7'), times=4)
 color3<- rep(c('black','#CCA65A','#7EBA68','#00C1B2','#6FB1E7'), each=3)
 color4<- rep(c('black','#CCA65A','#7EBA68','#00C1B2','#6FB1E7'), times=3)
-color5<- rep(c('black','#CCA65A','#7EBA68','#00C1B2','#6FB1E7'), each=6)
-color6<- rep(c('black','#CCA65A','#7EBA68','#00C1B2','#6FB1E7'), times=6)
+color5<- rep(c('black','#CCA65A','#7EBA68','#00C1B2','#6FB1E7'), each=3)
+color6<- rep(c('black','#CCA65A','#7EBA68','#00C1B2','#6FB1E7'), times=3)
 color7<- rep(c('black','#CCA65A','#7EBA68','#00C1B2','#6FB1E7','#D494E1'), each=5)
 color8<- rep(c('black','#CCA65A','#7EBA68','#00C1B2','#6FB1E7','#D494E1'), times=5)
 
@@ -578,10 +562,10 @@ NUTRIENT.plot <-small_multiple(NUTRIENT.mods) +
         axis.text.y = element_text( size = 10))
 
 
-modelPREY <- lmer(TP~Location.2+Herring.Biomass*HakeBiomass+allSmolt+(1|AA), data=dataPrey)
+modelPREY <- lmer(TP~Location.2+allSmolt+(1|AA), data=dataPrey)
 PREY <- tidy(modelPREY)
-x <- data.frame("term" = c('Intercept', 'Location',  'Herring', 'Hake', 'Smolts', 'Hake:Herring'), "estimate" = fixef(modelPREY), 
-                "std.error" = c(PREY[1:6,3]), "group" = c(rep('fixed', 6)), model="fixed")
+x <- data.frame("term" = c('Intercept', 'Location', 'Smolts'), "estimate" = fixef(modelPREY), 
+                "std.error" = c(PREY[1:3,3]), "group" = c(rep('fixed', 3)), model="fixed")
 PREY.fixed <- as_tibble(x)
 x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelPREY)$AA[1,1]) ,
                 "std.error" = c(ranef(modelPREY)$AA[1,1]), "group" = 'random', model="Ala")
@@ -600,8 +584,8 @@ PREY.mods <- rbind(PREY.fixed, PREY.GLU, PREY.ALA,  PREY.PRO, PREY.VAL)
 
 PREY.plot <-small_multiple(PREY.mods) +
   theme_bw()+
-  geom_point (colour=color5)+
-  geom_errorbar (colour=color6, width=.2,
+  geom_point (colour=color3)+
+  geom_errorbar (colour=color4, width=.2,
                  position=position_dodge(.9))+
   ylab("") +
   geom_hline(yintercept = 0, colour = "grey60", linetype = 2) +
@@ -615,12 +599,12 @@ PREY.plot <-small_multiple(PREY.mods) +
         axis.text.y = element_text( size = 10))
 
 
-color9<- rep(c('black','#CCA65A','#7EBA68','#00C1B2','#6FB1E7'), each=7)
-color10<- rep(c('black','#CCA65A','#7EBA68','#00C1B2','#6FB1E7'), times=7)
+color9<- rep(c('black','#CCA65A','#7EBA68','#00C1B2','#6FB1E7'), each=5)
+color10<- rep(c('black','#CCA65A','#7EBA68','#00C1B2','#6FB1E7'), times=5)
 
 FULL <- tidy(modelFULL)
-x <- data.frame("term" = c('Intercept', 'Location','Smolts',  'Herring', 'Hake','Discharge','Hake:Herring'), "estimate" = fixef(modelFULL), 
-                "std.error" = c(FULL[1:7,3]), "group" = c(rep('fixed', 7)), model="fixed")
+x <- data.frame("term" = c('Intercept', 'Location','Smolts', 'Discharge','Discharge:Smolt'), "estimate" = fixef(modelFULL), 
+                "std.error" = c(FULL[1:5,3]), "group" = c(rep('fixed', 5)), model="fixed")
 FULL.fixed <- as_tibble(x)
 x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelFULL)$AA[1,1]) ,
                 "std.error" = c(ranef(modelFULL)$AA[1,1]), "group" = 'random', model="Ala")
@@ -678,8 +662,8 @@ pdf(file="Results/Presentation Figures/FullDRAFT.pdf", width=5, height=5)
 FULL.plot
 dev.off()
 
-pdf(file="Results/Figures/HCoefPlot2.pdf", width=11, height=12)
-ggarrange(NUTRIENT.plot, ENV.plot, PREY.plot, Int.Prey,rremove("x.text"), 
+pdf(file="Results/Figures/HCoefPlot.pdf", width=11, height=12)
+ggarrange(ENV.plot, PREY.plot, FULL.plot, Int.Full2,rremove("x.text"), 
           #labels = c("A", "B", "C", "D", "E", "F"),
           ncol = 2, nrow = 2, align= 'hv',
           heights =c(4,6))
@@ -860,17 +844,45 @@ Sex.ss<-subset(Sex, Location.2=="Inland"& AA!="ASP")
 sex.GLU.c <- subset(Sex.c, AA=="Glu")
 summary(lm(TP~Sex, data=sex.GLU.c))
 
-mean(na.omit(subset(Sex.c, AA=="VAL")$TP)) #2.68
-sd(na.omit(subset(Sex.c, AA=="VAL")$TP)) #0.36
-max(na.omit(subset(Sex.c, AA=="VAL")$TP)) #3.45
-min(na.omit(subset(Sex.c, AA=="VAL")$TP)) #1.66
+mean(na.omit(subset(Sex, AA=="VAL")$TP)) #3.9
+sd(na.omit(subset(Sex, AA=="VAL")$TP)) #0.77
+max(na.omit(subset(Sex, AA=="VAL")$TP)) #3.45
+min(na.omit(subset(Sex, AA=="VAL")$TP)) #1.66
+vallow <- subset(Sex, AA=="VAL")$TP<3.5
+length(vallow[vallow== TRUE])#50
+valhigh <- subset(Sex, AA=="VAL")$TP>5
+length(valhigh[valhigh== TRUE])#12
+length(na.omit(subset(Sex, AA=="VAL")$TP))#108
 
+mean(na.omit(subset(Sex, AA=="Glu")$TP)) #4.5
+sd(na.omit(subset(Sex, AA=="Glu")$TP)) #0.44
+max(na.omit(subset(Sex, AA=="Glu")$TP)) #5.5
+min(na.omit(subset(Sex, AA=="Glu")$TP)) #3.4
+glulow <- subset(Sex, AA=="Glu")$TP<3.5
+length(glulow[glulow== TRUE])#8
+gluhigh <- subset(Sex, AA=="Glu")$TP>5
+length(gluhigh[gluhigh== TRUE])#18
+length(na.omit(subset(Sex, AA=="Glu")$TP))#109
 
-mean(na.omit(subset(Sex.c, AA=="Glu")$TP)) #5.08
-sd(na.omit(subset(Sex.c, AA=="Glu")$TP)) #0.81
-max(na.omit(subset(Sex.c, AA=="Glu")$TP)) #6.6
-min(na.omit(subset(Sex.c, AA=="Glu")$TP)) #3.0
+mean(na.omit(subset(Sex, AA=="ALA")$TP)) #4.1
+sd(na.omit(subset(Sex, AA=="ALA")$TP)) #0.77
+max(na.omit(subset(Sex, AA=="ALA")$TP)) #5.6
+min(na.omit(subset(Sex, AA=="ALA")$TP)) #3.1
+alalow <- subset(Sex, AA=="ALA")$TP<3.5
+length(alalow[alalow== TRUE])#10
+alahigh <- subset(Sex, AA=="ALA")$TP>5
+length(alahigh[alahigh== TRUE])#21
+length(na.omit(subset(Sex, AA=="ALA")$TP))#108
 
+mean(na.omit(subset(Sex, AA=="PRO")$TP)) #4.6
+sd(na.omit(subset(Sex, AA=="PRO")$TP)) #0.81
+max(na.omit(subset(Sex, AA=="PRO")$TP)) #6.6
+min(na.omit(subset(Sex, AA=="PRO")$TP)) #3.0
+prolow <- subset(Sex, AA=="PRO")$TP<3.5
+length(prolow[prolow== TRUE])#15
+prohigh <- subset(Sex, AA=="PRO")$TP>5
+length(prohigh[prohigh== TRUE])#37
+length(na.omit(subset(Sex, AA=="PRO")$TP))#107
 
 sex.GLU.ss <- subset(Sex.ss, AA=="Glu")
 summary(lm(TP~Sex, data=sex.GLU.ss))
