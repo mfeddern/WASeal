@@ -1,7 +1,8 @@
 library(lme4)
 library(AICcmodavg)
-data <-  read.csv("Data/Compiled/HierarchicalFiles/HierarchicalData_beta2.csv")
-
+library(dplyr)
+dataALL <-  read.csv("Data/Compiled/HierarchicalData.csv")
+data<-subset(subset(dataALL, Location.2=="Inland"|Location.2=="Coastal"), beta==1& eq==2)
 
 ########################    Hier Clim Models       ############################
 
@@ -15,7 +16,6 @@ dataCLIM <-dataCLIM %>% select(MEI,
                             UpInAn.45.Spring,
                             Col.Dis.high,
                             UpInAn.45.Summer,
-                            TP.norm,
                             TP,
                             Year,
                             AA,
@@ -122,7 +122,7 @@ model.selectionCLIM
 length(model.selectionCLIM[,1])
 x<-data.frame(model.selectionCLIM)
 subset(x, delAICc<=1.97)
-modelENV<- lmer(TP~Location.2+PDO*Col.Dis.high+(1|AA), data=dataCLIM)
+modelENV<- lmer(TP~Location.2+(1|AA), data=dataCLIM)
 summary(modelENV)
 
 
@@ -133,7 +133,7 @@ summary(modelENV)
 
 ########################    Hier PREY Models       ############################
 
-data2 <- subset(data, AA=="Glu"|AA=="ALA"|AA=="Val")
+data2 <- subset(data, AA=="Glu"|AA=="ALA"|AA=="Val"|AA=="ASP")
 dataPrey <-data2 %>% select(allSmolt, 
                             HakeBiomass,
                             Herring.Biomass,

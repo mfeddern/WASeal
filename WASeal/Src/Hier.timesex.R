@@ -8,9 +8,9 @@ library("sjPlot")
 library("lme4")
 library('AICcmodavg')
 ########Fitting HIerarchical with sex and length
-data <- read.csv("Data/Compiled/HierarchicalData2.csv")
-
-dataSum <- subset(data, AA=="Glu"|AA=="PRO"|AA=="ALA"|AA=="VAL")
+data <- read.csv("Data/Compiled/HierarchicalData.csv")
+data<-subset(data, beta==1& eq==2)
+dataSum <- subset(data, AA=="Glu"|AA=="ASP"|AA=="ALA"|AA=="VAL")
 dataSum <- subset(dataSum,TP>0)
 
 dataSum <- subset(dataSum,Sex=="F"|Sex=="M"&Year>1929)

@@ -30,9 +30,9 @@ coastal <- data.frame(Obs=na.omit(subset(data, Location.2=="Coastal")$d13C.s),
 salishsea <- data.frame(Obs=na.omit(subset(data, Location.2=="Inland")$d13C.s), 
                         C4EM= rep(-9.5325, length(na.omit(subset(data, Location.2=="Inland")$d13C.s))),
                         C3EM= rep(-19.44, length(na.omit(subset(data, Location.2=="Inland")$d13C.s))))
-all <- data.frame(Obs=na.omit(data$d13C.s), 
-                             C4EM= rep(-9.5325, length(na.omit(data$d13C.s))),
-                             C3EM= rep(-19.44, length(na.omit(data$d13C.s))))
+all <- data.frame(Obs=na.omit(subset(data, Location.2=="Coastal"|Location.2=="Inland")$d13C.s), 
+                             C4EM= rep(-9.5325, length(na.omit(subset(data, Location.2=="Inland"|Location.2=="Coastal")$d13C.s))),
+                             C3EM= rep(-19.44, length(na.omit(subset(data, Location.2=="Inland"|Location.2=="Coastal")$d13C.s))))
 
 names2 <- c("Mean", "SD")
 Percent.C3 <- data.frame(Coastal=c(mean(Function.MixingModel(coastal)), sd(Function.MixingModel(coastal))),
@@ -58,12 +58,12 @@ Percent.C4 <- data.frame(Coastal=c(mean(Function.MixingModel2(coastal)), sd(Func
 vander<-data.frame(vander)
 str(vander)
 mean.vander<-colMeans(na.omit(vander))
-beta<-matrix(ncol =length(mean.vander))
+beta<-matrix(ncol =length(mean.vander)+1)
 
 for(i in 1:length(mean.vander)){
   beta[,i] <- as.numeric(mean.vander[i]-mean.vander['Phe'])
 }
-colnames(beta)<- names(vander)
+colnames(beta)<- c(names(vander), "Pro")
 beta<-data.frame(beta)
 
 beta<-beta %>% select(Glu,
@@ -71,19 +71,26 @@ beta<-beta %>% select(Glu,
                        Ile,
                        Leu,
                       Asp,
-                      Val)
+                      Val,
+                      Pro)
 
-
+beta[1,7]=-7.7
 
 data2 <-data %>% select(PHE.mean,
                         GLU.mean,
                         ALA.mean,
                         VAL.mean,
                         ASP.mean,
+                        PRO.mean,
                              d13C.s, 
                              Year,
-                             Sample.ID,
-                             Location.2)
+                            
+                             Location.2,
+                        Sample.ID,
+                        d13C,
+                        d15N,
+              
+                        years)
 data2 <- data2[complete.cases(data2), ]
 
 all2 <- data.frame(Obs=na.omit(data2$d13C.s), 
@@ -128,28 +135,37 @@ all.C4.weighted<-data.frame(beta*Percent.C4[1,3]/100)
 coastal.beta <- cbind(Glu=C3.weighted['GLU']+coastal.C4.weighted['Glu'],
                       Val=C3.weighted['VAL']+coastal.C4.weighted['Val'],
                       Ala=C3.weighted['ALA']+coastal.C4.weighted['Ala'],
-                      Pro=C3.weighted['PRO']+rowMeans(coastal.C4.weighted))
+                      Asp=C3.weighted['ASP']+coastal.C4.weighted['Asp'],
+                      Pro=C3.weighted['PRO']+coastal.C4.weighted['Pro'])
 
 salishsea.beta <- cbind(Glu=C3.weighted['GLU']+salishsea.C4.weighted['Glu'],
                       Val=C3.weighted['VAL']+salishsea.C4.weighted['Val'],
                       Ala=C3.weighted['ALA']+salishsea.C4.weighted['Ala'],
-                      Pro=C3.weighted['PRO']+rowMeans(salishsea.C4.weighted))
+                      Asp=C3.weighted['ASP']+salishsea.C4.weighted['Asp'],
+                      Pro=C3.weighted['PRO']+salishsea.C4.weighted['Pro'])
 
 all.beta <- cbind(Glu=C3.weighted['GLU']+all.C4.weighted['Glu'],
                         Val=C3.weighted['VAL']+all.C4.weighted['Val'],
                         Ala=C3.weighted['ALA']+all.C4.weighted['Ala'],
-                        Pro=C3.weighted['ASP']+rowMeans(all.C4.weighted))
+                   Asp=C3.weighted['ASP']+all.C4.weighted['Asp'],
+                  Pro=C3.weighted['PRO']+all.C4.weighted['Pro'])
 
 
 
-ind.beta<-matrix(nrow=length(Function.MixingModel2(all3)), ncol=4)
+ind.beta<-matrix(nrow=length(Function.MixingModel2(all3)), ncol=5)
 for(i in 1:length(Function.MixingModel2(all3))) {
-  for(j in 1:4)
-    ind.beta[i,j]<-((Function.MixingModel2(all3)/100)[i]*c(beta[1], beta[2], beta[5], beta[6])[[j]])+
-      ((1-(Function.MixingModel2(all3)/100)[i])*as.numeric(c(Beta.JN[1,2:3], Beta.JN[1,6:7]))[[j]])
+  for(j in 1:5)
+    ind.beta[i,j]<-((Function.MixingModel2(all3)/100)[i]*c(beta[1], beta[2], beta[5], beta[6],beta[7])[[j]])+
+      ((1-(Function.MixingModel2(all3)/100)[i])*as.numeric(c(Beta.JN[1,2:3], Beta.JN[1,5:7]))[[j]])
 }  
-colnames(ind.beta)<- c("beta.glu", "beta.ala", "beta.asp", "beta.val")
-ind<-cbind(ind.beta, data2,percC3=(1-(Function.MixingModel2(all3)/100)))
+colnames(ind.beta)<- c("beta.glu", "beta.ala", "beta.asp", "beta.val","beta.pro")
+ind<-cbind(ind.beta, data2,percC3=(1-(Function.MixingModel2(all3)/100)), LocC3=rep(NA, length(data2$Year)))
+ind2 <- mutate(data, LocC3 = ifelse(Location.2 == "Coastal", Percent.C3[1,1], Percent.C3[1,2]))  
+ind2 <- mutate(ind2, Loc.ala = ifelse(Location.2 == "Coastal", coastal.beta$ALA, salishsea.beta$ALA))  
+ind2 <- mutate(ind2, Loc.glu = ifelse(Location.2 == "Coastal", coastal.beta$GLU, salishsea.beta$GLU))  
+ind2 <- mutate(ind2, Loc.val = ifelse(Location.2 == "Coastal", coastal.beta$VAL, salishsea.beta$VAL))  
+ind2 <- mutate(ind2, Loc.asp = ifelse(Location.2 == "Coastal", coastal.beta$ASP, salishsea.beta$ASP))  
+ind2 <- mutate(ind2, Loc.pro = ifelse(Location.2 == "Coastal", coastal.beta$PRO, salishsea.beta$PRO))  
 
 
 find.numeric <- sapply(ger.sealAA, is.numeric)
@@ -190,7 +206,7 @@ Calculating.TP.2  <- function(dataframe, AA.mean, AA, AA2, x) {
 
 
 ########################     Calculating TEF EQ3                ############################
-TP<-data.frame(rep(NA, length(AA.mean)))
+TP<-data.frame(rep(NA, length(data$AA.mean)))
 
 Calculating.TP.3  <- function(dataframe, AA.mean, AA, AA2, x) {
   
@@ -204,7 +220,7 @@ Calculating.TP.3  <- function(dataframe, AA.mean, AA, AA2, x) {
 
 
 ########################     Calculating TEF EQ4               ############################
-TP<-data.frame(rep(NA, length(AA.mean)))
+TP<-data.frame(rep(NA, length(data$AA.mean)))
 
 Calculating.TP.4<- function(dataframe, AA.mean, AA, AA2, x) {
   
@@ -221,8 +237,9 @@ Calculating.TP.4<- function(dataframe, AA.mean, AA, AA2, x) {
 TP.4.beta<- data.frame(ALA=Calculating.TP.4(data, data$ALA.mean, 'ALA', 'Ala',x=Percent.C3[1,3]),
                        GLU=Calculating.TP.4(data, data$GLU.mean, 'GLU', 'Glu', x=Percent.C3[1,3]),
                        VAL=Calculating.TP.4(data, data$VAL.mean, 'VAL', 'Val', x=Percent.C3[1,3]),
-                       ASP=Calculating.TP.4(data, data$GLU.mean, 'ASP', 'Asp', x=Percent.C3[1,3]))
-colnames(TP.4.beta)<- c("TP.ALA", "TP.GLU", "TP.VAL", "TP.ASP")
+                       ASP=Calculating.TP.4(data, data$ASP.mean, 'ASP', 'Asp', x=Percent.C3[1,3]),
+                       PRO=Calculating.TP.4(data, data$PRO.mean, 'PRO', 'Pro', x=Percent.C3[1,3]))
+colnames(TP.4.beta)<- c("TP.ALA", "TP.GLU", "TP.VAL", "TP.ASP", "TP.PRO")
 
 
 ########################     Calculating TEF EQ4 BETA IND              ############################
@@ -253,14 +270,31 @@ Calculating.TP.2IND<- function(dataframe, AA.mean, AA, AA2, beta) {
 TP.4IND<- data.frame(ALA=Calculating.TP.4IND(ind, ind$ALA.mean, 'ALA', 'Ala',ind$beta.ala),
                      GLU=Calculating.TP.4IND(ind, ind$GLU.mean, 'GLU', 'Glu', ind$beta.glu),
                      VAL=Calculating.TP.4IND(ind, ind$VAL.mean, 'VAL', 'Val', ind$beta.val),
-                     ASP=Calculating.TP.4IND(ind, ind$GLU.mean, 'ASP', 'Asp', ind$beta.asp),
+                     ASP=Calculating.TP.4IND(ind, ind$ASP.mean, 'ASP', 'Asp', ind$beta.asp),
+                     PRO=Calculating.TP.4IND(ind, ind$PRO.mean, 'PRO', 'Pro', ind$beta.pro),
                      
                      ALA=Calculating.TP.2IND(ind, ind$ALA.mean, 'ALA', 'Ala',ind$beta.ala),
                      GLU=Calculating.TP.2IND(ind, ind$GLU.mean, 'GLU', 'Glu', ind$beta.glu),
                      VAL=Calculating.TP.2IND(ind, ind$VAL.mean, 'VAL', 'Val', ind$beta.val),
-                     ASP=Calculating.TP.2IND(ind, ind$GLU.mean, 'ASP', 'Asp', ind$beta.asp))
-colnames(TP.4IND)<- c("TP.ALA", "TP.GLU", "TP.VAL", "TP.ASP",
-                      "TP.ALA2", "TP.GLU2", "TP.VAL2", "TP.ASP2")
+                     ASP=Calculating.TP.2IND(ind, ind$ASP.mean, 'ASP', 'Asp', ind$beta.asp),
+                     PRO=Calculating.TP.2IND(ind, ind$PRO.mean, 'PRO', 'Pro', ind$beta.pro))
+colnames(TP.4IND)<- c("TP.ALA", "TP.GLU", "TP.VAL", "TP.ASP","TP.PRO",
+                      "TP.ALA2", "TP.GLU2", "TP.VAL2", "TP.ASP2", "TP.PRO2")
+                     
+TP.LOC<- data.frame(ALA=Calculating.TP.4IND(ind2, ind2$ALA.mean, 'ALA', 'Ala',ind2$Loc.ala),
+                     GLU=Calculating.TP.4IND(ind2, ind2$GLU.mean, 'GLU', 'Glu', ind2$Loc.glu),
+                     VAL=Calculating.TP.4IND(ind2, ind2$VAL.mean, 'VAL', 'Val', ind2$Loc.val),
+                     ASP=Calculating.TP.4IND(ind2, ind2$ASP.mean, 'ASP', 'Asp', ind2$Loc.asp),
+                    PRO=Calculating.TP.4IND(ind2, ind2$PRO.mean, 'PRO', 'Pro', ind2$Loc.pro), 
+                    
+                     ALA=Calculating.TP.2IND(ind2, ind2$ALA.mean, 'ALA', 'Ala',ind2$Loc.ala),
+                     GLU=Calculating.TP.2IND(ind2, ind2$GLU.mean, 'GLU', 'Glu', ind2$Loc.glu),
+                     VAL=Calculating.TP.2IND(ind2, ind2$VAL.mean, 'VAL', 'Val', ind2$Loc.val),
+                     ASP=Calculating.TP.2IND(ind2, ind2$ASP.mean, 'ASP', 'Asp', ind2$Loc.asp),
+                    PRO=Calculating.TP.2IND(ind2, ind2$PRO.mean, 'PRO', 'Pro', ind2$Loc.pro))
+colnames(TP.LOC)<- c(
+                      "TP.ALA4.L", "TP.GLU4.L", "TP.VAL4.L", "TP.ASP4.L","TP.PRO4.L",
+                      "TP.ALA2.L", "TP.GLU2.L", "TP.VAL2.L", "TP.ASP2.L","TP.PRO2.L")
 
 
 ########################   Full Dataframe                     ############################
@@ -269,188 +303,254 @@ colnames(TP.4IND)<- c("TP.ALA", "TP.GLU", "TP.VAL", "TP.ASP",
 
 
 
-TP<- data.frame(ALA=Calculating.TP.1(data, data$ALA.mean, 'ALA', 'Ala', Percent.C3[1,4]),
+TP <- data.frame(ALA=Calculating.TP.1(data, data$ALA.mean, 'ALA', 'Ala', Percent.C3[1,4]),
                   GLU=Calculating.TP.1(data, data$GLU.mean, 'GLU', 'Glu',  Percent.C3[1,4]),
                   VAL=Calculating.TP.1(data, data$VAL.mean, 'VAL', 'Val', Percent.C3[1,4]),
-                  ASP=Calculating.TP.1(data, data$GLU.mean, 'ASP', 'Asp', Percent.C3[1,4]),
+                  ASP=Calculating.TP.1(data, data$ASP.mean, 'ASP', 'Asp', Percent.C3[1,4]),
+                 PRO=Calculating.TP.1(data, data$PRO.mean, 'PRO', 'Pro', Percent.C3[1,4]),
                   ALA=Calculating.TP.1(data, data$ALA.mean, 'ALA', 'Ala', Percent.C3[1,3]),
                   GLU=Calculating.TP.1(data, data$GLU.mean, 'GLU', 'Glu',  Percent.C3[1,3]),
                   VAL=Calculating.TP.1(data, data$VAL.mean, 'VAL', 'Val', Percent.C3[1,3]),
-                  ASP=Calculating.TP.1(data, data$GLU.mean, 'ASP', 'Asp', Percent.C3[1,3]),
+                  ASP=Calculating.TP.1(data, data$ASP.mean, 'ASP', 'Asp', Percent.C3[1,3]),
+                 PRO=Calculating.TP.1(data, data$PRO.mean, 'PRO', 'Pro', Percent.C3[1,3]),
                   ALA=Calculating.TP.2(data, data$ALA.mean, 'ALA', 'Ala', Percent.C3[1,4]),
                   GLU=Calculating.TP.2(data, data$GLU.mean, 'GLU', 'Glu',  Percent.C3[1,4]),
                   VAL=Calculating.TP.2(data, data$VAL.mean, 'VAL', 'Val', Percent.C3[1,4]),
-                  ASP=Calculating.TP.2(data, data$GLU.mean, 'ASP', 'Asp', Percent.C3[1,4]),
+                  ASP=Calculating.TP.2(data, data$ASP.mean, 'ASP', 'Asp', Percent.C3[1,4]),
+                 PRO=Calculating.TP.2(data, data$PRO.mean, 'PRO', 'Pro', Percent.C3[1,4]),
                   ALA=Calculating.TP.2(data, data$ALA.mean, 'ALA', 'Ala', Percent.C3[1,3]),
                   GLU=Calculating.TP.2(data, data$GLU.mean, 'GLU', 'Glu',  Percent.C3[1,3]),
                   VAL=Calculating.TP.2(data, data$VAL.mean, 'VAL', 'Val', Percent.C3[1,3]),
-                  ASP=Calculating.TP.2(data, data$GLU.mean, 'ASP', 'Asp', Percent.C3[1,3]),
+                  ASP=Calculating.TP.2(data, data$ASP.mean, 'ASP', 'Asp', Percent.C3[1,3]),
+                 PRO=Calculating.TP.2(data, data$PRO.mean, 'PRO', 'Pro', Percent.C3[1,3]),
                   ALA=Calculating.TP.3(data, data$ALA.mean, 'ALA', 'Ala', Percent.C3[1,4]),
                   GLU=Calculating.TP.3(data, data$GLU.mean, 'GLU', 'Glu',  Percent.C3[1,4]),
                   VAL=Calculating.TP.3(data, data$VAL.mean, 'VAL', 'Val', Percent.C3[1,4]),
-                  ASP=Calculating.TP.3(data, data$GLU.mean, 'ASP', 'Asp', Percent.C3[1,4]),
+                  ASP=Calculating.TP.3(data, data$ASP.mean, 'ASP', 'Asp', Percent.C3[1,4]),
+                 PRO=Calculating.TP.3(data, data$PRO.mean, 'PRO', 'Pro', Percent.C3[1,4]),
                   ALA=Calculating.TP.3(data, data$ALA.mean, 'ALA', 'Ala', Percent.C3[1,3]),
                   GLU=Calculating.TP.3(data, data$GLU.mean, 'GLU', 'Glu',  Percent.C3[1,3]),
                   VAL=Calculating.TP.3(data, data$VAL.mean, 'VAL', 'Val', Percent.C3[1,3]),
-                  ASP=Calculating.TP.3(data, data$GLU.mean, 'ASP', 'Asp', Percent.C3[1,3]),
+                  ASP=Calculating.TP.3(data, data$ASP.mean, 'ASP', 'Asp', Percent.C3[1,3]),
+                 PRO=Calculating.TP.3(data, data$PRO.mean, 'PRO', 'Pro', Percent.C3[1,3]),
                   ALA=Calculating.TP.4(data, data$ALA.mean, 'ALA', 'Ala', Percent.C3[1,4]),
                   GLU=Calculating.TP.4(data, data$GLU.mean, 'GLU', 'Glu',  Percent.C3[1,4]),
                   VAL=Calculating.TP.4(data, data$VAL.mean, 'VAL', 'Val', Percent.C3[1,4]),
                   ASP=Calculating.TP.4(data, data$GLU.mean, 'ASP', 'Asp', Percent.C3[1,4]),
+                 PRO=Calculating.TP.4(data, data$GLU.mean, 'PRO', 'Pro', Percent.C3[1,4]),
                   ALA=Calculating.TP.4(data, data$ALA.mean, 'ALA', 'Ala', Percent.C3[1,3]),
                   GLU=Calculating.TP.4(data, data$GLU.mean, 'GLU', 'Glu',  Percent.C3[1,3]),
                   VAL=Calculating.TP.4(data, data$VAL.mean, 'VAL', 'Val', Percent.C3[1,3]),
-                  ASP=Calculating.TP.4(data, data$GLU.mean, 'ASP', 'Asp', Percent.C3[1,3]))
+                  ASP=Calculating.TP.4(data, data$ASP.mean, 'ASP', 'Asp', Percent.C3[1,3]),
+                PRO=Calculating.TP.4(data, data$PRO.mean, 'PRO', 'Pro', Percent.C3[1,3]
+                                                            
+                                       )
+                )
 
-colnames(TP)<- c("TP.ALA1", "TP.GLU1", "TP.VAL1", "TP.ASP1","TP.ALA1.beta", "TP.GLU1.beta", "TP.VAL1.beta", "TP.ASP1.beta",
-                   "TP.ALA2", "TP.GLU2", "TP.VAL2", "TP.ASP2","TP.ALA2.beta", "TP.GLU2.beta", "TP.VAL2.beta", "TP.ASP2.beta",
-                   "TP.ALA3", "TP.GLU3", "TP.VAL3", "TP.ASP3","TP.ALA3.beta", "TP.GLU3.beta", "TP.VAL3.beta", "TP.ASP3.beta",
-                   "TP.ALA4", "TP.GLU4", "TP.VAL4", "TP.ASP4","TP.ALA4.beta", "TP.GLU4.beta", "TP.VAL4.beta", "TP.ASP4.beta")
+colnames(TP)<- c("TP.ALA1", "TP.GLU1", "TP.VAL1", "TP.ASP1","TP.PRO1","TP.ALA1.beta", "TP.GLU1.beta", "TP.VAL1.beta", "TP.ASP1.beta","TP.PRO1.beta",
+                   "TP.ALA2", "TP.GLU2", "TP.VAL2", "TP.ASP2","TP.PRO2","TP.ALA2.beta", "TP.GLU2.beta", "TP.VAL2.beta", "TP.ASP2.beta","TP.PRO2.beta",
+                   "TP.ALA3", "TP.GLU3", "TP.VAL3", "TP.ASP3","TP.PRO3","TP.ALA3.beta", "TP.GLU3.beta", "TP.VAL3.beta", "TP.ASP3.beta","TP.PRO3.beta",
+                   "TP.ALA4", "TP.GLU4", "TP.VAL4", "TP.ASP4","TP.PRO4","TP.ALA4.beta", "TP.GLU4.beta", "TP.VAL4.beta", "TP.ASP4.beta","TP.PRO4.beta")
+
 
 ########################    TP Plots variable TEF parameterization                      ############################
 color<- rep(c('black','#CCA65A','#7EBA68','#00C1B2','#6FB1E7'), each=4)
 par(mfrow=c(1,1),mar=c(3,3,4,2))
 cex=0.85
 pdf(file="Results/Figures/TEF.pdf", width=5, height=5)
-par(mfrow=c(2,2),mar=c(3,3,4,2))
-plot(density(na.omit(TP$TP.ALA1)), xlim=c(1,7), ylim=c(0,2),xlab='',col='#7EBA68', lwd=2,lty=1, bty='n',cex.main=0.85,
+par(mfrow=c(2,2),mar=c(4,3,4,2))
+plot(density(na.omit(TP$TP.ALA1)), xlim=c(1,7), ylim=c(0,2),xlab='Trophic Position',col='#7EBA68', cex.lab=0.75,lwd=2,lty=3, bty='n',cex.main=0.85,
      main=expression(paste("1. ",frac(paste(paste(delta^15, "N"['Tr'])," - ",paste(delta^15, "N"['Phe']), " - ", beta['Aq']),
                                       "TDF"['Average'])," + 1")))
 polygon(density(na.omit(TP$TP.ALA1)),col=alpha('#7EBA68',0.25),border='#7EBA68', lwd=2, lty=3)
 polygon(density(na.omit(TP$TP.GLU1)),col=alpha('#CCA65A',0.25),border='#CCA65A', lwd=2, lty=1)
 polygon(density(na.omit(TP$TP.ASP1)),col=alpha('#00C1B2',0.25),border='#00C1B2',lwd=2,lty=2)
 polygon(density(na.omit(TP$TP.VAL1)),col=alpha('#6FB1E7',0.25),border='#6FB1E7', lwd=2, lty=4)
+polygon(density(na.omit(TP$TP.PRO1)),col=alpha('#D494E1',0.25),border='#D494E1', lwd=2, lty=6)
 polygon(x=c(3.5,5,5,3.5), y=c(0,0,2,2), col=alpha('grey',0.2), border='grey')
 par(xpd=TRUE)
-legend(4.85, 2,legend=c("Alanine", "Glutamic Acid", "Valine", "Aspartic Acid", "Ecologically", "Realistic"),
-       col=c('#7EBA68', '#CCA65A','#00C1B2', "#6FB1E7","grey",""),lty=c(3,1,2,4,1,0),  cex=0.7, bty='n')
+legend(4.85, 2,legend=c("Alanine", "Glutamic Acid", "Valine", "Aspartic Acid", "Proline","Ecologically", "Realistic"),
+       col=c('#7EBA68', '#CCA65A','#00C1B2', "#6FB1E7",'#D494E1',"grey",""),lty=c(3,1,2,4,5,1,0),  cex=0.7, bty='n')
 par(xpd=FALSE)
-sum(na.omit(TP[,1:4]) > 3.5 & na.omit(TP[,1:4]) < 5)/sum(na.omit(TP[,1:4]) > 0 & na.omit(TP[,1:4]) < 8)
-text(4.25,1.85,labels="0.19",cex=cex)
+sum(na.omit(TP[,1:5]) > 3.5 & na.omit(TP[,1:5]) < 5)/sum(na.omit(TP[,1:5]) > 0 & na.omit(TP[,1:5]) < 8)
+text(4.25,1.85,labels="0.15",cex=cex)
 
 
-plot(density(na.omit(TP$TP.ALA2)), xlim=c(1,7), ylim=c(0,2),col='#7EBA68', lty=3, lwd=2, bty='n', xlab='',cex.main=0.85,
+plot(density(na.omit(TP$TP.ALA2)), xlim=c(1,7), ylim=c(0,2),col='#7EBA68', lty=3, lwd=2, cex.lab=0.75,bty='n', xlab='Trophic Position',cex.main=0.85,
      main=expression(paste("2. ",frac(paste(paste(delta^15, "N"['Tr'])," - ",paste(delta^15, "N"['Phe'])," - ", "TDF"['HS'], " - ", beta['Aq']),
                                       "TDF"['Average'])," + 2")))
 polygon(density(na.omit(TP$TP.ALA2)),col=alpha('#7EBA68',0.25),border='#7EBA68', lwd=2, lty=3)
 polygon(density(na.omit(TP$TP.GLU2)),col=alpha('#CCA65A',0.25),border='#CCA65A', lwd=2, lty=1)
 polygon(density(na.omit(TP$TP.ASP2)),col=alpha('#00C1B2',0.25),border='#00C1B2',lwd=2,lty=2)
 polygon(density(na.omit(TP$TP.VAL2)),col=alpha('#6FB1E7',0.25),border='#6FB1E7', lwd=2, lty=4)
+polygon(density(na.omit(TP$TP.PRO2)),col=alpha('#D494E1',0.25),border='#D494E1', lwd=2, lty=6)
+
 polygon(x=c(3.5,5,5,3.5), y=c(0,0,2,2), col=alpha('grey',0.15), border='grey')
-sum(na.omit(TP[,9:12]) > 3.5 & na.omit(TP[,9:12]) < 5)/sum(na.omit(TP[,9:12]) > 0 & na.omit(TP[,9:12]) < 8)
-text(4.25,1.85,labels="0.29",cex=cex)
+sum(na.omit(TP[,11:15]) > 3.5 & na.omit(TP[,11:15]) < 5)/sum(na.omit(TP[,11:15]) > 0 & na.omit(TP[,11:15]) < 8)
+text(4.25,1.85,labels="0.22",cex=cex)
 
 
-plot(density(na.omit(TP$TP.ALA3)), xlim=c(1,7), ylim=c(0,2),col='#7EBA68', lwd=2, lty=3, bty='n', xlab='',cex.main=0.85,
+plot(density(na.omit(TP$TP.ALA3)), xlim=c(1,7), ylim=c(0,2),col='#7EBA68', lwd=2, lty=3,cex.lab=0.75, bty='n', xlab='Trophic Position',cex.main=0.85,
      main=expression(paste("3. ",frac(paste(paste(delta^15, "N"['Tr'])," - ",paste(delta^15, "N"['Phe'])," - ", "TDF"['Phy'], " - ", beta['Aq']),
                                       "TDF"['Average'])," + 2")))
 polygon(density(na.omit(TP$TP.ALA3)),col=alpha('#7EBA68',0.25),border='#7EBA68', lwd=2, lty=3)
 polygon(density(na.omit(TP$TP.GLU3)),col=alpha('#CCA65A',0.25),border='#CCA65A', lwd=2, lty=1)
 polygon(density(na.omit(TP$TP.ASP3)),col=alpha('#00C1B2',0.25),border='#00C1B2',lwd=2,lty=2)
 polygon(density(na.omit(TP$TP.VAL3)),col=alpha('#6FB1E7',0.25),border='#6FB1E7', lwd=2, lty=4)
+polygon(density(na.omit(TP$TP.PRO3)),col=alpha('#D494E1',0.25),border='#D494E1', lwd=2, lty=6)
+
 polygon(x=c(3.5,5,5,3.5), y=c(0,0,2,2), col=alpha('grey',0.15), border='grey')
-sum(na.omit(TP[,17:20]) > 3.5 & na.omit(TP[,17:20]) < 5)/sum(na.omit(TP[,17:20]) > 0 & na.omit(TP[,17:20]) < 8)
+sum(na.omit(TP[,21:25]) > 3.5 & na.omit(TP[,21:25]) < 5)/sum(na.omit(TP[,21:25]) > 0 & na.omit(TP[,21:25]) < 8)
 text(4.25,1.85,labels="0.66",cex=cex)
 
 
-plot(density(na.omit(TP$TP.ALA4)), xlim=c(1,7), ylim=c(0,2),col='#7EBA68',lty=3, lwd=2, bty='n', xlab='',cex.main=0.85,
+plot(density(na.omit(TP$TP.ALA4)), xlim=c(1,7), ylim=c(0,2),col='#7EBA68',lty=3, lwd=2, cex.lab=0.75,bty='n', xlab='Trophic Position',cex.main=0.85,
      main=expression(paste("4. ",frac(paste(paste(delta^15, "N"['Tr'])," - ",paste(delta^15, "N"['Phe'])," - ", "TDF"['Phy'], " - ", "TDF"['HS']," - ", beta['Aq']),
                                       "TDF"['Average'])," + 3")))
 polygon(density(na.omit(TP$TP.ALA4)),col=alpha('#7EBA68',0.25),border='#7EBA68', lwd=2, lty=3)
 polygon(density(na.omit(TP$TP.GLU4)),col=alpha('#CCA65A',0.25),border='#CCA65A', lwd=2, lty=1)
 polygon(density(na.omit(TP$TP.ASP4)),col=alpha('#00C1B2',0.25),border='#00C1B2',lwd=2,lty=2)
 polygon(density(na.omit(TP$TP.VAL4)),col=alpha('#6FB1E7',0.25),border='#6FB1E7', lwd=2, lty=4)
+polygon(density(na.omit(TP$TP.PRO4)),col=alpha('#D494E1',0.25),border='#D494E1', lwd=2, lty=6)
+
 polygon(x=c(3.5,5,5,3.5), y=c(0,0,2,2), col=alpha('grey',0.15), border='grey')
-sum(na.omit(TP[,25:28]) > 3.5 & na.omit(TP[,25:28]) < 5)/sum(na.omit(TP[,25:28]) > 0 & na.omit(TP[,25:28]) < 8)
-text(4.25,1.85,labels="0.27",cex=cex)
+sum(na.omit(TP[,31:35]) > 3.5 & na.omit(TP[,31:35]) < 5)/sum(na.omit(TP[,31:35]) > 0 & na.omit(TP[,31:35]) < 8)
+text(4.25,1.85,labels="0.28",cex=cex)
 
 dev.off()
 
 ########################    TP Plots variable TEF and Beta parameterization                    ############################
-par(mfrow=c(1,1),mar=c(3,3,4,2))
-pdf(file="Results/Figures/TEF.beta.pdf", width=5, height=7.5)
-par(mfrow=c(3,2),mar=c(3,3,4,2))
-plot(density(na.omit(TP$TP.ALA1.beta)), xlim=c(1,7), ylim=c(0,2),xlab='',col='#7EBA68', lwd=2,lty=1, bty='n',cex.main=0.85,
+par(mfrow=c(1,1),mar=c(4,3,4,2))
+pdf(file="Results/Figures/TEF.beta.pdf", width=5, height=5)
+par(mfrow=c(2,2),mar=c(4,3,4,2))
+plot(density(na.omit(TP$TP.ALA1.beta)), xlim=c(1,7), ylim=c(0,2),xlab='Trophic Position',col='#7EBA68',cex.lab=0.75, lwd=2,lty=3, bty='n',cex.main=0.85,
      main=expression(paste("1. ",frac(paste(paste(delta^15, "N"['Tr'])," - ",paste(delta^15, "N"['Phe']), " - ", beta['W']),
                                       "TDF"['Average'])," + 1")))
+
 polygon(density(na.omit(TP$TP.ALA1.beta)),col=alpha('#7EBA68',0.25),border='#7EBA68', lwd=2, lty=3)
 polygon(density(na.omit(TP$TP.GLU1.beta)),col=alpha('#CCA65A',0.25),border='#CCA65A', lwd=2, lty=1)
 polygon(density(na.omit(TP$TP.ASP1.beta)),col=alpha('#00C1B2',0.25),border='#00C1B2',lwd=2,lty=2)
 polygon(density(na.omit(TP$TP.VAL1.beta)),col=alpha('#6FB1E7',0.25),border='#6FB1E7', lwd=2, lty=4)
+polygon(density(na.omit(TP$TP.PRO1.beta)),col=alpha('#D494E1',0.25),border='#D494E1', lwd=2, lty=6)
+
 polygon(x=c(3.5,5,5,3.5), y=c(0,0,2,2), col=alpha('grey',0.2), border='grey')
 par(xpd=TRUE)
-legend(4.85, 2,legend=c("Alanine", "Glutamic Acid", "Valine", "Aspartic Acid", "Ecologically", "Realistic"),
-       col=c('#7EBA68', '#CCA65A','#00C1B2', "#6FB1E7","grey", ""),lty=c(3,1,2,4,1, 0),  cex=0.7, bty='n')
+legend(4.85, 2,legend=c("Alanine", "Glutamic Acid", "Valine", "Aspartic Acid", "Proline","Ecologically", "Realistic"),
+       col=c('#7EBA68', '#CCA65A','#00C1B2', "#6FB1E7",'#D494E1',"grey",""),lty=c(3,1,2,4,5,1,0),  cex=0.7, bty='n')
 par(xpd=FALSE)
-sum(na.omit(TP[,5:8]) > 3.5 & na.omit(TP[,5:8]) < 5)/sum(na.omit(TP[,5:8]) > 0 & na.omit(TP[,5:8]) < 8)
-text(4.25,1.85,labels="0.63",cex=cex)
+sum(na.omit(TP[,6:10]) > 3.5 & na.omit(TP[,6:10]) < 5)/sum(na.omit(TP[,6:10]) > 0 & na.omit(TP[,6:10]) < 8)
+text(4.25,1.85,labels="0.65",cex=cex)
 
 
-plot(density(na.omit(TP$TP.ALA2.beta)), xlim=c(1,7), ylim=c(0,2),col='#7EBA68', lty=3, lwd=2, bty='n', xlab='',cex.main=0.85,
+plot(density(na.omit(TP$TP.ALA2.beta)), xlim=c(1,7), ylim=c(0,2),col='#7EBA68', cex.lab=0.75,lty=3, lwd=2, bty='n', xlab='Trophic Position',cex.main=0.85,
      main=expression(paste("2. ",frac(paste(paste(delta^15, "N"['Tr'])," - ",paste(delta^15, "N"['Phe'])," - ", "TDF"['HS'], " - ", beta['W']),
                                       "TDF"['Average'])," + 2")))
 polygon(density(na.omit(TP$TP.ALA2.beta)),col=alpha('#7EBA68',0.25),border='#7EBA68', lwd=2, lty=3)
 polygon(density(na.omit(TP$TP.GLU2.beta)),col=alpha('#CCA65A',0.25),border='#CCA65A', lwd=2, lty=1)
 polygon(density(na.omit(TP$TP.ASP2.beta)),col=alpha('#00C1B2',0.25),border='#00C1B2',lwd=2,lty=2)
 polygon(density(na.omit(TP$TP.VAL2.beta)),col=alpha('#6FB1E7',0.25),border='#6FB1E7', lwd=2, lty=4)
+polygon(density(na.omit(TP$TP.PRO2.beta)),col=alpha('#D494E1',0.25),border='#D494E1', lwd=2, lty=6)
+
 polygon(x=c(3.5,5,5,3.5), y=c(0,0,2,2), col=alpha('grey',0.15), border='grey')
-sum(na.omit(TP[,13:16]) > 3.5 & na.omit(TP[,13:16]) < 5)/sum(na.omit(TP[,13:16]) > 0 & na.omit(TP[,13:16]) < 8)
-text(4.25,1.85,labels="0.71",cex=cex)
+
+sum(na.omit(TP[,16:20]) > 3.5 & na.omit(TP[,16:20]) < 5)/sum(na.omit(TP[,16:20]) > 0 & na.omit(TP[,16:20]) < 8)
+text(4.25,1.85,labels="0.76",cex=cex)
 
 
 
-
-plot(density(na.omit(TP$TP.ALA3.beta)), xlim=c(1,7), ylim=c(0,2),col='#7EBA68', lwd=2, lty=3, bty='n', xlab='',cex.main=0.85,
+plot(density(na.omit(TP$TP.ALA3.beta)), xlim=c(1,7), ylim=c(0,2),col='#7EBA68', lwd=2, lty=3, bty='n', cex.lab=0.75,xlab='Trophic Position',cex.main=0.85,
      main=expression(paste("3. ",frac(paste(paste(delta^15, "N"['Tr'])," - ",paste(delta^15, "N"['Phe'])," - ", "TDF"['Phy'], " - ", beta['W']),
                                       "TDF"['Average'])," + 2")))
 polygon(density(na.omit(TP$TP.ALA3.beta)),col=alpha('#7EBA68',0.25),border='#7EBA68', lwd=2, lty=3)
 polygon(density(na.omit(TP$TP.GLU3.beta)),col=alpha('#CCA65A',0.25),border='#CCA65A', lwd=2, lty=1)
 polygon(density(na.omit(TP$TP.ASP3.beta)),col=alpha('#00C1B2',0.25),border='#00C1B2',lwd=2,lty=2)
 polygon(density(na.omit(TP$TP.VAL3.beta)),col=alpha('#6FB1E7',0.25),border='#6FB1E7', lwd=2, lty=4)
+polygon(density(na.omit(TP$TP.PRO3.beta)),col=alpha('#D494E1',0.25),border='#D494E1', lwd=2, lty=6)
+
 polygon(x=c(3.5,5,5,3.5), y=c(0,0,2,2), col=alpha('grey',0.15), border='grey')
-sum(na.omit(TP[,21:24]) > 3.5 & na.omit(TP[,21:24]) < 5)/sum(na.omit(TP[,21:24]) > 0 & na.omit(TP[,21:24]) < 8)
-text(4.25,1.85,labels="0.54",cex=cex)
+sum(na.omit(TP[,26:30]) > 3.5 & na.omit(TP[,26:30]) < 5)/sum(na.omit(TP[,26:30]) > 0 & na.omit(TP[,26:30]) < 8)
+text(4.25,1.85,labels="0.48",cex=cex)
 
 
 
-plot(density(na.omit(TP$TP.ALA4.beta)), xlim=c(1,7), ylim=c(0,2),col='#7EBA68',lty=3, lwd=2, bty='n', xlab='',cex.main=0.85,
+plot(density(na.omit(TP$TP.ALA4.beta)), xlim=c(1,7), ylim=c(0,2),col='#7EBA68',lty=3, lwd=2, bty='n',cex.lab=0.75, xlab='Trophic Position',cex.main=0.85,
      main=expression(paste("4. ",frac(paste(paste(delta^15, "N"['Tr'])," - ",paste(delta^15, "N"['Phe'])," - ", "TDF"['Phy'], " - ", "TDF"['HS']," - ", beta['W']),
                                       "TDF"['Average'])," + 3")))
 polygon(density(na.omit(TP$TP.ALA4.beta)),col=alpha('#7EBA68',0.25),border='#7EBA68', lwd=2, lty=3)
 polygon(density(na.omit(TP$TP.GLU4.beta)),col=alpha('#CCA65A',0.25),border='#CCA65A', lwd=2, lty=1)
 polygon(density(na.omit(TP$TP.ASP4.beta)),col=alpha('#00C1B2',0.25),border='#00C1B2',lwd=2,lty=2)
 polygon(density(na.omit(TP$TP.VAL4.beta)),col=alpha('#6FB1E7',0.25),border='#6FB1E7', lwd=2, lty=4)
+polygon(density(na.omit(TP$TP.PRO4.beta)),col=alpha('#D494E1',0.25),border='#D494E1', lwd=2, lty=6)
+
 polygon(x=c(3.5,5,5,3.5), y=c(0,0,2,2), col=alpha('grey',0.15), border='grey')
-sum(na.omit(TP[,29:32]) > 3.5 & na.omit(TP[,29:32]) < 5)/sum(na.omit(TP[,29:32]) > 0 & na.omit(TP[,29:32]) < 8)
-text(4.25,1.85,labels="0.75",cex=cex)
+sum(na.omit(TP[,36:40]) > 3.5 & na.omit(TP[,36:40]) < 5)/sum(na.omit(TP[,36:40]) > 0 & na.omit(TP[,36:40]) < 8)
+text(4.25,1.85,labels="0.80",cex=cex)
 
-
+dev.off()
 
 ########################     PLOT IND BETA                      ############################
 
+pdf(file="Results/Figures/TEF.betaIND.pdf", width=5, height=5)
+par(mfrow=c(2,2),mar=c(4,3,4,2))
 
-plot(density(na.omit(TP.4IND$TP.ALA2)), xlim=c(1,7), ylim=c(0,2),col='#7EBA68',lty=3, lwd=2, bty='n', xlab='',cex.main=0.85,
+plot(density(na.omit(TP.4IND$TP.ALA2)), xlim=c(1,7), ylim=c(0,2),col='#7EBA68',lty=3, lwd=2, bty='n',cex.lab=0.75, xlab='Trophic Position',cex.main=0.85,
      main=expression(paste("5.2 ",frac(paste(paste(delta^15, "N"['Tr'])," - ",paste(delta^15, "N"['Phe'])," - ",  "TDF"['HS']," - ", beta['Ind']),
                                        "TDF"['Average'])," + 2")))
 polygon(density(na.omit(TP.4IND$TP.ALA2)),col=alpha('#7EBA68',0.25),border='#7EBA68', lwd=2, lty=3)
 polygon(density(na.omit(TP.4IND$TP.GLU2)),col=alpha('#CCA65A',0.25),border='#CCA65A', lwd=2, lty=1)
 polygon(density(na.omit(TP.4IND$TP.ASP2)),col=alpha('#00C1B2',0.25),border='#00C1B2',lwd=2,lty=2)
 polygon(density(na.omit(TP.4IND$TP.VAL2)),col=alpha('#6FB1E7',0.25),border='#6FB1E7', lwd=2, lty=4)
+polygon(density(na.omit(TP.4IND$TP.PRO2)),col=alpha('#D494E1',0.25),border='#D494E1', lwd=2, lty=6)
+
 polygon(x=c(3.5,5,5,3.5), y=c(0,0,2,2), col=alpha('grey',0.15), border='grey')
-sum(na.omit(TP.4IND) > 3.5 & na.omit(TP.4IND) < 5)/sum(na.omit(TP.4IND) > 0 & na.omit(TP.4IND) < 8)
-text(4.25,1.85,labels="0.69",cex=cex)
+par(xpd=TRUE)
+legend(4.85, 2,legend=c("Alanine", "Glutamic Acid", "Valine", "Aspartic Acid", "Proline","Ecologically", "Realistic"),
+       col=c('#7EBA68', '#CCA65A','#00C1B2', "#6FB1E7",'#D494E1',"grey",""),lty=c(3,1,2,4,5,1,0),  cex=0.7, bty='n')
+par(xpd=FALSE)
+sum(na.omit(TP.4IND[6:10]) > 3.5 & na.omit(TP.4IND[6:10]) < 5)/sum(na.omit(TP.4IND[6:10]) > 0 & na.omit(TP.4IND[6:10]) < 8)
+text(4.25,1.85,labels="0.57",cex=cex)
 
 
-plot(density(na.omit(TP.4IND$TP.ALA)), xlim=c(1,7), ylim=c(0,2),col='#7EBA68',lty=3, lwd=2, bty='n', xlab='',cex.main=0.85,
-     main=expression(paste("5.4 ",frac(paste(paste(delta^15, "N"['Tr'])," - ",paste(delta^15, "N"['Phe'])," - ", "TDF"['Phy'], " - ", "TDF"['HS']," - ", beta['Ind']),
-                                      "TDF"['Average'])," + 3")))
+plot(density(na.omit(TP.4IND$TP.ALA)), xlim=c(1,7), ylim=c(0,2),col='#7EBA68',lty=3, lwd=2, cex.lab=0.75,bty='n', xlab='Trophic Position',cex.main=0.85,
+     main=expression(paste("5.2 ",frac(paste(paste(delta^15, "N"['Tr'])," - ",paste(delta^15, "N"['Phe'])," - ",  "TDF"['HS']," - ", beta['Ind']),
+                                       "TDF"['Average'])," + 2")))
 polygon(density(na.omit(TP.4IND$TP.ALA)),col=alpha('#7EBA68',0.25),border='#7EBA68', lwd=2, lty=3)
 polygon(density(na.omit(TP.4IND$TP.GLU)),col=alpha('#CCA65A',0.25),border='#CCA65A', lwd=2, lty=1)
 polygon(density(na.omit(TP.4IND$TP.ASP)),col=alpha('#00C1B2',0.25),border='#00C1B2',lwd=2,lty=2)
 polygon(density(na.omit(TP.4IND$TP.VAL)),col=alpha('#6FB1E7',0.25),border='#6FB1E7', lwd=2, lty=4)
 polygon(x=c(3.5,5,5,3.5), y=c(0,0,2,2), col=alpha('grey',0.15), border='grey')
-sum(na.omit(TP.4IND) > 3.5 & na.omit(TP.4IND) < 5)/sum(na.omit(TP.4IND) > 0 & na.omit(TP.4IND) < 8)
-text(4.25,1.85,labels="0.61",cex=cex)
+polygon(density(na.omit(TP.4IND$TP.PRO)),col=alpha('#D494E1',0.25),border='#D494E1', lwd=2, lty=6)
+
+sum(na.omit(TP.4IND[1:5]) > 3.5 & na.omit(TP.4IND[1:5]) < 5)/sum(na.omit(TP.4IND[1:5]) > 0 & na.omit(TP.4IND[1:5]) < 8)
+text(4.25,1.85,labels="0.70",cex=cex)
+
+
+plot(density(na.omit(TP.LOC$TP.ALA2.L)), xlim=c(1,7), ylim=c(0,2),col='#7EBA68',lty=3, lwd=2,cex.lab=0.75, bty='n', xlab='Trophic Position',cex.main=0.85,
+     main=expression(paste("5.2 ",frac(paste(paste(delta^15, "N"['Tr'])," - ",paste(delta^15, "N"['Phe'])," - ",  "TDF"['HS']," - ", beta['Loc']),
+                                       "TDF"['Average'])," + 2")))
+polygon(density(na.omit(TP.LOC$TP.ALA2.L)),col=alpha('#7EBA68',0.25),border='#7EBA68', lwd=2, lty=3)
+polygon(density(na.omit(TP.LOC$TP.GLU2.L)),col=alpha('#CCA65A',0.25),border='#CCA65A', lwd=2, lty=1)
+polygon(density(na.omit(TP.LOC$TP.ASP2.L)),col=alpha('#00C1B2',0.25),border='#00C1B2',lwd=2,lty=2)
+polygon(density(na.omit(TP.LOC$TP.VAL2.L)),col=alpha('#6FB1E7',0.25),border='#6FB1E7', lwd=2, lty=4)
+polygon(density(na.omit(TP.LOC$TP.PRO2.L)),col=alpha('#D494E1',0.25),border='#D494E1', lwd=2, lty=6)
+
+polygon(x=c(3.5,5,5,3.5), y=c(0,0,2,2), col=alpha('grey',0.15), border='grey')
+sum(na.omit(TP.LOC[6:10]) > 3.5 & na.omit(TP.LOC[6:10]) < 5)/sum(na.omit(TP.LOC[6:10]) > 0 & na.omit(TP.LOC[6:10]) < 8)
+text(4.25,1.85,labels="0.40",cex=cex)
+
+
+plot(density(na.omit(TP.LOC$TP.ALA4.L)), xlim=c(1,7), ylim=c(0,2),col='#7EBA68',lty=3, lwd=2,cex.lab=0.75, bty='n', xlab='Trophic Position',cex.main=0.85,
+     main=expression(paste("5.4 ",frac(paste(paste(delta^15, "N"['Tr'])," - ",paste(delta^15, "N"['Phe'])," - ", "TDF"['Phy'], " - ", "TDF"['HS']," - ", beta['Loc']),
+                                       "TDF"['Average'])," + 3")), cex.main=0.75)
+polygon(density(na.omit(TP.LOC$TP.ALA4.L)),col=alpha('#7EBA68',0.25),border='#7EBA68', lwd=2, lty=3)
+polygon(density(na.omit(TP.LOC$TP.GLU4.L)),col=alpha('#CCA65A',0.25),border='#CCA65A', lwd=2, lty=1)
+polygon(density(na.omit(TP.LOC$TP.ASP4.L)),col=alpha('#00C1B2',0.25),border='#00C1B2',lwd=2,lty=2)
+polygon(density(na.omit(TP.LOC$TP.VAL4.L)),col=alpha('#6FB1E7',0.25),border='#6FB1E7', lwd=2, lty=4)
+polygon(density(na.omit(TP.LOC$TP.PRO4.L)),col=alpha('#D494E1',0.25),border='#D494E1', lwd=2, lty=6)
+polygon(x=c(3.5,5,5,3.5), y=c(0,0,2,2), col=alpha('grey',0.15), border='grey')
+sum(na.omit(TP.LOC[1:5]) > 3.5 & na.omit(TP.LOC[1:5]) < 5)/sum(na.omit(TP.LOC[1:5]) > 0 & na.omit(TP.LOC[1:5]) < 8)
+text(4.25,1.85,labels="0.52",cex=cex)
+
 
 dev.off()
 ########################     Summary Statistics                      ############################
@@ -533,94 +633,129 @@ length <- plot(b) +  l_points(shape = 19, size = 2.5, alpha = 0.2)+ l_fitLine(li
 summary(fit.2)
 ########################     Creating Hierarchical Dataset subset selection       ############################
 
+x<-0
+b<-1
+e<-1
+Function.eq <- function(dataframe,dat, b, e, x){
+                X1<- cbind(dat[,c("years","Location.2", "Sample.ID", "PHE.mean","d13C", "d13C.s", "d15N","Sex", "Length")],dataframe[1+x], 
+                      AA=rep("ALA",length(dataframe[1])), eq=rep(e, length(dataframe[1])), beta=rep(b, length(dataframe[1])))
+                colnames(X1)<- c("years","Location.2", "Sample.ID", "PHE.mean","d13C", "d13C.s", "d15N","Sex",  "Length", "TP", "AA", "eq", "beta")
+                
+               X2<- cbind(dat[,c("years","Location.2", "Sample.ID", "PHE.mean","d13C", "d13C.s", "d15N","Sex", "Length")],dataframe[2+x], 
+                      AA=rep("GLU",length(dataframe[1])), eq=rep(e, length(dataframe[1])), beta=rep(b, length(dataframe[1])))
+               colnames(X2)<- c("years","Location.2", "Sample.ID", "PHE.mean","d13C", "d13C.s", "d15N","Sex",  "Length", "TP", "AA", "eq", "beta")
+               
+               X3<- cbind(dat[,c("years","Location.2", "Sample.ID","PHE.mean", "d13C", "d13C.s", "d15N","Sex", "Length")],dataframe[3+x], 
+                      AA=rep("VAL",length(dataframe[1])), eq=rep(e, length(dataframe[1])), beta=rep(b, length(dataframe[1])))
+               colnames(X3)<- c("years","Location.2", "Sample.ID","PHE.mean", "d13C", "d13C.s", "d15N","Sex",  "Length", "TP", "AA", "eq", "beta")
+               
+               X4<-  cbind(dat[,c("years","Location.2", "Sample.ID", "PHE.mean","d13C", "d13C.s", "d15N","Sex", "Length")],dataframe[4+x], 
+                      AA=rep("ASP",length(dataframe[1])), eq=rep(e, length(dataframe[1])), beta=rep(b, length(dataframe[1])))
+               colnames(X4)<- c("years","Location.2", "Sample.ID", "PHE.mean","d13C", "d13C.s", "d15N","Sex",  "Length", "TP", "AA", "eq", "beta")
+               
+               X5<-  cbind(dat[,c("years","Location.2", "Sample.ID", "PHE.mean","d13C", "d13C.s", "d15N","Sex", "Length")],dataframe[5+x], 
+                           AA=rep("PRO",length(dataframe[1])), eq=rep(e, length(dataframe[1])), beta=rep(b, length(dataframe[1])))
+               colnames(X5)<- c("years","Location.2", "Sample.ID", "PHE.mean","d13C", "d13C.s", "d15N","Sex",  "Length", "TP", "AA", "eq", "beta")
+               
+               output<- rbind(X1, X2, X3, X4, X5)
+  return(output)
+}
 
-#data2<-cbind(data[,c("years","Location.2", "Sample.ID", "Sex", "Length")],TP.GLU=TP$TP.GLU1.beta,
- #            TP.ALA=TP$TP.ALA1.beta,TP.ASP=TP$TP.ASP1.beta,TP.VAL=TP$TP.VAL1.beta)
-
-#data2<-cbind(data[,c("years","Location.2", "Sample.ID", "Sex", "Length")],TP.GLU=TP$TP.GLU2.beta,
-#             TP.ALA=TP$TP.ALA2.beta,TP.ASP=TP$TP.ASP2.beta,TP.VAL=TP$TP.VAL2.beta)
-
-#data2<-cbind(data[,c("years","Location.2", "Sample.ID", "Sex", "Length")],TP.GLU=TP$TP.GLU3.beta,
- #            TP.ALA=TP$TP.ALA3.beta,TP.ASP=TP$TP.ASP3.beta,TP.VAL=TP$TP.VAL3.beta)
 
 
-#data2<-cbind(data[,c("years","Location.2", "Sample.ID", "Sex", "Length")],TP.GLU=TP$TP.GLU4.beta,
-#             TP.ALA=TP$TP.ALA4.beta,TP.ASP=TP$TP.ASP4.beta,TP.VAL=TP$TP.VAL4.beta)
+data.hier<- rbind(Function.eq(TP,data, 0, 1, 0),
+Function.eq(TP,data,1, 1, 5),
+Function.eq(TP,data,0, 2, 10),
+Function.eq(TP,data,1, 2, 15),
+Function.eq(TP,data,0, 3, 20),
+Function.eq(TP,data,1, 3, 25),
+Function.eq(TP,data,0, 4, 30),
+Function.eq(TP,data,1, 4, 35),
 
-#data2<-cbind(data[,c("years","Location.2", "Sample.ID", "Sex", "Length")],TP.GLU=TP$TP.GLU4,
-#             TP.ALA=TP$TP.ALA4,TP.ASP=TP$TP.ASP4,TP.VAL=TP$TP.VAL4)
+Function.eq(TP.LOC,data,4, 4,0),
+Function.eq(TP.LOC,data,4, 2,5))
 
-#data2<-cbind(data[,c("years","Location.2", "Sample.ID", "Sex", "Length")],TP.GLU=TP$TP.GLU3,
-#             TP.ALA=TP$TP.ALA3,TP.ASP=TP$TP.ASP3,TP.VAL=TP$TP.VAL3)
 
-#data2<-cbind(data[,c("years","Location.2", "Sample.ID", "Sex", "Length")],TP.GLU=TP$TP.GLU2,
-#             TP.ALA=TP$TP.ALA2,TP.ASP=TP$TP.ASP2,TP.VAL=TP$TP.VAL2)
+Function.eq2 <- function(dataframe,dat, b, e, x){
+  X1<- cbind(dat[,c("years","Location.2", "Sample.ID", "PHE.mean","d13C", "d13C.s", "d15N")],dataframe[1+x], 
+             AA=rep("ALA",length(dataframe[1])), eq=rep(e, length(dataframe[1])), beta=rep(b, length(dataframe[1])))
+  colnames(X1)<- c("years","Location.2", "Sample.ID", "PHE.mean","d13C", "d13C.s", "d15N", "TP", "AA", "eq", "beta")
+  
+  X2<- cbind(dat[,c("years","Location.2", "Sample.ID", "PHE.mean","d13C", "d13C.s", "d15N")],dataframe[2+x], 
+             AA=rep("GLU",length(dataframe[1])), eq=rep(e, length(dataframe[1])), beta=rep(b, length(dataframe[1])))
+  colnames(X2)<- c("years","Location.2", "Sample.ID", "PHE.mean","d13C", "d13C.s", "d15N", "TP", "AA", "eq", "beta")
+  
+  X3<- cbind(dat[,c("years","Location.2", "Sample.ID","PHE.mean", "d13C", "d13C.s", "d15N")],dataframe[3+x], 
+             AA=rep("VAL",length(dataframe[1])), eq=rep(e, length(dataframe[1])), beta=rep(b, length(dataframe[1])))
+  colnames(X3)<- c("years","Location.2", "Sample.ID","PHE.mean", "d13C", "d13C.s", "d15N", "TP", "AA", "eq", "beta")
+  
+  X4<-  cbind(dat[,c("years","Location.2", "Sample.ID", "PHE.mean","d13C", "d13C.s", "d15N")],dataframe[4+x], 
+              AA=rep("ASP",length(dataframe[1])), eq=rep(e, length(dataframe[1])), beta=rep(b, length(dataframe[1])))
+  colnames(X4)<- c("years","Location.2", "Sample.ID", "PHE.mean","d13C", "d13C.s", "d15N", "TP", "AA", "eq", "beta")
+  
+  X5<-  cbind(dat[,c("years","Location.2", "Sample.ID", "PHE.mean","d13C", "d13C.s", "d15N")],dataframe[5+x], 
+              AA=rep("PRO",length(dataframe[1])), eq=rep(e, length(dataframe[1])), beta=rep(b, length(dataframe[1])))
+  colnames(X4)<- c("years","Location.2", "Sample.ID", "PHE.mean","d13C", "d13C.s", "d15N", "TP", "AA", "eq", "beta")
+  output<- rbind(X1, X2, X3, X4,X5)
+  return(output)
+}
+data.hier2<- rbind(Function.eq2(TP.4IND,data2,3, 4, 0),
+Function.eq2(TP.4IND,data2,3, 2, 5),
+Function.eq2(TP.4IND,data2,4, 4,10),
+Function.eq2(TP.4IND,data2,4, 2,15))
 
-data2<-cbind(data[,c("years","Location.2", "Sample.ID", "Sex", "Length")],TP.GLU=TP$TP.GLU1,
-             TP.ALA=TP$TP.ALA1,TP.ASP=TP$TP.ASP1,TP.VAL=TP$TP.VAL1)
+
+
+
 
 ########################     Creating Hierarchical Dataset       ############################
-transform_to_log_scale <- function(x){
-  if(x!=0){
-    y <- (sign(x)) * (log(abs(x)))
-  } else {
-    y <-0
-  }
-  y 
-}
 
-transform_to_log <- function(x){
-  
-  y <- (sign(x)) * (log(abs(x)))
-  y 
-}
-
-
-data.hGLU = data2[,c("years","Location.2","TP.GLU", "Sample.ID", "Sex", "Length")]
-#data.hGLU =cbind(data.hGLU, AA=rep('Glu',length(data.hGLU$TP.GLU)), TP.norm=data.hGLU$TP.GLU-mean(na.omit(data.hGLU$TP.GLU)))
-data.hGLU =cbind(data.hGLU, AA=rep('Glu',length(data.hGLU$TP.GLU)), TP.norm=((data.hGLU$TP.GLU)-mean(na.omit(data.hGLU$TP.GLU)))/sd(na.omit(data.hGLU$TP.GLU)))
-data.hGLU =dplyr::rename(data.hGLU, TP = TP.GLU)
-
-data.hASP = data2[,c("years","Location.2","TP.ASP", "Sample.ID","Sex", "Length")]
-#data.hASP =cbind(data.hASP, AA=rep('Asp',length(data.hASP$TP.ASP)), TP.norm=data.hASP$TP.ASP-mean(na.omit(data.hASP$TP.ASP)))
-data.hASP =cbind(data.hASP, AA=rep('ASP',length(data.hASP$TP.ASP)), TP.norm=((data.hASP$TP.ASP)-mean(na.omit(data.hASP$TP.ASP)))/sd(na.omit(data.hASP$TP.ASP)))
-data.hASP =dplyr::rename(data.hASP, TP = TP.ASP)
-
-data.hVAL = data2[,c("years","Location.2","TP.VAL", "Sample.ID", "Sex", "Length")]
-#data.hVAL =cbind(data.hVAL, AA=rep('Val',length(data.hVAL$TP.VAL)), TP.norm=data.hVAL$TP.VAL-mean(na.omit(data.hVAL$TP.VAL)))
-data.hVAL =cbind(data.hVAL, AA=rep('VAL',length(data.hVAL$TP.VAL)), TP.norm=((data.hVAL$TP.VAL)-mean(na.omit(data.hVAL$TP.VAL)))/sd(na.omit(data.hVAL$TP.VAL)))
-data.hVAL =dplyr::rename(data.hVAL, TP = TP.VAL)
-
-data.hALA = data2[,c("years","Location.2","TP.ALA", "Sample.ID","Sex", "Length")]
-#data.hALA =cbind(data.hALA, AA=rep('Ala',length(data.hALA$TP.ALA)), TP.norm=data.hALA$TP.ALA-mean(na.omit(data.hALA$TP.ALA)))
-data.hALA =cbind(data.hALA, AA=rep('ALA',length(data.hALA$TP.ALA)), TP.norm=((data.hALA$TP.ALA)-mean(na.omit(data.hALA$TP.ALA)))/sd(na.omit(data.hALA$TP.ALA)))
-data.hALA =dplyr::rename(data.hALA, TP = TP.ALA)
-
-data.hPHE = data[,c("years","PHE.mean", "Sample.ID","Sex", "Length")]
-#data.hPHE =cbind(data.hPHE,PHE.norm=data.hPHE$PHE.mean-mean(na.omit(data.hPHE$PHE.mean)))
-data.hPHE =cbind(data.hPHE,PHE.norm=(data.hPHE$PHE.mean-mean(na.omit(data.hPHE$PHE.mean)))/sd(na.omit(data.hPHE$PHE.mean)))
-
-
-data.d13C = data[,c("years","d13C.s", "Sample.ID","Sex", "Length")]
-#data.d13C =cbind(data.d13C,d13C.norm=data.d13C$d13C.s-mean(na.omit(data.d13C$d13C.s)))
-data.d13C =cbind(data.d13C,d13C.norm=(data.d13C$d13C.s-mean(na.omit(data.d13C$d13C.s)))/sd(na.omit(data.d13C$d13C.s)))
-
-
-
-data.hier <- rbind(data.hGLU, data.hPRO)
-data.hier <- rbind(data.hier, data.hVAL)
-data.hier <- rbind(data.hier, data.hALA)
-data.hier<- subset(data.hier, Location.2=="Coastal"|Location.2=="Inland")
-lag <- 1
-data.hier <-cbind(Year=data.hier$years+lag, data.hier)
-total3 <- left_join(data.hier, data.d13C, by="Sample.ID")
-total3 <- left_join(total3,data.hPHE, by="Sample.ID")
+lag <- 2
+data4 <-cbind(Year=data.hier$years+lag, data.hier)
+#total3 <- left_join(data4, data.d13C, by="Sample.ID")
+#total3 <- left_join(total3,data.hPHE, by="Sample.ID")
+#total3 <- left_join(total3,data.hd15N, by="Sample.ID")
 
 prey <- read.csv("Data/Compiled/WA.Prey.tot.csv")
 Env <- read.csv("Data/Compiled/Washington.Environmental.Standardized.csv")
-total1 <- left_join(total3, Env, by="Year")
+total1 <- left_join(data4, Env, by="Year")
 total2 <- left_join(total1, prey, by="Year")
 
-write.csv(total2, 'Data/Compiled/HierarchicalFiles/HierarchicalData_1.csv')
+write.csv(total2, 'Data/Compiled/HierarchicalData2lag.csv')
+
+
+
+
+lag <- 2
+data3 <-cbind(Year=data.hier2$years+lag, data.hier2)
+#total3 <- left_join(data3, data.d13C, by="Sample.ID")
+#total3 <- left_join(total3,data.hPHE, by="Sample.ID")
+#total3 <- left_join(total3,data.hd15N, by="Sample.ID")
+
+prey <- read.csv("Data/Compiled/WA.Prey.tot.csv")
+Env <- read.csv("Data/Compiled/Washington.Environmental.Standardized.csv")
+total1 <- left_join(data3, Env, by="Year")
+total2 <- left_join(total1, prey, by="Year")
+
+write.csv(total2, 'Data/Compiled/HierarchicalData2.csv')
+
+
+########################     Creating Hierarchical Dataset       ############################
+
+data6<-  cbind(data[,c("years","Location.2", "Sample.ID", "Sex", "Length", "d13C.s",
+                       "d13C", "d15N", "PHE.mean", "GLU.mean", "VAL.mean", "PRO.mean",
+                        "ASP.mean")],TP)
+              
+
+
+lag <- 2
+data6 <-cbind(Year=data6$years+lag, data6)
+
+prey <- read.csv("Data/Compiled/WA.Prey.tot.csv")
+Env <- read.csv("Data/Compiled/Washington.Environmental.Standardized.csv")
+total1 <- left_join(data6, Env, by="Year")
+total2 <- left_join(total1, prey, by="Year")
+
+write.csv(total2, 'Data/Compiled/DataFull.csv')
 
 
