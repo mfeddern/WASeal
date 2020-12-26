@@ -37,8 +37,12 @@ palette()
 col<-c('#7EBA68', '#CCA65A','#00C1B2', "#6FB1E7",'#D494E1')
 
 dataTS.ss$Year <- as.numeric(dataTS.ss$Year)
-SS.TS <- ggplot(dataTS.ss, aes(x =na.omit(Year), y = na.omit(TP))) + 
-  stat_smooth(method = "gam", formula = TP~s(Year), data=dataTS.ss,aes(color = AA2)) +
+gam.ss<- gam(TP~s(Year, k=5, by=AA), data=dataTS.ss)
+ss.p<- predict_gam(gam.ss)
+
+SS.TS <- ggplot(dataTS.ss, aes(x=Year, y= TP, color=col)) + 
+  #stat_smooth(aes(color = AA2), method='loess', formula=y~x)+
+  stat_smooth(method = "gam", formula = y ~ s(x, k = 6), aes(color = AA2))+
   geom_point(aes(color = AA2, alpha=0.5), pch=16, size=2.5) +
   facet_grid(AA2~.,labeller = labeller(dataTS.ss$AA2))+
   ylim(1, 6)+
@@ -61,7 +65,8 @@ dataTS.c$AA2<- factor(dataTS.c$AA2,  levels = c("b. Glutamic Acid","a. Alanine",
 palette(c('#7EBA68', '#CCA65A','#00C1B2', "#6FB1E7",'#D494E1'))
 palette()
 Coastal.TS<-ggplot(dataTS.c, aes(x = Year, y = TP, color=col)) + 
-  stat_smooth(fullrange=TRUE,aes(color = AA2)) +
+  stat_smooth(method = "gam", formula = y ~ s(x, k = 6), aes(color = AA2))+
+  
   geom_point(aes(color = AA2, alpha=0.5), pch=16, size=2.5) +
   facet_grid(AA2~.,labeller = labeller(dataTS.c$AA2))+
   ylim(1, 6)+
@@ -206,7 +211,7 @@ Length <-data %>% select(TP,
                          eq)
 
 
-
+Length<- subset(Length, Location.2=="Inland"|Location.2=="Coastal")
 
 
 Length.c <- Length%>% filter(Location.2 == "Coastal")
@@ -218,20 +223,19 @@ Length.c$AA<- factor(Length.c$AA, levels = c("ALA","GLU",
 summary(lm(TP~AA*Length, data=Length.c))
 fit.c<-lm(TP~AA*Length, data=Length.c)
 
-Coastal.Length <- qplot(Length, TP, data=Length.c, colour=AA)+
-  ggtitle("A. Coastal")+
+Coastal.Length <- ggplot(data=Length.c,aes(x=Length, y=TP, color=col))+
+  ggtitle("B. Coastal")+
   theme_bw()+
   labs(y="Trophic Position", x="Standard Length (cm)")+
   geom_point(aes(color = AA, alpha=0.5), pch=16, size=2.5) +
   #geom_smooth(method="lm", aes(color = AA, alpha=0.5))+
-  geom_line(data = fortify(fit.c), aes(x = Length, y = .fitted))+
+  stat_smooth(method = "gam", formula = y ~ s(x, k = 3), aes(color = AA))+
+  #geom_line(data = fortify(fit.c), aes(x = Length, y = .fitted))+
   scale_colour_manual(name = "AA",values = col)+
   facet_grid(AA~.,labeller = labeller(Length.c$AA))+
-  theme(plot.title = element_text(hjust = 0.5),strip.background =element_blank(),
-        strip.text.y = element_blank(),
-        panel.border = element_blank(), panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"
-        ))+
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), 
+        plot.title = element_text(hjust = 0.5))+
   guides(colour=FALSE, alpha=FALSE)
 Coastal.Length 
 
@@ -244,24 +248,25 @@ Length.ss$AA<- factor(Length.ss$AA, levels = c("ALA","GLU",
 summary(lm(TP~AA*Length, data=Length.ss))
 fit.ss<-lm(TP~AA*Length, data=Length.ss)
 
-SalishSea.Length <- qplot(Length, TP, data=Length.ss, colour=AA)+
-  ggtitle("B. Salish Sea")+
+SalishSea.Length <- ggplot(data=Length.ss,aes(x=Length, y=TP, color=col))+
+  ggtitle("A. Salish Sea")+
   theme_bw()+
-  labs(y="", x="Standard Length (cm)")+
+  labs(y="Trophic Position", x="Standard Length (cm)")+
   geom_point(aes(color = AA, alpha=0.5), pch=16, size=2.5) +
   #geom_smooth(method="lm", aes(color = AA, alpha=0.5))+
-  geom_line(data = fortify(fit.ss), aes(x = Length, y = .fitted))+
+  stat_smooth(method = "gam", formula = y ~ s(x, k = 3), aes(color = AA))+
+  #geom_line(data = fortify(fit.c), aes(x = Length, y = .fitted))+
   scale_colour_manual(name = "AA",values = col)+
-  facet_grid(AA~.,labeller = labeller(Length.ss$AA))+
-  theme(plot.title = element_text(hjust = 0.5), strip.background =element_blank(),
-        panel.border = element_blank(), 
-        panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-        axis.line = element_line(colour = "black"
+  facet_grid(AA~.,labeller = labeller(Length.c$AA))+
+  theme(plot.title = element_text(hjust = 0.5),strip.background =element_blank(),
+        strip.text.y = element_blank(),
+        panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"
         ))+
   guides(colour=FALSE, alpha=FALSE)
 SalishSea.Length 
 
-pdf(file="Results/Figures/Lengthplot.pdf", width=8, height=4)
+pdf(file="Results/Figures/Lengthplot.pdf", width=8, height=6)
 ggarrange(Coastal.Length, SalishSea.Length, rremove("x.text"), 
           #labels = c("A", "B", "C", "D", "E", "F"),
           ncol = 2, nrow = 1, align= 'hv')
@@ -269,11 +274,29 @@ ggarrange(Coastal.Length, SalishSea.Length, rremove("x.text"),
 dev.off()
 
 
+length.mod<-lmer(TP~Length+Location.2+(1|AA), data=subset(Length, Location.2=="Coastal"|Location.2=="Inland"))
+Len
+summary(lmer(TP~Length+Location.2+(1|AA), data=subset(Length, Location.2=="Coastal"|Location.2=="Inland")))
+mean(subset(Length.c, Length >=150 & Length<=180 &AA=="Glutamic Acid")$TP)#4.65
+mean(subset(Length.c,  Length<=120 &AA=="Glutamic Acid")$TP)#4.21
+mean(subset(Length.c, Length >=150 & Length<=180 )$TP)#4.21
+mean(subset(Length.c,  Length<=120 )$TP)#4.53
 
 
+new.DATA.low <- data.frame(
+  TP=Length$TP,
+  Length = rep(120, length(Length$TP)), 
+  Location.2=rep('Coastal', length(Length$TP)),  AA=Length$AA
+)
+pred.low <-data.frame(predict(length.mod, new.DATA.low, random.only=TRUE, interval = "confidence"))
 
 
-
+new.DATA.high <- data.frame(
+  TP=dataFull$TP,
+  Col.Dis.high = dataFull$Col.Dis.high,
+  allSmolt = rep(max(dataFull$allSmolt), 300), allSmolt=dataFull$allSmolt,
+  Location.2=dataFull$Location.2, Col.Dis.high=dataFull$Col.Dis.high, AA=dataFull$AA
+)
 
 
 ############### Source AA verse TP AAs #################
