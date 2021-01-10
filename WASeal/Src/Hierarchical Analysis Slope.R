@@ -3,7 +3,7 @@ rm(list = ls())
 library(lme4)
 library(AICcmodavg)
 
-dataALL <-  read.csv("Data/Compiled/HierarchicalData.csv")
+dataALL <-  read.csv("Data/Compiled/HierarchicalData2.csv")
 data<-subset(subset(dataALL, Location.2=="Inland"|Location.2=="Coastal"), beta==1& eq==2)
 data$TP
 subset(dataALL, AA=="GLU")
@@ -12,8 +12,6 @@ subset(dataALL, AA=="GLU")
 ########################    Hier Clim2 Models       ############################
 
 dataCLIM <- subset(data, AA=="VAL"|AA=="GLU"|AA=="ALA"|AA=="PRO")
-#dataCLIM <- subset(data, Year>=1960&Year<=2008)# & AA=="Glu"|AA=="PRO"|AA=="ALA")
-
 dataCLIM <-dataCLIM %>% select(MEI, 
                                PDO,
                                NPGO,
@@ -88,7 +86,9 @@ ModelSelection.CLIM<- function(dataframe,n, y) {
                       AICc(lmer(y~Col.Dis.high+WA.SST.Su+Location.2+(1+Location.2|AA), data=dataframe)),#33
                       AICc(lmer(y~Col.Dis.high+UpInAn.45.Summer+Location.2+(1+Location.2|AA), data=dataframe)),#34
                       AICc(lmer(y~WA.SST.Su+UpInAn.45.Summer+Location.2+(1+Location.2|AA), data=dataframe)),#35
-                      AICc(lmer(y~WA.SST.Su+UpInAn.45.Summer+Col.Dis.high+Location.2+(1+Location.2|AA), data=dataframe))#36
+                      AICc(lmer(y~WA.SST.Su+UpInAn.45.Summer+Col.Dis.high+Location.2+(1+Location.2|AA), data=dataframe)),
+                     AICc(lmer(y~MEI*Location.2+(1+Location.2|AA), data=dataframe))#36
+                     #36
                       
                       
                       
@@ -111,7 +111,8 @@ ModelSelection.CLIM<- function(dataframe,n, y) {
                    "2.Col.Dis.high,  PDO, Upwelling (Sp)", "4.Col.Dis.high,  NPGO, Upwelling (Sp)",
                    "6. Col.Dis.high, MEI, Upwelling (Sp)",
                    
-                   "Col.Dis.high, WA.SST.Su", " Col.Dis.high UpInAn.45.Summer", "WA.SST.Su, UpInAn.45.Summer", "WA.SST.Su, UpInAn.45.Summer, Col.Dis.high")
+                   "Col.Dis.high, WA.SST.Su", " Col.Dis.high UpInAn.45.Summer", "WA.SST.Su, UpInAn.45.Summer", "WA.SST.Su, UpInAn.45.Summer, Col.Dis.high",
+                  "PDO INT")
   
   row.names(aic.output) <- model.names
   delaic <- aic.output-min(aic.output)
@@ -147,6 +148,7 @@ dataPrey <-data2 %>% select(allSmolt,
                             Coho,
                             Chum,
                             TP,
+                            MEI,
                             Year,
                             Sample.ID,
                             Location.2,
@@ -258,16 +260,18 @@ model.selection.PREY <- function(dataframe,n, y) {
 
 
 
-model.selectionPREY <- model.selection.PREY(dataPrey, n, dataPrey$TP)
+model.selectionPREY <- model.selection.PREY2(dataPrey, n, dataPrey$TP)
 length(model.selectionPREY[,1])
 model.selectionPREY
 x<-data.frame(model.selectionPREY)
-subset(x, delAICc<=5)
-PREY<-lmer(TP~allSmolt+(1+Location.2|AA), data=dataPrey)
+subset(x, delAICc<=2)
+PREY<-lmer(TP~allSmolt+Chinook+(1+Location.2|AA), data=dataPrey)
 summary(PREY)
 vif(PREY)
 subset(dataPrey, AA=="GLU")
 
+summary(lmer(TP~allSmolt*MEI+(1+Location.2|AA), data=dataPrey))
+AICc(lmer(TP~MEI+(1+Location.2|AA), data=dataPrey))
 
 ########################     Plots#######################
 library(dotwhisker)

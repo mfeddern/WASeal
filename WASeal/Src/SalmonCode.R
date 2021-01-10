@@ -11,7 +11,7 @@ require(mgcv)
 library(qpcR)
 
 ############### Importing Datasets#########################
-rm(list = ls())
+#rm(list = ls())
 lag <- 1
 
 herring <- read.csv("Data/Compiled/Prey/herring.tot.csv")
@@ -38,16 +38,16 @@ transform_to_log_scale <- function(x){
   }
   y 
 }
-herring.norm <- cbind(Year=herring$yr, Total=transform_to_log_scale(herring$value-mean(herring$value)))
-chinook.norm <- cbind(Year=chinook$Year, Total=transform_to_log_scale(chinook$Count-mean(chinook$Count)))
-chum.norm <- cbind(Year=chum$Year, Total=transform_to_log_scale(chum$Count-mean(chum$Count)))
-coho.norm <- cbind(Year=coho$yr, Total=transform_to_log_scale(coho$value-mean(coho$value)))
-seal.norm <- cbind(Year=seal[,2], Total=transform_to_log_scale(seal[,3]-mean(seal[,3])))
-hatch.norm <- cbind(Year=hatch$Year, Total=transform_to_log_scale(hatch$Smolts-mean(na.omit(hatch$Smolts))))
-hake.norm <- cbind(Year=hake[,1], Total=transform_to_log_scale(hake[,4]-mean(na.omit(hake[,4]))))
-eulachon.norm <- cbind(Year=eulachon[,1], Total=transform_to_log_scale(eulachon[,2]-mean(na.omit(eulachon[,2]))))
-wildproduction.norm <- cbind(Year=wildproduction[,1], Total=transform_to_log_scale(wildproduction[,2]-mean(na.omit(wildproduction[,2]))))
-allsmolt.norm <- cbind(Year=allsmolt[,1], Total=transform_to_log_scale(allsmolt[,2]-mean(na.omit(allsmolt[,2]))))
+herring.norm <- cbind(Year=herring$yr, Total=transform_to_log_scale(herring$value))
+chinook.norm <- cbind(Year=chinook$Year, Total=transform_to_log_scale(chinook$Count))
+chum.norm <- cbind(Year=chum$Year, Total=transform_to_log_scale(chum$Count))
+coho.norm <- cbind(Year=coho$yr, Total=transform_to_log_scale(coho$value))
+seal.norm <- cbind(Year=seal[,2], Total=transform_to_log_scale(seal[,3]))
+hatch.norm <- cbind(Year=hatch$Year, Total=transform_to_log_scale(hatch$Smolts))
+hake.norm <- cbind(Year=hake[,1], Total=transform_to_log_scale(hake[,4]))
+eulachon.norm <- cbind(Year=eulachon[,1], Total=transform_to_log_scale(eulachon[,2]))
+wildproduction.norm <- cbind(Year=wildproduction[,1], Total=transform_to_log_scale(wildproduction[,2]))
+allsmolt.norm <- cbind(Year=allsmolt[,1], Total=transform_to_log_scale(allsmolt[,2]))
 
 herring.norm2 <- cbind(Year=herring$yr, Total=(herring$value-mean(herring$value))/sd(herring$value))
 chinook.norm2 <- cbind(Year=chinook$Year, Total=(chinook$Count-mean(chinook$Count))/sd(chinook$Count))
@@ -62,8 +62,8 @@ allsmolt.norm2 <- cbind(Year=allsmolt[,1], Total=(allsmolt[,2]-mean(allsmolt[,2]
 
 
 
-data.merge <- list(herring.norm, chinook.norm, chum.norm, coho.norm, seal.norm,
-                   hatch.norm, hake.norm, eulachon.norm, wildproduction.norm, allsmolt.norm)
+data.merge <- list(herring.norm2, chinook.norm2, chum.norm2, coho.norm2, seal.norm2,
+                   hatch.norm2, hake.norm2, eulachon.norm2, wildproduction.norm2, allsmolt.norm2)
 Wa.Prey <- Reduce(function(x,y) merge(x,y, by='Year', all.x=TRUE), data.merge)
 colnames(Wa.Prey)<- c("Year","Herring.Biomass", "Chinook", "Chum", "Coho", "HarborSeal",
                       "HatcherySmolts", "HakeBiomass","EulachonLandings", "WildProduction", "allSmolt")

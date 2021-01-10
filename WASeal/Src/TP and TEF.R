@@ -127,17 +127,9 @@ fit.TP <- gam(TP.GLU~s(Year)+Location.2, data=Location)
 AIC(gam(TP.GLU~s(Year), data=Location)) # 82.81808 gam with a smooth term to year, two level factors with a plus after year
 AIC(gam(TP.GLU~s(Year, by=Location.2), data=Location)) #82.85721 gam with a smooth term to year, two level factors with a plus after year
 
-########################     Time sereis to check seasonality and size       ############################
+########################     Time sereis to check size       ############################
 
-pdf(file="Results/Figures/MonthAnalysis.TPMean.pdf", width=6, height=5)
-fit.1 <- gam(TP.ger~s(Month, bs="cc", k=12), data=data2)
-b <- getViz(fit.1)
-phe.m <- plot(b) +  l_points(shape = 19, size = 2.5, alpha = 0.2)+ l_fitLine(linetype = 3) +
-  ggtitle(expression(paste(delta^15, "Trophic Position")))+
-  l_ciLine(colour = 'red') + theme_classic() + labs(title = NULL)
-print(phe.m, pages = 1)
 
-dev.off()
 
 palette(c('black','#6FB1E7','#D494E1','#CCA65A','#7EBA68','#00C1B2'))
 
@@ -232,6 +224,13 @@ total1 <- left_join(total3, Env, by="Year")
 total2 <- left_join(total1, prey, by="Year")
 
 write.csv(total2, 'Data/Compiled/HierarchicalData3.csv')
+
+########################     checking seasonality      ############################
+data2 <- read.csv("Data/Compiled/WASealAAandTP2.csv")
+data3 <- read.csv("Data/Compiled/SI Data.csv")
+data4 <- left_join(data2, data3, by = "Sample.ID")
+
+
 
 ########################     basic GAMS      ############################
 

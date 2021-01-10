@@ -13,6 +13,72 @@ library(ggpubr)
 
 data <- read.csv("Data/Compiled/HierarchicalData.csv")
 data<-subset(data, beta==1& eq==2)
+
+############### Seasonality #################
+data2 <- read.csv("Data/Compiled/WASealAAandTP2.csv")
+data4 <- left_join(data, data2, by = "Sample.ID")
+
+dataSeas <-data4 %>% select(
+  TP,
+  Location.2.x,
+  AA,
+  Year,
+  Month)%>%
+  mutate(AA2 =recode(AA,'GLU' = "a. Glutamic Acid",'ALA'="b. Alanine",
+                     'ASP'="d. Aspartic Acid", 'VAL'="c. Valine", "PRO"="e. Proline"))
+
+dataSeas$AA2<- factor(dataSeas$AA2, levels = c("a. Glutamic Acid","b. Alanine",
+                                                 "d. Aspartic Acid", "c. Valine", "e. Proline"),
+                       labels = c("Glutamic Acid","Alanine",
+                                  "Aspartic Acid", "Valine", "Proline")
+)
+
+palette(c('#CCA65A','#7EBA68', '#00C1B2', "#6FB1E7",'#D494E1'))
+palette()
+col<-c('#CCA65A','#7EBA68', '#00C1B2', "#6FB1E7",'#D494E1')
+
+dataSeas <- dataSeas[complete.cases(dataSeas), ]
+
+Seas <- ggplot(dataSeas, aes(x=Month, y= TP, color=col)) + 
+  #stat_smooth(aes(color = AA2), method='loess', formula=y~x)+
+  stat_smooth(method = "gam", formula = y ~ s(x, k = 12), aes(color = AA2))+
+  geom_point(aes(color = AA2, alpha=0.5), pch=16, size=2.5) +
+  facet_grid(AA2~.,labeller = labeller(dataSeas$AA2))+
+  ylim(2, 7)+
+  xlim(1, 12)+
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
+        plot.title = element_text(hjust = 0.5))+
+  scale_colour_manual(values = col)+
+  ylab("Trophic Position")+
+  ggtitle("Seasonality")+
+  guides(colour=FALSE, alpha=FALSE)
+Seas
+
+GLU<-filter(dataSeas, AA == "GLU")
+summary(gam(TP~s(Month, k = 12), data=GLU))
+
+ALA<-filter(dataSeas, AA == "ALA")
+summary(gam(TP~s(Month, k = 12), data=ALA))
+
+ASP<-filter(dataSeas, AA == "ASP")
+summary(gam(TP~s(Month, k = 12), data=ASP))
+
+VAL<-filter(dataSeas, AA == "VAL")
+summary(gam(TP~s(Month, k = 12), data=VAL))
+
+PRO<-filter(dataSeas, AA == "PRO")
+summary(gam(TP~s(Month, k = 12), data=PRO))
+
+pdf(file="Results/Figures/Seasonality.pdf", width=5, height=8)
+Seas
+dev.off()
+
+############### Correlation Matrix #################
+Corr.mat <-cbind(VAL=subset(data, AA=='VAL')$TP, PRO=subset(data, AA=='PRO')$TP,GLU=subset(data, AA=='GLU')$TP,
+ALA=subset(data, AA=='ALA')$TP, ASP=subset(data, AA=='ASP')$TP)
+
+cor(Corr.mat, method = "pearson", use = "complete.obs")
 ############### Time Series #################
 
 
@@ -21,20 +87,20 @@ dataTS <-data %>% select(
   Location.2,
   AA,
   Year)%>%
-  mutate(AA2 =recode(AA,'GLU' = "b. Glutamic Acid",'ALA'="a. Alanine",
+  mutate(AA2 =recode(AA,'GLU' = "a. Glutamic Acid",'ALA'="b. Alanine",
                           'ASP'="d. Aspartic Acid", 'VAL'="c. Valine", "PRO"="e. Proline"))
 
-
+dataTS<-subset(dataTS, Location.2=="Inland"|Location.2=="Coastal")
 dataTS <- dataTS[complete.cases(dataTS), ]
 dataTS.ss<- subset(dataTS, Location.2=="Inland")
-dataTS.ss$AA2<- factor(dataTS.ss$AA2, levels = c("b. Glutamic Acid","a. Alanine",
+dataTS.ss$AA2<- factor(dataTS.ss$AA2, levels = c("a. Glutamic Acid","b. Alanine",
                                                  "d. Aspartic Acid", "c. Valine", "e. Proline"),
                               labels = c("Glutamic Acid","Alanine",
-                                         "Aspartic Acid", "Valine", "Proline")
+                                         "Aspartic Acid", "Valine*", "Proline")
 )
-palette(c('#7EBA68', '#CCA65A','#00C1B2', "#6FB1E7",'#D494E1'))
+palette(c('#CCA65A','#7EBA68', '#00C1B2', "#6FB1E7",'#D494E1'))
 palette()
-col<-c('#7EBA68', '#CCA65A','#00C1B2', "#6FB1E7",'#D494E1')
+col<-c('#CCA65A','#7EBA68', '#00C1B2', "#6FB1E7",'#D494E1')
 
 dataTS.ss$Year <- as.numeric(dataTS.ss$Year)
 gam.ss<- gam(TP~s(Year, k=5, by=AA), data=dataTS.ss)
@@ -42,10 +108,10 @@ ss.p<- predict_gam(gam.ss)
 
 SS.TS <- ggplot(dataTS.ss, aes(x=Year, y= TP, color=col)) + 
   #stat_smooth(aes(color = AA2), method='loess', formula=y~x)+
-  stat_smooth(method = "gam", formula = y ~ s(x, k = 6), aes(color = AA2))+
+  stat_smooth(method = "gam", formula = y ~ s(x, k = 4), aes(color = AA2))+
   geom_point(aes(color = AA2, alpha=0.5), pch=16, size=2.5) +
   facet_grid(AA2~.,labeller = labeller(dataTS.ss$AA2))+
-  ylim(1, 6)+
+  ylim(2, 6)+
   xlim(1925, 2015)+
   theme(panel.border = element_blank(), panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
@@ -57,19 +123,19 @@ SS.TS <- ggplot(dataTS.ss, aes(x=Year, y= TP, color=col)) +
 SS.TS
 
 dataTS.c<- subset(dataTS, Location.2=="Coastal")
-dataTS.c$AA2<- factor(dataTS.c$AA2,  levels = c("b. Glutamic Acid","a. Alanine",
+dataTS.c$AA2<- factor(dataTS.c$AA2,  levels = c("a. Glutamic Acid","b. Alanine",
                                                 "d. Aspartic Acid", "c. Valine", "e. Proline"),
-                      labels = c("Glutamic Acid","Alanine",
-                                 "Aspartic Acid", "Valine", "Proline")
+                      labels = c("Glutamic Acid*","Alanine",
+                                 "Aspartic Acid*", "Valine", "Proline*")
 )
 palette(c('#7EBA68', '#CCA65A','#00C1B2', "#6FB1E7",'#D494E1'))
 palette()
 Coastal.TS<-ggplot(dataTS.c, aes(x = Year, y = TP, color=col)) + 
-  stat_smooth(method = "gam", formula = y ~ s(x, k = 6), aes(color = AA2))+
+  stat_smooth(method = "gam", formula = y ~ s(x, k = 4), aes(color = AA2))+
   
   geom_point(aes(color = AA2, alpha=0.5), pch=16, size=2.5) +
   facet_grid(AA2~.,labeller = labeller(dataTS.c$AA2))+
-  ylim(1, 6)+
+  ylim(2, 6)+
   xlim(1925, 2015)+
   theme(panel.border = element_blank(), panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), 
@@ -80,17 +146,44 @@ Coastal.TS<-ggplot(dataTS.c, aes(x = Year, y = TP, color=col)) +
   guides(colour=FALSE, alpha=FALSE)
 Coastal.TS
 
-pdf(file="Results/Figures/TimeSeries.pdf", width=8, height=5.5)
+pdf(file="Results/Figures/TimeSeries.pdf", width=8, height=8)
 ggarrange(SS.TS, Coastal.TS, 
           #labels = c("A", "B", "C", "D", "E", "F"),
           ncol = 2, nrow = 1, align="h")
 
 dev.off()
 
+summary(gam(TP~s(Year, k=4), data=subset(dataTS.c, AA=="GLU")))#sig
+summary(gam(TP~s(Year, k=4), data=subset(dataTS.c, AA=="ALA")))
+summary(gam(TP~s(Year, k=4), data=subset(dataTS.c, AA=="ASP")))#sig
+summary(gam(TP~s(Year, k=4), data=subset(dataTS.c, AA=="VAL")))
+summary(gam(TP~s(Year, k=4), data=subset(dataTS.c, AA=="PRO")))#sig
+
+summary(gam(TP~s(Year, k=4), data=subset(dataTS.ss, AA=="GLU")))
+summary(gam(TP~s(Year, k=4), data=subset(dataTS.ss, AA=="ALA")))
+summary(gam(TP~s(Year, k=4), data=subset(dataTS.ss, AA=="ASP")))
+summary(gam(TP~s(Year, k=4), data=subset(dataTS.ss, AA=="VAL")))#sig
+summary(gam(TP~s(Year, k=4), data=subset(dataTS.ss, AA=="PRO")))
 
 
+Coastal.TS2<-ggplot(dataTS.c, aes(x = Year, y = TP, color=col)) + 
+  stat_smooth(method = "gam", formula = y ~ s(x, k = 6), aes(color = AA2))+
+  
+  geom_point(aes(color = AA2, alpha=0.5), pch=16, size=2.5) +
+  
+  ylim(1, 6)+
+  xlim(1925, 2015)+
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), 
+        plot.title = element_text(hjust = 0.5))+
+  scale_colour_manual(values = col)+
+  ylab(" ")+
+  ggtitle("B. Coastal")+
+  guides(colour=FALSE, alpha=FALSE)
+Coastal.TS2
 ############### Location By Sex ###########
 Sex<-data
+
 males <- subset(subset(data, Sex=='M'), Location.2=="Inland"|Location.2=="Coastal")
 length(males$Sex)/4 #54
 females <- subset(subset(data, Sex=='F'), Location.2=="Inland"|Location.2=="Coastal")
@@ -136,11 +229,13 @@ summary(lm(TP~Sex, data=all.VAL.c))
 summary(lm(TP~Sex, data=all.GLU.c))
 summary(lm(TP~Sex, data=all.ALA.c))
 summary(lm(TP~Sex, data=all.ASP.c))
+summary(lm(TP~Sex, data=all.PRO.c))
 
 summary(lm(TP~Sex, data=all.VAL.ss))
 summary(lm(TP~Sex, data=all.GLU.ss))
 summary(lm(TP~Sex, data=all.ALA.ss))
 summary(lm(TP~Sex, data=all.ASP.ss))
+summary(lm(TP~Sex, data=all.PRO.ss))
 
 
 n.sex <- length(male.GLU)+length(females.GLU) #102
@@ -208,8 +303,9 @@ Length <-data %>% select(TP,
                          Length,
                          Location.2,
                          beta,
-                         eq)
-
+                         eq)%>%
+                      mutate(AA2 =recode(AA,'GLU' = "a. Glutamic Acid",'ALA'="b. Alanine",
+                     'ASP'="d. Aspartic Acid", 'VAL'="c. Valine", "PRO"="e. Proline"))
 
 Length<- subset(Length, Location.2=="Inland"|Location.2=="Coastal")
 
@@ -266,19 +362,59 @@ SalishSea.Length <- ggplot(data=Length.ss,aes(x=Length, y=TP, color=col))+
   guides(colour=FALSE, alpha=FALSE)
 SalishSea.Length 
 
-pdf(file="Results/Figures/Lengthplot.pdf", width=8, height=6)
-ggarrange(Coastal.Length, SalishSea.Length, rremove("x.text"), 
-          #labels = c("A", "B", "C", "D", "E", "F"),
-          ncol = 2, nrow = 1, align= 'hv')
+Length.full <- Length
 
+Length.full$AA2<- factor(Length.full$AA2, levels = c("a. Glutamic Acid","b. Alanine",
+                                                 "d. Aspartic Acid", "c. Valine", "e. Proline"),
+                       labels = c("Glutamic Acid","Alanine",
+                                  "Aspartic Acid", "Valine*", "Proline")
+)
+summary(lm(TP~AA*Length, data=Length.ss))
+fit.ss<-lm(TP~AA*Length, data=Length.ss)
+
+
+
+Full.Length <- ggplot(data=Length.full,aes(x=Length, y=TP, color=col))+
+  ggtitle("")+
+  theme_bw()+
+  labs(y="Trophic Position", x="Standard Length (cm)")+
+  geom_point(aes(color = AA2, alpha=0.5), pch=16, size=2.5) +
+  #geom_smooth(method="lm", aes(color = AA, alpha=0.5))+
+  stat_smooth(method = "gam", formula = y ~ s(x, k = 3), aes(color = AA2))+
+  #geom_line(data = fortify(fit.c), aes(x = Length, y = .fitted))+
+  scale_colour_manual(name = "AA2",values = col)+
+  ylim(2,6)+
+  facet_grid(AA2~.,labeller = labeller(Length.c$AA2))+
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), 
+        plot.title = element_text(hjust = 0.5))+
+  guides(colour=FALSE, alpha=FALSE)
+Full.Length 
+pdf(file="Results/Figures/Lengthplot.pdf", width=4, height=6)
+Full.Length
 dev.off()
+
+
+summary(gam(TP~s(Length, k=2), data=subset(Length.full, AA=="Glutamic Acid")))
+summary(gam(TP~s(Length, k=4), data=subset(Length.full, AA=="Alanine")))
+summary(gam(TP~s(Length, k=4), data=subset(Length.full, AA=="Aspartic Acid")))
+summary(gam(TP~s(Length, k=4), data=subset(Length.full, AA=="Valine")))
+summary(gam(TP~s(Length, k=4), data=subset(Length.full, AA=="Proline")))#sig
+
+summary(lm(TP~log(Length), data=subset(Length.full, AA=="Glutamic Acid")))
+summary(lm(TP~log(Length), data=subset(Length.full, AA=="Alanine")))
+summary(lm(TP~log(Length), data=subset(Length.full, AA=="Aspartic Acid")))
+summary(lm(TP~log(Length), data=subset(Length.full, AA=="Valine")))
+summary(lm(TP~log(Length), data=subset(Length.full, AA=="Proline")))#sig
+
+
 
 
 length.mod<-lmer(TP~Length+Location.2+(1|AA), data=subset(Length, Location.2=="Coastal"|Location.2=="Inland"))
 Len
 summary(lmer(TP~Length+Location.2+(1|AA), data=subset(Length, Location.2=="Coastal"|Location.2=="Inland")))
-mean(subset(Length.c, Length >=150 & Length<=180 &AA=="Glutamic Acid")$TP)#4.65
-mean(subset(Length.c,  Length<=120 &AA=="Glutamic Acid")$TP)#4.21
+mean(subset(Length.full, Length >=150 & Length<=180 &AA=="Proline")$TP)#4.4
+mean(subset(Length.full,  Length<=120 &AA=="Proline")$TP)#5.0
 mean(subset(Length.c, Length >=150 & Length<=180 )$TP)#4.21
 mean(subset(Length.c,  Length<=120 )$TP)#4.53
 
@@ -297,7 +433,22 @@ new.DATA.high <- data.frame(
   allSmolt = rep(max(dataFull$allSmolt), 300), allSmolt=dataFull$allSmolt,
   Location.2=dataFull$Location.2, Col.Dis.high=dataFull$Col.Dis.high, AA=dataFull$AA
 )
+############### means and ss #################
 
+mean(na.omit(subset(data, AA=="GLU")$TP))
+sd(na.omit(subset(data, AA=="GLU")$TP))
+
+mean(na.omit(subset(data, AA=="ALA")$TP))
+sd(na.omit(subset(data, AA=="ALA")$TP))
+
+mean(na.omit(subset(data, AA=="PRO")$TP))
+sd(na.omit(subset(data, AA=="PRO")$TP))
+
+mean(na.omit(subset(data, AA=="VAL")$TP))
+sd(na.omit(subset(data, AA=="VAL")$TP))
+
+mean(na.omit(subset(data, AA=="ASP")$TP))
+sd(na.omit(subset(data, AA=="ASP")$TP))
 
 ############### Source AA verse TP AAs #################
 data2 <- read.csv("Data/Compiled/DataFull.csv")

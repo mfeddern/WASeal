@@ -1,5 +1,7 @@
 rm(list = ls())
 
+library(devtools)
+install_version("lme4", "1.1-25")
 library(lme4)
 library(AICcmodavg)
 
@@ -19,9 +21,13 @@ dataALL <-  read.csv("Data/Compiled/HierarchicalData4.csv")
 data<-subset(subset(dataALL, Location.2=="Inland"|Location.2=="Coastal"), beta==1& eq==2)
 data.lag4<-data
 
+
+dataALL <-  read.csv("Data/Compiled/HierarchicalData5.csv")
+data<-subset(subset(dataALL, Location.2=="Inland"|Location.2=="Coastal"), beta==1& eq==2)
+data.lag5<-data
 ########################    Hier Clim2 Models       ############################
 
-dataCLIM <- subset(data.lag1, AA=="GLU"|AA=="ALA"|AA=="PRO"|AA=="VAL")
+dataCLIM <- subset(data.lag1, AA=="GLU"|AA=="ALA"|AA=="VAL"|AA=="PRO")
 dataCLIM.1 <-dataCLIM %>% select(MEI, 
                                PDO,
                                NPGO,
@@ -36,8 +42,8 @@ dataCLIM.1 <-dataCLIM %>% select(MEI,
                                Location.2)
 dataCLIM.1 <- dataCLIM.1[complete.cases(dataCLIM.1), ]
 
-dataCLIM <- subset(data.lag2, AA=="GLU"|AA=="ALA"|AA=="PRO"|AA=="VAL")
-dataCLIM.2 <-dataCLIM.2 %>% select(MEI, 
+dataCLIM <- subset(data.lag2, AA=="GLU"|AA=="ALA"|AA=="VAL"|AA=="PRO")
+dataCLIM.2 <-dataCLIM %>% select(MEI, 
                                    PDO,
                                    NPGO,
                                    WA.SST.Su, 
@@ -51,7 +57,7 @@ dataCLIM.2 <-dataCLIM.2 %>% select(MEI,
                                    Location.2)
 dataCLIM.2 <- dataCLIM.2[complete.cases(dataCLIM.2), ]
 
-dataCLIM<- subset(data.lag3, AA=="GLU"|AA=="ALA"|AA=="PRO"|AA=="VAL")
+dataCLIM<- subset(data.lag3, AA=="GLU"|AA=="ALA"|AA=="VAL"|AA=="PRO")
 dataCLIM.3 <-dataCLIM %>% select(MEI, 
                                    PDO,
                                    NPGO,
@@ -66,7 +72,7 @@ dataCLIM.3 <-dataCLIM %>% select(MEI,
                                    Location.2)
 dataCLIM.3 <- dataCLIM.3[complete.cases(dataCLIM.3), ]
 
-dataCLIM<- subset(data.lag4, AA=="GLU"|AA=="ALA"|AA=="PRO"|AA=="VAL")
+dataCLIM<- subset(data.lag4, AA=="GLU"|AA=="ALA"|AA=="PRO"|AA=="VAL"|AA=="PRO")
 dataCLIM.4 <-dataCLIM %>% select(MEI, 
                                  PDO,
                                  NPGO,
@@ -111,43 +117,40 @@ ModelSelection.CLIM<- function(dataframe,n, y) {
                       AICc(lmer(y~WA.SST.Su+UpInAn.45.Spring+NPGO+Location.2+(1|AA), data=dataframe)),#16
                       #AIC(lmer(y~WA.SST.Su+MEI+NPGO+Location.2+(1|AA), data=dataframe)),
                       AICc(lmer(y~WA.SST.Su+MEI+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#17
-                      
                       AICc(lmer(y~Location.2+(1|AA)+UpInAn.45.Summer, data=dataframe)), #18
                       AICc(lmer(y~UpInAn.45.Summer+PDO+Location.2+(1|AA), data=dataframe)),#19
                       AICc(lmer(y~UpInAn.45.Summer+NPGO+Location.2+(1|AA), data=dataframe)),#20
                       AICc(lmer(y~UpInAn.45.Summer+MEI+Location.2+(1|AA), data=dataframe)),#21
-                      AIC(lmer(y~UpInAn.45.Summer+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#22
+                      #AIC(lmer(y~UpInAn.45.Summer+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#22
                       # AIC(lmer(y~UpInAn.45.Summer+PDO+NPGO+Location.2+(1|AA), data=dataframe)),
-                      AICc(lmer(y~UpInAn.45.Summer+PDO+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),
+                      #AICc(lmer(y~UpInAn.45.Summer+PDO+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),
                       #AIC(lmer(y~UpInAn.45.Summer+PDO+MEI+Location.2+(1|AA), data=dataframe)),
-                      AICc(lmer(y~UpInAn.45.Summer+UpInAn.45.Spring+NPGO+Location.2+(1|AA), data=dataframe)),#23
+                      AICc(lmer(y~UpInAn.45.Summer+UpInAn.45.Spring+NPGO+Location.2+(1|AA), data=dataframe)),#22
                       #AIC(lmer(y~UpInAn.45.Summer+MEI+NPGO+Location.2+(1|AA), data=dataframe)),
-                      AICc(lmer(y~UpInAn.45.Summer+MEI+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#24
+                      #AICc(lmer(y~UpInAn.45.Summer+MEI+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#24
                       
-                      AICc(lmer(y~Location.2+(1|AA)+Col.Dis.high, data=dataframe)), #25
-                      AICc(lmer(y~Col.Dis.high+PDO+Location.2+(1|AA), data=dataframe)),#26
-                      AICc(lmer(y~Col.Dis.high+NPGO+Location.2+(1|AA), data=dataframe)),#27
-                      AICc(lmer(y~Col.Dis.high+MEI+Location.2+(1|AA), data=dataframe)),#28
-                      AICc(lmer(y~Col.Dis.high+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#29
+                      AICc(lmer(y~Location.2+(1|AA)+Col.Dis.high, data=dataframe)), #23
+                      AICc(lmer(y~Col.Dis.high+PDO+Location.2+(1|AA), data=dataframe)),#24
+                      AICc(lmer(y~Col.Dis.high+NPGO+Location.2+(1|AA), data=dataframe)),#25
+                      AICc(lmer(y~Col.Dis.high+MEI+Location.2+(1|AA), data=dataframe)),#26
+                      AICc(lmer(y~Col.Dis.high+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#27
                       # AICc(lmer(y~Col.Dis.high+PDO+NPGO+Location.2+(1|AA), data=dataframe)),
-                      AICc(lmer(y~Col.Dis.high+PDO+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#30
+                      AICc(lmer(y~Col.Dis.high+PDO+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#28
                       #AICc(lmer(y~Col.Dis.high+PDO+MEI+Location.2+(1|AA), data=dataframe)),
-                      AICc(lmer(y~Col.Dis.high+UpInAn.45.Spring+NPGO+Location.2+(1|AA), data=dataframe)),#31
+                      AICc(lmer(y~Col.Dis.high+UpInAn.45.Spring+NPGO+Location.2+(1|AA), data=dataframe)),#29
                       # AICc(lmer(y~Col.Dis.high+MEI+NPGO+Location.2+(1|AA), data=dataframe)),
-                      AICc(lmer(y~Col.Dis.high+MEI+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#32
+                      AICc(lmer(y~Col.Dis.high+MEI+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#30
                       
-                      AICc(lmer(y~Col.Dis.high+WA.SST.Su+Location.2+(1|AA), data=dataframe)),#33
-                      AICc(lmer(y~Col.Dis.high+UpInAn.45.Summer+Location.2+(1|AA), data=dataframe)),#34
-                      AICc(lmer(y~WA.SST.Su+UpInAn.45.Summer+Location.2+(1|AA), data=dataframe)),#35
-                      AICc(lmer(y~WA.SST.Su+UpInAn.45.Summer+Col.Dis.high+Location.2+(1|AA), data=dataframe)),
-                      AICc(lmer(y~MEI*Location.2+(1|AA), data=dataframe))#36
-                      #36
+                      AICc(lmer(y~Col.Dis.high+WA.SST.Su+Location.2+(1|AA), data=dataframe)),#31
+                      AICc(lmer(y~Col.Dis.high+UpInAn.45.Summer+Location.2+(1|AA), data=dataframe)),#32
+                      AICc(lmer(y~WA.SST.Su+UpInAn.45.Summer+Location.2+(1|AA), data=dataframe)),#33
+                      AICc(lmer(y~WA.SST.Su+UpInAn.45.Summer+Col.Dis.high+Location.2+(1|AA), data=dataframe))
+
                       
                       
                       
   )
   
-  names <- seq(1,n,1)
   model.names <- c("1. Null","2. Location", "3. PDO", "4. NPGO", "5. MEI", "6. Upwelling (Sp)","NPGO,PDO", "7. PDO, Upwelling (Sp)",  
                    "8. NPGO, Upwelling (Sp)","9. MEI, Upwelling (Sp)",  
                    
@@ -156,16 +159,16 @@ ModelSelection.CLIM<- function(dataframe,n, y) {
                    "16. WA.SST.Su, NPGO, Upwelling (Sp)", "17. WA.SST.Su, MEI, Upwelling (Sp)",
                    
                    "18. UpInAn.45.Summer, Location", "19. UpInAn.45.Summer, PDO", "20. UpInAn.45.Summer, NPGO", 
-                   "21. UpInAn.45.Summer, MEI", "22. UpInAn.45.Summer, Upwelling (Sp)",
-                   "23.UpInAn.45.Summer,  PDO, Upwelling (Sp)",
-                   "24. UpInAn.45.Summer,  NPGO, Upwelling (Sp)", "25. UpInAn.45.Summer, MEI, Upwelling (Sp)",
+                   "21. UpInAn.45.Summer, MEI", #"22. UpInAn.45.Summer, Upwelling (Sp)",
+                   #"23.UpInAn.45.Summer,  PDO, Upwelling (Sp)",
+                   "22. UpInAn.45.Summer,  NPGO, Upwelling (Sp)", #"25. UpInAn.45.Summer, MEI, Upwelling (Sp)",
                    
-                   "Col.Dis.high, Location", "Col.Dis.high, PDO", "Col.Dis.high, NPGO", "Col.Dis.high, MEI", "Upwelling (Sp)",
-                   "2.Col.Dis.high,  PDO, Upwelling (Sp)", "4.Col.Dis.high,  NPGO, Upwelling (Sp)",
-                   "6. Col.Dis.high, MEI, Upwelling (Sp)",
+                   "23. Col.Dis.high, Location", "24. Col.Dis.high, PDO", "25. Col.Dis.high, NPGO", "26. Col.Dis.high, MEI", "27. Upwelling (Sp)",
+                   "28.Col.Dis.high,  PDO, Upwelling (Sp)", "29.Col.Dis.high,  NPGO, Upwelling (Sp)",
+                   "30. Col.Dis.high, MEI, Upwelling (Sp)",
                    
-                   "Col.Dis.high, WA.SST.Su", " Col.Dis.high UpInAn.45.Summer", "WA.SST.Su, UpInAn.45.Summer", "WA.SST.Su, UpInAn.45.Summer, Col.Dis.high",
-                   "PDO INT")
+                   "31. Col.Dis.high, WA.SST.Su", "32. Col.Dis.high UpInAn.45.Summer", 
+                   "33. WA.SST.Su, UpInAn.45.Summer", "34. WA.SST.Su, UpInAn.45.Summer, Col.Dis.high")
   
   row.names(aic.output) <- model.names
   delaic <- aic.output-min(aic.output)
@@ -177,11 +180,14 @@ ModelSelection.CLIM<- function(dataframe,n, y) {
   colnames(aic.output)<- c("AICc", "delAICc", "AICc Weight")
   return(aic.output)
 }
+
 model.selectionCLIM.1 <- ModelSelection.CLIM(dataCLIM.1, n, dataCLIM.1$TP)
 clim.1 <-data.frame(model.selectionCLIM.1)
 subset(clim.1, delAICc<=1.97)
 modelENV.1 <- lmer(TP~Location.2+UpInAn.45.Summer+(1|AA), data=dataCLIM.1)
 summary(modelENV.1)
+modelENV.1 <- lmer(TP~Location.2+UpInAn.45.Summer+(1|AA), data=dataCLIM.1)
+summary(lmer(TP~(1|AA), data=dataCLIM.1))
 
 model.selectionCLIM.2 <- ModelSelection.CLIM(dataCLIM.2, n, dataCLIM.2$TP)
 clim.2 <-data.frame(model.selectionCLIM.2)
@@ -192,7 +198,7 @@ summary(modelENV.2)
 model.selectionCLIM.3 <- ModelSelection.CLIM(dataCLIM.3, n, dataCLIM.3$TP)
 clim.3 <-data.frame(model.selectionCLIM.3)
 subset(clim.3, delAICc<=2)
-modelENV.3 <- lmer(TP~Location.2+UpInAn.45.Summer+UpInAn.45.Spring+(1|AA), data=dataCLIM.3)
+modelENV.3 <- lmer(TP~Location.2+UpInAn.45.Summer+MEI+(1|AA), data=dataCLIM.3)
 summary(modelENV.3)
 
 model.selectionCLIM.4 <- ModelSelection.CLIM(dataCLIM.4, n, dataCLIM.4$TP)
@@ -203,7 +209,7 @@ summary(modelENV.4)
 
 ########################    Hier PREY Models       ############################
 
-dataPrey <- subset(data.lag1, AA=="GLU"|AA=="ALA"|AA=="PRO"|AA=="VAL")
+dataPrey <- subset(data.lag1, AA=="GLU"|AA=="ALA"|AA=="VAL"|AA=="PRO")
 dataPrey.1 <-dataPrey %>% select(allSmolt, 
                             HakeBiomass,
                             Herring.Biomass,
@@ -222,7 +228,7 @@ dataPrey.1 <-dataPrey %>% select(allSmolt,
                             beta)
 dataPrey.1 <- dataPrey.1[complete.cases(dataPrey.1), ]
 
-dataPrey <- subset(data.lag2, AA=="GLU"|AA=="ALA"|AA=="PRO"|AA=="VAL")
+dataPrey <- subset(data.lag2, AA=="GLU"|AA=="ALA"|AA=="VAL"|AA=="PRO")
 dataPrey.2 <-dataPrey %>% select(allSmolt, 
                                   HakeBiomass,
                                   Herring.Biomass,
@@ -240,7 +246,7 @@ dataPrey.2 <-dataPrey %>% select(allSmolt,
                                   beta)
 dataPrey.2 <- dataPrey.2[complete.cases(dataPrey.2), ]
 
-dataPrey <- subset(data.lag3, AA=="GLU"|AA=="ALA"|AA=="PRO"|AA=="VAL")
+dataPrey <- subset(data.lag3, AA=="GLU"|AA=="ALA"|AA=="VAL"|AA=="PRO")
 dataPrey.3 <-dataPrey %>% select(allSmolt, 
                                   HakeBiomass,
                                   Herring.Biomass,
@@ -257,7 +263,7 @@ dataPrey.3 <-dataPrey %>% select(allSmolt,
                                   beta)
 dataPrey.3 <- dataPrey.3[complete.cases(dataPrey.3), ]
 
-dataPrey <- subset(data.lag4, AA=="GLU"|AA=="ALA"|AA=="PRO"|AA=="VAL")
+dataPrey <- subset(data.lag4, AA=="GLU"|AA=="ALA"|AA=="VAL"|AA=="PRO")
 dataPrey.4 <-dataPrey %>% select(allSmolt, 
                                  HakeBiomass,
                                  Herring.Biomass,
@@ -273,6 +279,23 @@ dataPrey.4 <-dataPrey %>% select(allSmolt,
                                  eq,
                                  beta)
 dataPrey.4 <- dataPrey.4[complete.cases(dataPrey.4), ]
+
+dataPrey <- subset(data.lag4, AA=="GLU"|AA=="ALA"|AA=="VAL"|AA=="PRO")
+dataPrey.5 <-dataPrey %>% select(allSmolt, 
+                                 HakeBiomass,
+                                 Herring.Biomass,
+                                 AA,
+                                 Chinook, 
+                                 HarborSeal,
+                                 WildProduction,
+                                 HatcherySmolts,
+                                 TP,
+                                 Year,
+                                 Sample.ID,
+                                 Location.2,
+                                 eq,
+                                 beta)
+dataPrey.5 <- dataPrey.5[complete.cases(dataPrey.5), ]
 
 model.selection.PREY <- function(dataframe,n, y) {
   
@@ -316,7 +339,6 @@ model.selection.PREY <- function(dataframe,n, y) {
                       
   )
   
-  names <- seq(1,n,1)
   model.names <- c("Null","Location","Wild Smolts", "Hatch Smolts", "Herring", "Chinook", "Smolts", "Hake","1. Herring, Chinook", 
                    "2. Herring, Hake", "3. Herring, Smolts", "4. Chinook, Hake","CH SM",
                    "6. Smolts, Hake", "CH SM", "8. Herring, Smolts, Hake","CH SM",
@@ -340,19 +362,19 @@ model.selection.PREY <- function(dataframe,n, y) {
 
 model.selectionPREY.1 <- model.selection.PREY(dataPrey.1, n, dataPrey.1$TP)
 x<-data.frame(model.selectionPREY.1)
-subset(x, delAICc<=5)
+subset(x, delAICc<=2)
 modelPREY1<-lmer(TP~Location.2+HakeBiomass+(1|AA), data=dataPrey.1)
 summary(modelPREY1)
 
 model.selectionPREY.2 <- model.selection.PREY(dataPrey.2, n, dataPrey.2$TP)
 x<-data.frame(model.selectionPREY.2)
-subset(x, delAICc<=5)
+subset(x, delAICc<=2)
 modelPREY2<-lmer(TP~Location.2+allSmolt+(1|AA), data=dataPrey.2)
 summary(modelPREY2)
 
 model.selectionPREY.3 <- model.selection.PREY(dataPrey.3, n, dataPrey.3$TP)
 x<-data.frame(model.selectionPREY.3)
-subset(x, delAICc<=5)
+subset(x, delAICc<=2)
 modelPREY3<-lmer(TP~Location.2+allSmolt+HakeBiomass+Herring.Biomass+(1|AA), data=dataPrey.3)
 summary(modelPREY3)
 
@@ -362,6 +384,11 @@ subset(x, delAICc<=5)
 modelPREY3<-lmer(TP~Location.2+allSmolt+HakeBiomass+Herring.Biomass+(1|AA), data=dataPrey.3)
 summary(modelPREY3)
 
+model.selectionPREY.5 <- model.selection.PREY(dataPrey.5, n, dataPrey.5$TP)
+x<-data.frame(model.selectionPREY.5)
+subset(x, delAICc<=5)
+modelPREY3<-lmer(TP~Location.2+allSmolt+HakeBiomass+Herring.Biomass+(1|AA), data=dataPrey.3)
+summary(modelPREY3)
 
 ########################    Environmental  Plots#######################
 library(dotwhisker)
@@ -370,8 +397,8 @@ library(dplyr)
 library(colorspace)
 library(ggpubr)
 
-color<- rep(c('black','#CCA65A','#7EBA68','#00C1B2','#6FB1E7'), each=4)
-color2<- rep(c('black','#CCA65A','#7EBA68','#00C1B2','#6FB1E7'), times=4)
+color<- rep(c('black','#CCA65A','#7EBA68','#6FB1E7','#D494E1'), each=4)
+color2<- rep(c('black','#CCA65A','#7EBA68','#6FB1E7','#D494E1'), times=4)
 color3<- rep(c('black','#CCA65A','#7EBA68','#6FB1E7','#D494E1'), each=3)
 color4<- rep(c('black','#CCA65A','#7EBA68','#6FB1E7','#D494E1'), times=3)
 color5<- rep(c('black','#CCA65A','#7EBA68','#00C1B2','#6FB1E7'), each=2)
@@ -384,17 +411,17 @@ color8<- rep(c('black','#CCA65A','#7EBA68','#00C1B2','#6FB1E7'), times=5)
 ENV <- tidy(modelENV.1)
 x <- data.frame("term" = c('Intercept',   'Location','Summer Upwelling'), "estimate" =   c(ENV[1:3,2]), "std.error" = c(ENV[1:3,3]), "group" = c(rep('fixed', 3)), model="fixed")
 ENV.fixed <- as_tibble(x)
-x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelENV)$AA[1,1]),
-                "std.error" = c(ranef(modelENV)$AA[1,1]), "group" = 'random', model="Ala")
+x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelENV.1)$AA[1,1]),
+                "std.error" = c(ranef(modelENV.1)$AA[1,1]), "group" = 'random', model="Ala")
 ENV.ALA <- as_tibble(x)
-x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelENV)$AA[3,1]) ,
-                "std.error" = c(ranef(modelENV)$AA[3,1]), "group" = 'random', model="Pro")
+x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelENV.1)$AA[3,1]) ,
+                "std.error" = c(ranef(modelENV.1)$AA[3,1]), "group" = 'random', model="Pro")
 ENV.PRO <- as_tibble(x)
-x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelENV)$AA[2,1]), 
-                "std.error" = c(ranef(modelENV)$AA[2,1]), "group" = 'random', model="Glu")
+x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelENV.1)$AA[2,1]), 
+                "std.error" = c(ranef(modelENV.1)$AA[2,1]), "group" = 'random', model="Glu")
 ENV.GLU <- as_tibble(x)
-x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelENV)$AA[4,1]), 
-                "std.error" = c(ranef(modelENV)$AA[4,1]), "group" = 'random', model="Val")
+x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelENV.1)$AA[4,1]), 
+                "std.error" = c(ranef(modelENV.1)$AA[4,1]), "group" = 'random', model="Val")
 ENV.VAL <- as_tibble(x)
 
 ENV.mods <- rbind(ENV.fixed, ENV.GLU, ENV.ALA,   ENV.VAL, ENV.PRO)
@@ -406,7 +433,7 @@ ENV.plot1 <-small_multiple(ENV.mods) +
                  position=position_dodge(.9))+
   ylab("") +
   geom_hline(yintercept = 0, colour = "grey60", linetype = 2) +
-  ggtitle("A. 1-Year Lag") +
+  ggtitle("A. Year-0") +
   
   theme(plot.title = element_text(face="bold", hjust=0.5, size=14), 
         panel.grid.minor = element_blank(),
@@ -419,17 +446,17 @@ ENV.plot1
 ENV <- tidy(modelENV.2)
 x <- data.frame("term" = c('Intercept',   'Location','Summer SST'), "estimate" =   c(ENV[1:3,2]), "std.error" = c(ENV[1:3,3]), "group" = c(rep('fixed', 3)), model="fixed")
 ENV.fixed <- as_tibble(x)
-x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelENV)$AA[1,1]),
-                "std.error" = c(ranef(modelENV)$AA[1,1]), "group" = 'random', model="Ala")
+x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelENV.2)$AA[1,1]),
+                "std.error" = c(ranef(modelENV.2)$AA[1,1]), "group" = 'random', model="Ala")
 ENV.ALA <- as_tibble(x)
-x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelENV)$AA[3,1]) ,
-                "std.error" = c(ranef(modelENV)$AA[3,1]), "group" = 'random', model="Pro")
+x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelENV.2)$AA[3,1]) ,
+                "std.error" = c(ranef(modelENV.2)$AA[3,1]), "group" = 'random', model="Pro")
 ENV.PRO <- as_tibble(x)
-x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelENV)$AA[2,1]), 
-                "std.error" = c(ranef(modelENV)$AA[2,1]), "group" = 'random', model="Glu")
+x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelENV.2)$AA[2,1]), 
+                "std.error" = c(ranef(modelENV.2)$AA[2,1]), "group" = 'random', model="Glu")
 ENV.GLU <- as_tibble(x)
-x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelENV)$AA[4,1]), 
-                "std.error" = c(ranef(modelENV)$AA[4,1]), "group" = 'random', model="Val")
+x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelENV.2)$AA[4,1]), 
+                "std.error" = c(ranef(modelENV.2)$AA[4,1]), "group" = 'random', model="Val")
 ENV.VAL <- as_tibble(x)
 
 ENV.mods <- rbind(ENV.fixed, ENV.GLU, ENV.ALA,   ENV.VAL, ENV.PRO)
@@ -441,7 +468,7 @@ ENV.plot2 <-small_multiple(ENV.mods) +
                  position=position_dodge(.9))+
   ylab("") +
   geom_hline(yintercept = 0, colour = "grey60", linetype = 2) +
-  ggtitle("B. 2-Year Lag") +
+  ggtitle("B. Year-1") +
   
   theme(plot.title = element_text(face="bold", hjust=0.5, size=14), 
         panel.grid.minor = element_blank(),
@@ -451,9 +478,54 @@ ENV.plot2 <-small_multiple(ENV.mods) +
         axis.text.y = element_text( size = 10)) 
 ENV.plot2
 
-pdf(file="Results/Figures/HCoefPlotENV.pdf", width=9, height=6)
-ggarrange(ENV.plot1,ENV.plot2,
-          ncol = 2, nrow = 1, align= 'v')
+
+ENV <- tidy(modelENV.3)
+x <- data.frame("term" = c('Intercept',   'Location','Summer Upwelling', "MEI"), "estimate" =   c(ENV[1:4,2]), 
+                "std.error" = c(ENV[1:4,3]), "group" = c(rep('fixed', 4)), model="fixed")
+ENV.fixed <- as_tibble(x)
+x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelENV.3)$AA[1,1]),
+                "std.error" = c(ranef(modelENV.3)$AA[1,1]), "group" = 'random', model="Ala")
+ENV.ALA <- as_tibble(x)
+x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelENV.3)$AA[3,1]) ,
+                "std.error" = c(ranef(modelENV.3)$AA[3,1]), "group" = 'random', model="Pro")
+ENV.PRO <- as_tibble(x)
+x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelENV.3)$AA[2,1]), 
+                "std.error" = c(ranef(modelENV.3)$AA[2,1]), "group" = 'random', model="Glu")
+ENV.GLU <- as_tibble(x)
+x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelENV.3)$AA[4,1]), 
+                "std.error" = c(ranef(modelENV.3)$AA[4,1]), "group" = 'random', model="Val")
+ENV.VAL <- as_tibble(x)
+
+ENV.mods <- rbind(ENV.fixed, ENV.GLU, ENV.ALA,   ENV.VAL, ENV.PRO)
+
+ENV.plot3 <-small_multiple(ENV.mods) +
+  theme_bw()+
+  geom_point (colour=color)+
+  geom_errorbar (colour=color2, width=.2,
+                 position=position_dodge(.9))+
+  ylab("") +
+  geom_hline(yintercept = 0, colour = "grey60", linetype = 2) +
+  ggtitle("C. Year-2") +
+  
+  theme(plot.title = element_text(face="bold", hjust=0.5, size=14), 
+        panel.grid.minor = element_blank(),
+        panel.grid.major = element_blank(),
+        legend.position = "none",
+        axis.text.x = element_text(angle = 60, hjust = 1, size = 12),
+        axis.text.y = element_text( size = 10)) 
+ENV.plot3
+
+
+ENV.plot<-ggarrange(ENV.plot1,ENV.plot2,ENV.plot3,
+                     ncol = 3, nrow = 1, align= 'v')
+ENV.plot<-annotate_figure(ENV.plot,
+                           top = text_grob("Ocean Condition Models", color = "black", face = "bold", size = 14)
+)
+ENV.plot
+
+
+pdf(file="Results/Figures/HCoefPlotENV.pdf", width=12, height=6.5)
+ENV.plot
 
 dev.off()
 
@@ -475,13 +547,14 @@ PREY.mods <- rbind(PREY.fixed, PREY.GLU, PREY.ALA,  PREY.VAL, PREY.PRO)
 
 
 PREY.plot1 <-small_multiple(PREY.mods) +
-  theme_bw()+
+  theme_bw( )+
+ # theme(plot.margin = margin(1, 0.35, 0.5, 0.35, "cm"))+
   geom_point (colour=color3)+
   geom_errorbar (colour=color4, width=.2,
                  position=position_dodge(.9))+
   ylab("") +
   geom_hline(yintercept = 0, colour = "grey60", linetype = 2) +
-  ggtitle("A. 1-Year Lag") +
+  ggtitle("A. Year-0") +
   # scale_y_discrete("", breaks=waiver(), labels=waiver())+
   theme(plot.title = element_text(face="bold", hjust=0.5, size=14), 
         panel.grid.minor = element_blank(),
@@ -492,7 +565,7 @@ PREY.plot1 <-small_multiple(PREY.mods) +
 PREY.plot1
 
 PREY <- tidy(modelPREY2)
-x <- data.frame("term" = c('Intercept',  'Location', "Smolt"), "estimate" = fixef(modelPREY2), "std.error" = c(PREY[1:3,3]), "group" = c(rep('fixed', 3)), model="fixed")
+x <- data.frame("term" = c('Intercept',  'Location', "Chinook Smolts"), "estimate" = fixef(modelPREY2), "std.error" = c(PREY[1:3,3]), "group" = c(rep('fixed', 3)), model="fixed")
 PREY.fixed <- as_tibble(x)
 x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelPREY2)$AA[1,1]), "std.error" = c(ranef(modelPREY2)$AA[1,1]),   "group" = 'random', model="Ala")
 PREY.ALA <- as_tibble(x)
@@ -508,11 +581,12 @@ PREY.mods <- rbind(PREY.fixed, PREY.GLU, PREY.ALA,  PREY.VAL, PREY.PRO)
 PREY.plot2 <-small_multiple(PREY.mods) +
   theme_bw()+
   geom_point (colour=color3)+
+  #theme(plot.margin = margin(1, 0.35, 0.5, 0.35, "cm"))+
   geom_errorbar (colour=color4, width=.2,
                  position=position_dodge(.9))+
   ylab("") +
   geom_hline(yintercept = 0, colour = "grey60", linetype = 2) +
-  ggtitle("B. 2-Year Lag") +
+  ggtitle("B. Year-1") +
   # scale_y_discrete("", breaks=waiver(), labels=waiver())+
   theme(plot.title = element_text(face="bold", hjust=0.5, size=14), 
         panel.grid.minor = element_blank(),
@@ -523,7 +597,7 @@ PREY.plot2 <-small_multiple(PREY.mods) +
 PREY.plot2
 
 PREY <- tidy(modelPREY3)
-x <- data.frame("term" = c('Intercept',  'Location', "Smolt", "Hake", "Herring"), "estimate" = fixef(modelPREY3), "std.error" = c(PREY[1:5,3]), "group" = c(rep('fixed', 5)), model="fixed")
+x <- data.frame("term" = c('Intercept',  'Location', "Chinook Smolts", "Hake", "Herring"), "estimate" = fixef(modelPREY3), "std.error" = c(PREY[1:5,3]), "group" = c(rep('fixed', 5)), model="fixed")
 PREY.fixed <- as_tibble(x)
 x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelPREY3)$AA[1,1]), "std.error" = c(ranef(modelPREY3)$AA[1,1]),   "group" = 'random', model="Ala")
 PREY.ALA <- as_tibble(x)
@@ -542,8 +616,9 @@ PREY.plot3 <-small_multiple(PREY.mods) +
   geom_errorbar (colour=color8, width=.2,
                  position=position_dodge(.9))+
   ylab("") +
+ # theme(plot.margin = margin(1, 0.35, 0.5, 0.35, "cm"))+
   geom_hline(yintercept = 0, colour = "grey60", linetype = 2) +
-  ggtitle("C. 3-Year Lag") +
+  ggtitle("C. Year-2") +
   # scale_y_discrete("", breaks=waiver(), labels=waiver())+
   theme(plot.title = element_text(face="bold", hjust=0.5, size=14), 
         panel.grid.minor = element_blank(),
@@ -553,17 +628,19 @@ PREY.plot3 <-small_multiple(PREY.mods) +
         axis.text.y = element_text( size = 10))
 PREY.plot3
 
-
-
-pdf(file="Results/Figures/HCoefPlot.pdf", width=12, height=6)
-ggarrange(PREY.plot1,PREY.plot2,PREY.plot3,
+PREY.plot<-ggarrange(PREY.plot1,PREY.plot2,PREY.plot3,
           ncol = 3, nrow = 1, align= 'v')
+PREY.plot<-annotate_figure(PREY.plot,
+                top = text_grob("Food Web Models", color = "black", face = "bold", size = 14)
+)
+PREY.plot
 
+
+pdf(file="Results/Figures/HCoefPlot.pdf", width=12, height=6.5)
+PREY.plot
 dev.off()
 
-pdf(file="Results/Presentation Figures/EnvDRAFT.pdf", width=5, height=5)
-ENV.plot
-dev.off()
+
 
 
 
