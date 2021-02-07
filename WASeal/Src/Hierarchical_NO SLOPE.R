@@ -1,8 +1,9 @@
 rm(list = ls())
 
 library(devtools)
-install_version("lme4", "1.1-25")
+#install_version("lme4", "1.1-25")
 library(lme4)
+
 library(AICcmodavg)
 
 dataALL <-  read.csv("Data/Compiled/HierarchicalData.csv")
@@ -529,6 +530,20 @@ ENV.plot
 
 dev.off()
 
+
+ENV.plot<-ggarrange(ENV.plot3,ENV.plot2,ENV.plot1,
+                    ncol = 3, nrow = 1, align= 'v')
+ENV.plot<-annotate_figure(ENV.plot,
+                          top = text_grob("Ocean Condition Models", color = "black", face = "bold", size = 14)
+)
+ENV.plot
+
+
+pdf(file="Results/Figures/HCoefPlotENV.rev.pdf", width=12, height=6.5)
+ENV.plot
+
+dev.off()
+
 ########################    Foodweb Plots#######################
 
 
@@ -641,13 +656,16 @@ PREY.plot
 dev.off()
 
 
+PREY.plot<-ggarrange(PREY.plot3,PREY.plot2,PREY.plot1,
+                     ncol = 3, nrow = 1, align= 'v')
+PREY.plot<-annotate_figure(PREY.plot,
+                           top = text_grob("Food Web Models", color = "black", face = "bold", size = 14)
+)
+PREY.plot
 
 
-
-pdf(file="Results/Figures/HCoefPlot.pdf", width=5, height=8)
-ggarrange(ENV.plot, PREY.plot,
-          ncol = 1, nrow = 2, align= 'v')
-
+pdf(file="Results/Figures/HCoefPlot.rev.pdf", width=12, height=6.5)
+PREY.plot
 dev.off()
 
 
