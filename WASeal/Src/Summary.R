@@ -10,6 +10,12 @@ library(qpcR)
 library(dplyr)
 library(dotwhisker)
 library(ggpubr)
+library(dplyr)
+library(ggplot2)
+library(ggpubr)
+library(hrbrthemes)
+library(viridis)
+library(viridisLite)
 
 data <- read.csv("Data/Compiled/HierarchicalData.csv")
 data<-subset(data, beta==1& eq==2)
@@ -296,6 +302,102 @@ summary(lmer(TP~Sex+(1|AA), data=Sex.c))
 AICc(lmer(TP~Sex+(1|AA), data=Sex.ss))
 AICc(lmer(TP~(1|AA), data=Sex.ss))
 pairwise.t.test(data$TP, pool.sd=FALSE, data$AA, p.adj = "bonf")
+
+############### Location By Sex Violin###########
+size.ax<- 14
+col.v<- c( "#DAC584", "#B88A00", "#95D69A", 
+          "#50A315", "#61D8D6", "#00AD9A","#AAC8FC", "#009ADE", 
+     "#F1B2EE","#C86DD7")
+col.v<- c( "#50A315","#50A315",
+           "#00AD9A","#00AD9A",
+           "#B88A00", "#B88A00",
+           "#C86DD7","#C86DD7" ,
+           "#009ADE","#009ADE")
+SalishSea<- Sex %>%
+  mutate(AA.Sex=NA) %>% 
+  mutate(alpha2=ifelse(Sex=='F', 1, 0.9)) %>%
+  filter(Location.2 =="Inland"&TP>0)  %>% 
+  mutate(AA2 =recode(AA,'GLU' = "Glutamic Acid",'ALA'="Alanine",
+                     'ASP'="Aspartic Acid", 'VAL'="Valine", "PRO"="Proline"))%>% 
+  unite(AA.Sex, AA2, Sex, sep = "", remove=FALSE) %>% 
+  ggplot( aes(x=AA2, y=TP, fill=AA.Sex, alpha=alpha2)) +
+
+  
+  geom_violin(position=position_dodge(0.8)) +
+  geom_boxplot(position=position_dodge(0.8), width=0.1)+
+  scale_fill_manual(values = col.v)+
+  scale_x_discrete(limits=c("Glutamic Acid","Alanine","Aspartic Acid", "Valine", "Proline"))+
+  scale_alpha(range = c(0.4, 1))+
+  #scale_fill_viridis(discrete = TRUE, alpha=0.6, option="A") +
+  theme_ipsum() +
+  ggtitle("A. Salish Sea") +
+  theme_bw() + 
+  xlab("Mesh Size") +
+  ylab("Trophic Position") +
+  ylim(1,6.5) +
+  theme(plot.title = element_text(face="bold", hjust=0.5, size=size.ax+2),
+        plot.margin = margin(0.25, 1, 0, .75, "cm"),
+     # panel.grid.minor = element_blank(),
+       panel.grid.major = element_blank(),
+        legend.position="none",
+        axis.title.y = element_text(size = size.ax+2,vjust=5),
+        axis.text.x=element_text(size=size.ax),
+        axis.text.y=element_text(size=size.ax))+
+  xlab("")
+SalishSea
+
+CoastalWA<- Sex %>%
+  mutate(AA.Sex=NA) %>% 
+  mutate(alpha2=ifelse(Sex=='F', 1, 0.9)) %>%
+  filter(Location.2 =="Coastal"&TP>0)  %>% 
+  mutate(AA2 =recode(AA,'GLU' = "Glutamic Acid",'ALA'="Alanine",
+                     'ASP'="Aspartic Acid", 'VAL'="Valine", "PRO"="Proline"))%>% 
+  unite(AA.Sex, AA2, Sex, sep = "", remove=FALSE) %>% 
+  ggplot( aes(x=AA2, y=TP, fill=AA.Sex, alpha=alpha2)) +
+  
+  
+  geom_violin(position=position_dodge(0.8)) +
+  geom_boxplot(position=position_dodge(0.8), width=0.1)+
+  scale_fill_manual(values = col.v)+
+  scale_x_discrete(limits=c("Glutamic Acid","Alanine","Aspartic Acid", "Valine", "Proline"))+
+  scale_alpha(range = c(0.4, 1))+
+  #scale_fill_viridis(discrete = TRUE, alpha=0.6, option="A") +
+  theme_ipsum() +
+  ggtitle("B. Coastal") +
+  theme_bw() + 
+  xlab("Mesh Size") +
+  ylab("Trophic Position") +
+  ylim(1,6.5) +
+
+  geom_text(aes(x = c(0.75), y = 1, label=c("F")))+
+  geom_text(aes(x = c(1.25), y = 1, label=c("M")))+
+  geom_text(aes(x = c(1.75), y = 1, label=c("F")))+
+  geom_text(aes(x = c(2.25), y = 1, label=c("M")))+
+  geom_text(aes(x = c(2.75), y = 1, label=c("F")))+
+  geom_text(aes(x = c(3.25), y = 1, label=c("M")))+
+  geom_text(aes(x = c(3.75), y = 1, label=c("F")))+
+  geom_text(aes(x = c(4.25), y = 1, label=c("M")))+
+  geom_text(aes(x = c(4.75), y = 1, label=c("F")))+
+  geom_text(aes(x = c(5.25), y = 1, label=c("M")))+
+  theme(plot.title = element_text(face="bold", hjust=0.5, size=size.ax+2),
+        plot.margin = margin(0.25, 1, 0, .75, "cm"),
+        # panel.grid.minor = element_blank(),
+        panel.grid.major = element_blank(),
+        legend.position="none",
+        axis.title.y = element_text(size = size.ax+2,vjust=5),
+        axis.text.x=element_text(size=size.ax),
+        axis.text.y=element_text(size=size.ax))+
+  xlab("")
+CoastalWA
+
+pdf(file="Results/Figures/SexViolinPlot.pdf", width=10, height=9)
+ggarrange(SalishSea+   rremove("x.text"), CoastalWA, 
+          #labels = c("A", "B", "C", "D", "E", "F"),
+          ncol = 1, nrow = 2, align="hv")
+
+
+dev.off()
+
 
 ############### Location By Length ###########
 Length <-data %>% select(TP,

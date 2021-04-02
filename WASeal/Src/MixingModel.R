@@ -34,6 +34,10 @@ all <- data.frame(Obs=na.omit(subset(data, Location.2=="Coastal"|Location.2=="In
                              C4EM= rep(-9.5325, length(na.omit(subset(data, Location.2=="Inland"|Location.2=="Coastal")$d13C.s))),
                              C3EM= rep(-19.44, length(na.omit(subset(data, Location.2=="Inland"|Location.2=="Coastal")$d13C.s))))
 
+all.TEF <- data.frame(Obs=na.omit(subset(data, Location.2=="Coastal"|Location.2=="Inland")$d13C.s)-(3), 
+                  C4EM= rep(-9.5325, length(na.omit(subset(data, Location.2=="Inland"|Location.2=="Coastal")$d13C.s))),
+                  C3EM= rep(-19.44, length(na.omit(subset(data, Location.2=="Inland"|Location.2=="Coastal")$d13C.s))))
+
 names2 <- c("Mean", "SD")
 Percent.C3 <- data.frame(Coastal=c(mean(Function.MixingModel(coastal)), sd(Function.MixingModel(coastal))),
                           SalishSea=c(mean(Function.MixingModel(salishsea)), sd(Function.MixingModel(salishsea))),
@@ -54,6 +58,8 @@ Percent.C4 <- data.frame(Coastal=c(mean(Function.MixingModel2(coastal)), sd(Func
                          All=c(mean(Function.MixingModel2(all)), sd(Function.MixingModel2(all))),
                          None=c(0,0),
                          row.names = names2)
+Function.MixingModel2(all.TEF)
+
 
 vander<-data.frame(vander)
 str(vander)
