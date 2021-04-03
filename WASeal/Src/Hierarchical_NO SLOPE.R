@@ -391,7 +391,7 @@ subset(x, delAICc<=5)
 modelPREY3<-lmer(TP~Location.2+allSmolt+HakeBiomass+Herring.Biomass+(1|AA), data=dataPrey.3)
 summary(modelPREY3)
 
-########################    Environmental  Plots#######################
+########################    1. Environmental  Plots#######################
 library(dotwhisker)
 library(broom)
 library(dplyr)
@@ -425,7 +425,7 @@ x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelENV.1)$AA[4,1]
                 "std.error" = c(ranef(modelENV.1)$AA[4,1]), "group" = 'random', model="Val")
 ENV.VAL <- as_tibble(x)
 
-ENV.mods <- rbind(ENV.fixed, ENV.GLU, ENV.ALA,   ENV.VAL, ENV.PRO)
+ENV.mods <- rbind(ENV.fixed, ENV.GLU, ENV.ALA,ENV.VAL, ENV.PRO)
 
 ENV.plot1 <-small_multiple(ENV.mods) +
   theme_bw()+
@@ -525,30 +525,11 @@ ENV.plot<-annotate_figure(ENV.plot,
 ENV.plot
 
 
-pdf(file="Results/Figures/HCoefPlotENV.pdf", width=12, height=6.5)
-ENV.plot
-
-dev.off()
-
-
-ENV.plot<-ggarrange(ENV.plot3,ENV.plot2,ENV.plot1,
-                    ncol = 3, nrow = 1, align= 'v')
-ENV.plot<-annotate_figure(ENV.plot,
-                          top = text_grob("Ocean Condition Models", color = "black", face = "bold", size = 14)
-)
-ENV.plot
-
-
-pdf(file="Results/Figures/HCoefPlotENV.rev.pdf", width=12, height=6.5)
-ENV.plot
-
-dev.off()
-
-########################    Foodweb Plots#######################
+########################    1. Foodweb Plots#######################
 
 
 PREY <- tidy(modelPREY1)
-x <- data.frame("term" = c('Intercept',  'Location', "Hake"), "estimate" = fixef(modelPREY1), "std.error" = c(PREY[1:3,3]), "group" = c(rep('fixed', 3)), model="fixed")
+x <- data.frame("term" = c('Intercept',  'Location', "Hake"), "estimate" = fixef(modelPREY1), "std.error" = c(PREY[1:3,5]), "group" = c(rep('fixed', 3)), model="fixed")
 PREY.fixed <- as_tibble(x)
 x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelPREY1)$AA[1,1]), "std.error" = c(ranef(modelPREY1)$AA[1,1]),   "group" = 'random', model="Ala")
 PREY.ALA <- as_tibble(x)
@@ -563,7 +544,7 @@ PREY.mods <- rbind(PREY.fixed, PREY.GLU, PREY.ALA,  PREY.VAL, PREY.PRO)
 
 PREY.plot1 <-small_multiple(PREY.mods) +
   theme_bw( )+
- # theme(plot.margin = margin(1, 0.35, 0.5, 0.35, "cm"))+
+  # theme(plot.margin = margin(1, 0.35, 0.5, 0.35, "cm"))+
   geom_point (colour=color3)+
   geom_errorbar (colour=color4, width=.2,
                  position=position_dodge(.9))+
@@ -631,7 +612,7 @@ PREY.plot3 <-small_multiple(PREY.mods) +
   geom_errorbar (colour=color8, width=.2,
                  position=position_dodge(.9))+
   ylab("") +
- # theme(plot.margin = margin(1, 0.35, 0.5, 0.35, "cm"))+
+  # theme(plot.margin = margin(1, 0.35, 0.5, 0.35, "cm"))+
   geom_hline(yintercept = 0, colour = "grey60", linetype = 2) +
   ggtitle("C. Year-2") +
   # scale_y_discrete("", breaks=waiver(), labels=waiver())+
@@ -644,9 +625,9 @@ PREY.plot3 <-small_multiple(PREY.mods) +
 PREY.plot3
 
 PREY.plot<-ggarrange(PREY.plot1,PREY.plot2,PREY.plot3,
-          ncol = 3, nrow = 1, align= 'v')
+                     ncol = 3, nrow = 1, align= 'v')
 PREY.plot<-annotate_figure(PREY.plot,
-                top = text_grob("Food Web Models", color = "black", face = "bold", size = 14)
+                           top = text_grob("Food Web Models", color = "black", face = "bold", size = 14)
 )
 PREY.plot
 
@@ -666,6 +647,321 @@ PREY.plot
 
 pdf(file="Results/Figures/HCoefPlot.rev.pdf", width=12, height=6.5)
 PREY.plot
+dev.off()
+
+########################    2. Environmental  Plots#######################
+library(dotwhisker)
+library(broom)
+library(dplyr)
+library(colorspace)
+library(ggpubr)
+#'black','#CCA65A','#7EBA68','#6FB1E7','#D494E1',"#009ADE",
+
+colore1bar<- c('black','grey','grey',"grey",'grey', #Int
+               '#CCA65A','grey','grey',"grey",'grey', #Location
+               '#D494E1','grey','grey',"grey",'grey') #Upwelling
+
+colore1pt<- c( 'black','#CCA65A','#D494E1','grey',"grey",'grey', 'grey',
+              'grey', 'grey','grey','grey',"grey",'grey', 'grey',
+              'grey') #Location
+
+
+ENV <- tidy(modelENV.1)
+x <- data.frame("term" = c('Intercept',   'Location','Upwelling'), "estimate" =   c(ENV[1:3,4]), "std.error" = c(ENV[1:3,5]), "group" = c(rep('fixed', 3)), model="fixed")
+ENV.fixed <- as_tibble(x)
+x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelENV.1)$AA[1,1]),
+                "std.error" = c(ranef(modelENV.1)$AA[1,1]), "group" = 'random', model="Ala")
+ENV.ALA <- as_tibble(x)
+x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelENV.1)$AA[3,1]) ,
+                "std.error" = c(ranef(modelENV.1)$AA[3,1]), "group" = 'random', model="Pro")
+ENV.PRO <- as_tibble(x)
+x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelENV.1)$AA[2,1]), 
+                "std.error" = c(ranef(modelENV.1)$AA[2,1]), "group" = 'random', model="Glu")
+ENV.GLU <- as_tibble(x)
+x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelENV.1)$AA[4,1]), 
+                "std.error" = c(ranef(modelENV.1)$AA[4,1]), "group" = 'random', model="Val")
+ENV.VAL <- as_tibble(x)
+
+ENV.mods <- rbind(ENV.fixed, ENV.GLU, ENV.ALA,   ENV.VAL, ENV.PRO)
+
+ENV.plot1 <-small_multiple(ENV.mods) +
+  theme_bw()+
+  geom_point (colour=colore1pt)+
+  geom_errorbar (colour=colore1bar, width=.2,
+                 position=position_dodge(.9))+
+  ylab("") +
+  geom_hline(yintercept = 0, colour = "grey60", linetype = 2) +
+  ggtitle("Physiological Delay") +
+  
+  theme(plot.title = element_text(face="bold", hjust=0.5, size=14), 
+        plot.background = element_rect(fill = "transparent", color = NA),
+        panel.grid.minor = element_blank(),
+        panel.grid.major = element_blank(),
+        legend.position = "none",
+        axis.text.x = element_blank(),
+        axis.text.y = element_text( size = 10)) 
+ENV.plot1
+
+ENV <- tidy(modelENV.2)
+x <- data.frame("term" = c('Intercept',   'Location','Summer SST'), "estimate" =   c(ENV[1:3,4]), "std.error" = c(ENV[1:3,5]), "group" = c(rep('fixed', 3)), model="fixed")
+ENV.fixed <- as_tibble(x)
+x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelENV.2)$AA[1,1]),
+                "std.error" = c(ranef(modelENV.2)$AA[1,1]), "group" = 'random', model="Ala")
+ENV.ALA <- as_tibble(x)
+x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelENV.2)$AA[3,1]) ,
+                "std.error" = c(ranef(modelENV.2)$AA[3,1]), "group" = 'random', model="Pro")
+ENV.PRO <- as_tibble(x)
+x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelENV.2)$AA[2,1]), 
+                "std.error" = c(ranef(modelENV.2)$AA[2,1]), "group" = 'random', model="Glu")
+ENV.GLU <- as_tibble(x)
+x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelENV.2)$AA[4,1]), 
+                "std.error" = c(ranef(modelENV.2)$AA[4,1]), "group" = 'random', model="Val")
+ENV.VAL <- as_tibble(x)
+
+ENV.mods <- rbind(ENV.fixed, ENV.GLU, ENV.ALA,   ENV.VAL, ENV.PRO)
+
+
+
+colore2bar<- c('black','grey','grey',"grey",'grey', #Int
+               '#CCA65A','grey','grey',"grey",'grey', #Location
+               '#6FB1E7','grey','grey',"grey",'grey') #SST
+
+colore2pt<- c( 'black','#CCA65A','#6FB1E7','grey',"grey",'grey', 'grey',
+               'grey', 'grey','grey','grey',"grey",'grey', 'grey',
+               'grey') #Location
+
+
+ENV.plot2 <-small_multiple(ENV.mods) +
+  theme_bw()+
+  geom_point (colour=colore2pt)+
+  geom_errorbar (colour=colore2bar, width=.2,
+                 position=position_dodge(.9))+
+  ylab("") +
+  geom_hline(yintercept = 0, colour = "grey60", linetype = 2) +
+  ggtitle("1-year Ecological Delay") +
+  
+  theme(plot.title = element_text(face="bold", hjust=0.5, size=14), 
+        plot.background = element_rect(fill = "transparent", color = NA),
+        panel.grid.minor = element_blank(),
+        panel.grid.major = element_blank(),
+        legend.position = "none",
+        axis.text.x = element_blank(),
+        axis.text.y = element_text( size = 10)) 
+ENV.plot2
+
+
+ENV <- tidy(modelENV.3)
+x <- data.frame("term" = c('Intercept',   'Location','Upwelling', "MEI"), "estimate" =   c(ENV[1:4,4]), 
+                "std.error" = c(ENV[1:4,5]), "group" = c(rep('fixed', 4)), model="fixed")
+ENV.fixed <- as_tibble(x)
+x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelENV.3)$AA[1,1]),
+                "std.error" = c(ranef(modelENV.3)$AA[1,1]), "group" = 'random', model="Ala")
+ENV.ALA <- as_tibble(x)
+x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelENV.3)$AA[3,1]) ,
+                "std.error" = c(ranef(modelENV.3)$AA[3,1]), "group" = 'random', model="Pro")
+ENV.PRO <- as_tibble(x)
+x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelENV.3)$AA[2,1]), 
+                "std.error" = c(ranef(modelENV.3)$AA[2,1]), "group" = 'random', model="Glu")
+ENV.GLU <- as_tibble(x)
+x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelENV.3)$AA[4,1]), 
+                "std.error" = c(ranef(modelENV.3)$AA[4,1]), "group" = 'random', model="Val")
+ENV.VAL <- as_tibble(x)
+
+ENV.mods <- rbind(ENV.fixed, ENV.GLU, ENV.ALA,   ENV.VAL, ENV.PRO)
+
+
+colore3bar<- c('black','grey','grey',"grey",'grey', #Int
+               '#CCA65A','grey','grey',"grey",'grey', #Location
+               '#7EBA68','grey','grey',"grey",'grey',#MEI
+               '#D494E1','grey','grey',"grey",'grey') #upwelling
+colore3pt<- c( 'black','#CCA65A','#7EBA68','#D494E1',
+               'grey',"grey",'grey', 'grey',
+               'grey', 'grey','grey','grey',
+               "grey",'grey', 'grey','grey',
+               'grey','grey','grey','grey') #Location
+
+
+ENV.plot3 <-small_multiple(ENV.mods) +
+  theme_bw()+
+  geom_point (colour=colore3pt)+
+  geom_errorbar (colour=colore3bar, width=.2,
+                 position=position_dodge(.9))+
+  ylab("") +
+  geom_hline(yintercept = 0, colour = "grey60", linetype = 2) +
+  ggtitle("2-year Ecological Delay") +
+  
+  theme(plot.title = element_text(face="bold", hjust=0.5, size=14), 
+        plot.background = element_rect(fill = "transparent", color = NA),
+        panel.grid.minor = element_blank(),
+        panel.grid.major = element_blank(),
+        legend.position = "none",
+        axis.text.x = element_blank(),
+        axis.text.y = element_text( size = 10)) 
+ENV.plot3
+
+
+ENV.plot<-ggarrange(ENV.plot1,ENV.plot2,ENV.plot3,
+                    ncol = 3, nrow = 1, align= 'v')
+ENV.plot<-annotate_figure(ENV.plot,
+                          top = text_grob("Ocean Condition Models", color = "black", face = "bold", size = 14)
+)
+ENV.plot
+
+
+
+
+########################   2. Foodweb Plots#######################
+colorp1bar<- c('#7EBA68','grey','grey',"grey",'grey', #Hake
+            'black','grey','grey',"grey",'grey', #Int
+            '#CCA65A','grey','grey',"grey",'grey') #Location
+
+colorp1pt<- c('#7EBA68', 'black','#CCA65A','grey',"grey",'grey', 'grey',
+              'grey', 'grey','grey','grey',"grey",'grey', 'grey',
+              'grey') #Location
+
+PREY <- tidy(modelPREY1)
+x <- data.frame("term" = c('Intercept',  'Location', "Hake"), "estimate" = fixef(modelPREY1), "std.error" = c(PREY[1:3,5]), "group" = c(rep('fixed', 3)), model="fixed")
+PREY.fixed <- as_tibble(x)
+x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelPREY1)$AA[1,1]), "std.error" = c(ranef(modelPREY1)$AA[1,1]),   "group" = 'random', model="Ala")
+PREY.ALA <- as_tibble(x)
+x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelPREY1)$AA[2,1]), "std.error" = c(ranef(modelPREY1)$AA[2,1]), "group" = 'random', model="Glu")
+PREY.GLU <- as_tibble(x)
+x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelPREY1)$AA[3,1]), "std.error" = c(ranef(modelPREY1)$AA[3,1]), "group" = 'random', model="Pro")
+PREY.PRO <- as_tibble(x)
+x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelPREY1)$AA[4,1]), "std.error" = c(ranef(modelPREY1)$AA[4,1]), "group" = 'random', model="Val")
+PREY.VAL <- as_tibble(x)
+PREY.mods <- rbind(PREY.fixed, PREY.GLU, PREY.ALA,  PREY.VAL, PREY.PRO)
+
+
+PREY.plot1 <-small_multiple(PREY.mods) +
+  theme_bw( )+
+  # theme(plot.margin = margin(1, 0.35, 0.5, 0.35, "cm"))+
+  geom_point (colour=colorp1pt)+
+  geom_errorbar (colour=colorp1bar, width=.2,
+                 position=position_dodge(.9))+
+  ylab("") +
+  geom_hline(yintercept = 0, colour = "grey60", linetype = 2) +
+  ggtitle(" ") +
+  # scale_y_discrete("", breaks=waiver(), labels=waiver())+
+  theme(plot.title = element_text(face="bold", hjust=0.5, size=14), 
+        panel.grid.minor = element_blank(),
+        plot.background = element_rect(fill = "transparent", color = NA),
+        panel.grid.major = element_blank(),
+        legend.position = "none",
+        axis.text.x = element_text(angle = 60, hjust = 1, size = 12),
+        axis.text.y = element_text( size = 10))
+PREY.plot1
+
+
+
+PREY <- tidy(modelPREY2)
+x <- data.frame("term" = c('Intercept',  'Location', "Smolts"), "estimate" = fixef(modelPREY2), "std.error" = c(PREY[1:3,5]), "group" = c(rep('fixed', 3)), model="fixed")
+PREY.fixed <- as_tibble(x)
+x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelPREY2)$AA[1,1]), "std.error" = c(ranef(modelPREY2)$AA[1,1]),   "group" = 'random', model="Ala")
+PREY.ALA <- as_tibble(x)
+x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelPREY2)$AA[2,1]), "std.error" = c(ranef(modelPREY2)$AA[2,1]), "group" = 'random', model="Glu")
+PREY.GLU <- as_tibble(x)
+x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelPREY2)$AA[3,1]), "std.error" = c(ranef(modelPREY2)$AA[3,1]), "group" = 'random', model="Pro")
+PREY.PRO <- as_tibble(x)
+x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelPREY2)$AA[4,1]), "std.error" = c(ranef(modelPREY2)$AA[4,1]), "group" = 'random', model="Val")
+PREY.VAL <- as_tibble(x)
+PREY.mods <- rbind(PREY.fixed, PREY.GLU, PREY.ALA,  PREY.VAL, PREY.PRO)
+
+colorp2bar<- c('black','grey','grey',"grey",'grey', #chinook
+               '#CCA65A','grey','grey',"grey",'grey', #Int
+               '#6FB1E7','grey','grey',"grey",'grey') #Location
+
+colorp2pt<- c( 'black','#CCA65A','#6FB1E7','grey',"grey",'grey', 'grey',
+              'grey', 'grey','grey','grey',"grey",'grey', 'grey',
+              'grey') #Location
+
+PREY.plot2 <-small_multiple(PREY.mods) +
+  theme_bw()+
+  geom_point (colour=colorp2pt)+
+  #theme(plot.margin = margin(1, 0.35, 0.5, 0.35, "cm"))+
+  geom_errorbar (colour=colorp2bar, width=.2,
+                 position=position_dodge(.9))+
+  ylab("") +
+  geom_hline(yintercept = 0, colour = "grey60", linetype = 2) +
+ ggtitle("Food Web Models") +
+  # scale_y_discrete("", breaks=waiver(), labels=waiver())+
+  theme(plot.title = element_text(face="bold", hjust=0.5, size=16), 
+        plot.background = element_rect(fill = "transparent", color = NA),
+        panel.grid.minor = element_blank(),
+        panel.grid.major = element_blank(),
+        legend.position = "none",
+        axis.text.x = element_text(angle = 60, hjust = 1, size = 12),
+        axis.text.y = element_text( size = 10))
+PREY.plot2
+
+PREY <- tidy(modelPREY3)
+x <- data.frame("term" = c('Intercept',  'Location', "Smolts", "Hake", "Herring"), "estimate" = fixef(modelPREY3), "std.error" = c(PREY[1:5,5]), "group" = c(rep('fixed', 5)), model="fixed")
+PREY.fixed <- as_tibble(x)
+x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelPREY3)$AA[1,1]), "std.error" = c(ranef(modelPREY3)$AA[1,1]),   "group" = 'random', model="Ala")
+PREY.ALA <- as_tibble(x)
+x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelPREY3)$AA[2,1]), "std.error" = c(ranef(modelPREY3)$AA[2,1]), "group" = 'random', model="Glu")
+PREY.GLU <- as_tibble(x)
+x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelPREY3)$AA[3,1]), "std.error" = c(ranef(modelPREY3)$AA[3,1]), "group" = 'random', model="Pro")
+PREY.PRO <- as_tibble(x)
+x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelPREY3)$AA[4,1]), "std.error" = c(ranef(modelPREY3)$AA[4,1]), "group" = 'random', model="Val")
+PREY.VAL <- as_tibble(x)
+PREY.mods <- rbind(PREY.fixed, PREY.GLU, PREY.ALA,  PREY.VAL, PREY.PRO)
+
+labs<- c("Chinook Smolts","Hake","Herring",'Intercept','Location')
+
+colorp3bar<- c('#7EBA68','grey','grey',"grey",'grey', #chinook
+               '#D494E1','grey','grey',"grey",'grey', #Hake
+               'black' ,'grey','grey',"grey",'grey', #herring
+               '#CCA65A','grey','grey',"grey",'grey', #Int
+               '#6FB1E7','grey','grey',"grey",'grey') #Location
+             
+
+colorp3pt<- c('#7EBA68', '#D494E1','black','#CCA65A','#6FB1E7', 
+              'grey',"grey",'grey', 'grey', 'grey',
+              'grey', 'grey','grey','grey',"grey",
+              'grey', 'grey','grey','grey',"grey",
+              'grey','grey','grey','grey',"grey") #Location
+
+
+PREY.plot3 <-small_multiple(PREY.mods) +
+  theme_bw()+
+  geom_point (colour=colorp3pt)+
+  geom_errorbar (colour=colorp3bar, width=.2,
+                 position=position_dodge(.9))+
+  ylab("") +
+  geom_hline(yintercept = 0, colour = "grey60", linetype = 2) +
+  ggtitle(" ") +
+ # facet_grid(term ~ ., labeller(term=label_wrap_gen(10)))+
+  theme(plot.title = element_text(face="bold", hjust=0.5, size=14), 
+        plot.background = element_rect(fill = "transparent", color = NA),
+        panel.grid.minor = element_blank(),
+        panel.grid.major = element_blank(),
+        legend.position = "none",
+        axis.text.x = element_text(angle = 60, hjust = 1, size = 12),
+        axis.text.y = element_text( size = 10))
+PREY.plot3
+
+PREY.plot<-ggarrange(PREY.plot1,PREY.plot2,PREY.plot3,
+                     ncol = 3, nrow = 1, align= 'v')
+PREY.plot<-annotate_figure(PREY.plot
+                          # top = text_grob("Food Web Models", color = "black", face = "bold", size = 14)
+)
+PREY.plot
+
+####FULL PLOT####
+
+
+FULL.plot<-ggarrange(ENV.plot3,ENV.plot2,ENV.plot1,
+                     PREY.plot3,PREY.plot2,PREY.plot1,
+                     ncol = 3, nrow = 2, align= 'v')
+FULL.plot<-annotate_figure(FULL.plot,
+                           top = text_grob("Ocean Condition Models", color = "black", face = "bold", size = 16)
+)
+FULL.plot
+
+
+pdf(file="Results/Figures/HCoefPlot.FULL.pdf", width=9.5, height=8.5)
+FULL.plot
 dev.off()
 
 
