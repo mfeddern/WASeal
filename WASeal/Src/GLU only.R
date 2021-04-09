@@ -3,19 +3,19 @@ rm(list = ls())
 library(lme4)
 library(AICcmodavg)
 
-dataALL <-  read.csv("Data/Compiled/HierarchicalData.csv")
+dataALL <-  read.csv("Data/Compiled/HierarchicalDataCorr.csv")
 data<-subset(subset(dataALL, Location.2=="Inland"|Location.2=="Coastal"), beta==1& eq==2)
 data.lag1<-data
 
-dataALL <-  read.csv("Data/Compiled/HierarchicalData2.csv")
+dataALL <-  read.csv("Data/Compiled/HierarchicalData2Corr.csv")
 data<-subset(subset(dataALL, Location.2=="Inland"|Location.2=="Coastal"), beta==1& eq==2)
 data.lag2<-data
 
-dataALL <-  read.csv("Data/Compiled/HierarchicalData3.csv")
+dataALL <-  read.csv("Data/Compiled/HierarchicalData3Corr.csv")
 data<-subset(subset(dataALL, Location.2=="Inland"|Location.2=="Coastal"), beta==1& eq==2)
 data.lag3<-data
 
-dataALL <-  read.csv("Data/Compiled/HierarchicalData4.csv")
+dataALL <-  read.csv("Data/Compiled/HierarchicalData4Corr.csv")
 data<-subset(subset(dataALL, Location.2=="Inland"|Location.2=="Coastal"), beta==1& eq==2)
 data.lag4<-data
 
