@@ -7,19 +7,19 @@ library(lme4)
 library(AICcmodavg)
 
 dataALL <-  read.csv("Data/Compiled/HierarchicalData.csv")
-data<-subset(subset(dataALL, Location.2=="Inland"|Location.2=="Coastal"), beta==1& eq==2)
+data<-subset(subset(dataALL, Location.2=="Inland"|Location.2=="Coastal"), beta==0& eq==2)
 data.lag1<-data
 
 dataALL <-  read.csv("Data/Compiled/HierarchicalData2.csv")
-data<-subset(subset(dataALL, Location.2=="Inland"|Location.2=="Coastal"), beta==1& eq==2)
+data<-subset(subset(dataALL, Location.2=="Inland"|Location.2=="Coastal"), beta==0& eq==2)
 data.lag2<-data
 
 dataALL <-  read.csv("Data/Compiled/HierarchicalData3.csv")
-data<-subset(subset(dataALL, Location.2=="Inland"|Location.2=="Coastal"), beta==1& eq==2)
+data<-subset(subset(dataALL, Location.2=="Inland"|Location.2=="Coastal"), beta==0& eq==2)
 data.lag3<-data
 
 dataALL <-  read.csv("Data/Compiled/HierarchicalData4.csv")
-data<-subset(subset(dataALL, Location.2=="Inland"|Location.2=="Coastal"), beta==1& eq==2)
+data<-subset(subset(dataALL, Location.2=="Inland"|Location.2=="Coastal"), beta==0& eq==2)
 data.lag4<-data
 
 
@@ -300,55 +300,71 @@ dataPrey.5 <- dataPrey.5[complete.cases(dataPrey.5), ]
 
 model.selection.PREY <- function(dataframe,n, y) {
   
-  aic.output <- rbind(AICc(lmer(y~(1|AA), data=dataframe)), 
-                      AICc(lmer(y~Location.2+(1|AA), data=dataframe)),
-                      AICc(lmer(y~Location.2+WildProduction+(1|AA), data=dataframe)),
-                      AICc(lmer(y~Location.2+HatcherySmolts+(1|AA), data=dataframe)),
-                      AICc(lmer(y~Herring.Biomass+Location.2+(1|AA), data=dataframe)),
-                      AICc(lmer(y~Chinook+Location.2+(1|AA), data=dataframe)),
-                      AICc(lmer(y~allSmolt+Location.2+(1|AA), data=dataframe)),
-                      AICc(lmer(y~HakeBiomass+Location.2+(1|AA), data=dataframe)),
-                      AICc(lmer(y~Herring.Biomass+Chinook+Location.2+(1|AA), data=dataframe)),#1
-                      AICc(lmer(y~Herring.Biomass+HakeBiomass+(1|AA), data=dataframe)),#2
-                      AICc(lmer(y~Herring.Biomass+allSmolt+Location.2+(1|AA), data=dataframe)),#3
-                      AICc(lmer(y~HakeBiomass+Chinook+Location.2+(1|AA), data=dataframe)),#4
-                      AICc(lmer(y~allSmolt+Chinook+Location.2+(1|AA), data=dataframe)),#5
-                      AICc(lmer(y~allSmolt+HakeBiomass+Location.2+(1|AA), data=dataframe)),#6
-                      AICc(lmer(y~allSmolt+Chinook+HakeBiomass+Location.2+(1|AA), data=dataframe)),#7
-                      AICc(lmer(y~Herring.Biomass+allSmolt+HakeBiomass+Location.2+(1|AA), data=dataframe)),#8
-                     AICc(lmer(y~Herring.Biomass+allSmolt+Chinook+Location.2+(1|AA), data=dataframe)),#9
-                      AICc(lmer(y~Herring.Biomass+Chinook+HakeBiomass+Location.2+(1|AA), data=dataframe)),
-                      
-             
-                      AICc(lmer(y~HarborSeal+Location.2+(1|AA), data=dataframe)), 
-                      AICc(lmer(y~HarborSeal+Herring.Biomass+Location.2+(1|AA), data=dataframe)),
-                      AICc(lmer(y~HarborSeal+Chinook+Location.2+(1|AA), data=dataframe)),
-                      AICc(lmer(y~HarborSeal+allSmolt+Location.2+(1|AA), data=dataframe)),
-                      AICc(lmer(y~HarborSeal+HakeBiomass+Location.2+(1|AA), data=dataframe)),
-                      AICc(lmer(y~HarborSeal+Herring.Biomass+Chinook+Location.2+(1|AA), data=dataframe)),#1
-                      AICc(lmer(y~HarborSeal+Herring.Biomass+HakeBiomass+Location.2+(1|AA), data=dataframe)),#2
-                      AICc(lmer(y~HarborSeal+Herring.Biomass+allSmolt+Location.2+(1|AA), data=dataframe)),#3
-                      AICc(lmer(y~HarborSeal+HakeBiomass+Chinook+Location.2+(1|AA), data=dataframe)),#4
-                      #AICc(lmer(y~HarborSeal+allSmolt+Chinook+Location.2+(1|AA), data=dataframe)),#5
-                      AICc(lmer(y~HarborSeal+allSmolt+HakeBiomass+Location.2+(1|AA), data=dataframe)),#6
-                
-                  
-                      AICc(lmer(y~Herring.Biomass*HakeBiomass+Location.2+(1|AA), data=dataframe)),
-                     AICc(lmer(y~Herring.Biomass*HakeBiomass+allSmolt+Location.2+(1|AA), data=dataframe))
+  aic.output <- rbind(AICc(lmer(y~(1|AA), data=dataframe)), #1, null
+                      AICc(lmer(y~Location.2+(1|AA), data=dataframe)), #2 Location Only
+                      AICc(lmer(y~Location.2+WildProduction+(1|AA), data=dataframe)), #3. Wild Production Smolts
+                      AICc(lmer(y~Location.2+HatcherySmolts+(1|AA), data=dataframe)),#4. Hatchery smolts
+                      AICc(lmer(y~Herring.Biomass+Location.2+(1|AA), data=dataframe)), #5. Herring Biomass
+                      AICc(lmer(y~Chinook+Location.2+(1|AA), data=dataframe)),#6. Chinook Escapements
+                      AICc(lmer(y~allSmolt+Location.2+(1|AA), data=dataframe)), #7. All smolts
+                      AICc(lmer(y~HakeBiomass+Location.2+(1|AA), data=dataframe)), #8. Hake Biomass
+                      AICc(lmer(y~Herring.Biomass+Chinook+Location.2+(1|AA), data=dataframe)),#9. Herring Biomass, Chinook Escapements
+                      AICc(lmer(y~Herring.Biomass+HakeBiomass+(1|AA), data=dataframe)),#10. Herring Biomass, Hake Biomass
+                      AICc(lmer(y~Herring.Biomass+allSmolt+Location.2+(1|AA), data=dataframe)),#11. Herring Biomass, all smolt
+                      AICc(lmer(y~HakeBiomass+Chinook+Location.2+(1|AA), data=dataframe)),#12. Hake Bimass, Chinook Escapement
+                      AICc(lmer(y~allSmolt+Chinook+Location.2+(1|AA), data=dataframe)),#13. all smolt, Chinook Escapements
+                      AICc(lmer(y~allSmolt+HakeBiomass+Location.2+(1|AA), data=dataframe)),#14. all smolt, Hake Biomass
+                      AICc(lmer(y~allSmolt+Chinook+HakeBiomass+Location.2+(1|AA), data=dataframe)),#15. all smolt, Chinook escapent, Hake Biomas
+                      AICc(lmer(y~Herring.Biomass+allSmolt+HakeBiomass+Location.2+(1|AA), data=dataframe)),#16. Herring Biomass, all smolts, Hake Biomass
+                     AICc(lmer(y~Herring.Biomass+allSmolt+Chinook+Location.2+(1|AA), data=dataframe)),#17.Herring biomass, all smolts, Chinook escapements
+                      AICc(lmer(y~Herring.Biomass+Chinook+HakeBiomass+Location.2+(1|AA), data=dataframe)), #18. Herring Biomass, Chinook escapements, Hake biomass
+                      AICc(lmer(y~HarborSeal+Location.2+(1|AA), data=dataframe)), #19. Harbor seal 
+                      AICc(lmer(y~HarborSeal+Herring.Biomass+Location.2+(1|AA), data=dataframe)),#20. Harbor seal, herring biomass
+                      AICc(lmer(y~HarborSeal+Chinook+Location.2+(1|AA), data=dataframe)), #21. Harbor seal, Chinook escapement
+                      AICc(lmer(y~HarborSeal+allSmolt+Location.2+(1|AA), data=dataframe)),#22. Harbor seal, all smolt
+                      AICc(lmer(y~HarborSeal+HakeBiomass+Location.2+(1|AA), data=dataframe)),#23. Harbor seal, hake biomass
+                      AICc(lmer(y~HarborSeal+Herring.Biomass+Chinook+Location.2+(1|AA), data=dataframe)),#24. Harbor seal, herring biomass, Chinook escapement
+                      AICc(lmer(y~HarborSeal+Herring.Biomass+HakeBiomass+Location.2+(1|AA), data=dataframe)),#25. Harbor seal, herring biomass, hakr biomass
+                      AICc(lmer(y~HarborSeal+Herring.Biomass+allSmolt+Location.2+(1|AA), data=dataframe)),#26. Harbor seal, herring biomass, all smolts
+                      AICc(lmer(y~HarborSeal+HakeBiomass+Chinook+Location.2+(1|AA), data=dataframe)),#27. Harbor seal, hake biomass, Chinool escapement
+                      AICc(lmer(y~HarborSeal+allSmolt+HakeBiomass+Location.2+(1|AA), data=dataframe)),#28. Harbor seal, all smolts, hake biomass
+                      AICc(lmer(y~Herring.Biomass*HakeBiomass+Location.2+(1|AA), data=dataframe)), #29. Hake:Herring biomass
+                     AICc(lmer(y~Herring.Biomass*HakeBiomass+allSmolt+Location.2+(1|AA), data=dataframe))#30. Hake:Herring biomass, all smolt
                       
                       
                       
   )
   
-  model.names <- c("Null","Location","Wild Smolts", "Hatch Smolts", "Herring", "Chinook", "Smolts", "Hake","1. Herring, Chinook", 
-                   "2. Herring, Hake", "3. Herring, Smolts", "4. Chinook, Hake","CH SM",
-                   "6. Smolts, Hake", "CH SM", "8. Herring, Smolts, Hake","CH SM",
-                   "11. Herring Hake Chinook",
-                   "Harbor Seal, Location", "Harbor Seal, Herring", "Harbor Seal, Chinook", "Harbor Seal, Smolts", 
-                   "Hake","1. Harbor Seal, Herring, Chinook",
-                   "2.Harbor Seal,  Herring, Hake", "3.Harbor Seal,  Herring, Smolts", "4.Harbor Seal,  Chinook, Hake",
-                   "6. Harbor Seal, Smolts, Hake",
-                   "Int","Int Sm")
+  model.names <- c("1. Null",
+                   "2. Location Only",
+                   "3. Wild Smolts", 
+                   "4. Hatchery Smolts", 
+                   "5. Herring Biomass", 
+                   "6. Chinook Escapements", 
+                   "7. All Smolts", 
+                   "8. Hake Biomass",
+                   "9. Herring Biomass, Chinook escapements", 
+                   "10. Herring Biomass, Hake Biomass", 
+                   "11. Herring Biomass, All Smolts", 
+                   "12. Chinook escapement, Hake biomass",
+                   "13. Chinool escapments, all smolts",
+                   "14. All Smolts, Hake biomass", 
+                   "15. Chinook escapement, all smolts, Hake biomass", 
+                   "16. Herring Biomass, all Smolts, Hake biomass",
+                   "17. Chinook escapement, all smolts, herring biomass",
+                   "18. Herring biomass, Hake biomass, Chinook escapement",
+                   "19. Harbor Seal population",
+                   "20. Harbor Seal population, Herring biomass", 
+                   "21. Harbor Seal population, Chinook escapement", 
+                   "22.Harbor Seal population, all Smolts", 
+                   "23. Harbor seal population, Hake biomass",
+                   "24. Harbor Seal population, Herring biomass, Chinook escapement",
+                   "25.Harbor Seal population,  Herring biomass, Hake biomass", 
+                   "26.Harbor Seal population,  Herring biomass, all Smolts", 
+                   "27.Harbor Seal population,  Chinook escapement, Hake biomass",
+                   "28. Harbor Seal population, all Smolts, Hake biomass",
+                   "29. Hake and Herring interaction",
+                   "30. Hake and Herring interaction, all smolts")
   
   row.names(aic.output) <- model.names
   delaic <- aic.output-min(aic.output)
