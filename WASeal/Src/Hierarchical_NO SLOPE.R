@@ -98,50 +98,29 @@ ModelSelection.CLIM<- function(dataframe,n, y) {
                       AICc(lmer(y~UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#6
                       AICc(lmer(y~PDO+NPGO+Location.2+(1|AA), data=dataframe)),
                       AICc(lmer(y~PDO+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#7
-                      #AICc(lmer(y~PDO+MEI+Location.2+(1|AA), data=dataframe)),
                       AICc(lmer(y~UpInAn.45.Spring+NPGO+Location.2+(1|AA), data=dataframe)),#8
-                      #AICc(lmer(y~MEI+NPGO+Location.2+(1|AA), data=dataframe)),#5
                       AICc(lmer(y~MEI+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#9
-                      #AICc(lmer(y~MEI+NPGO+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#7
-                      #AICc(lmer(y~PDO+MEI+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#8
-                      #AICc(lmer(y~PDO+MEI+NPGO+Location.2+(1|AA), data=dataframe)),#9
-                      #AICc(lmer(y~PDO+NPGO+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),
-                      
                       AICc(lmer(y~Location.2+(1|AA)+WA.SST.Su, data=dataframe)), #10
                       AICc(lmer(y~WA.SST.Su+PDO+Location.2+(1|AA), data=dataframe)),#11
                       AICc(lmer(y~WA.SST.Su+NPGO+Location.2+(1|AA), data=dataframe)),#12
                       AICc(lmer(y~WA.SST.Su+MEI+Location.2+(1|AA), data=dataframe)),#13
                       AICc(lmer(y~WA.SST.Su+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#14
-                      # AIC(lmer(y~WA.SST.Su+PDO+NPGO+Location.2+(1|AA), data=dataframe)),
                       AICc(lmer(y~WA.SST.Su+PDO+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#15
-                      #AIC(lmer(y~WA.SST.Su+PDO+MEI+Location.2+(1|AA), data=dataframe)),
                       AICc(lmer(y~WA.SST.Su+UpInAn.45.Spring+NPGO+Location.2+(1|AA), data=dataframe)),#16
-                      #AIC(lmer(y~WA.SST.Su+MEI+NPGO+Location.2+(1|AA), data=dataframe)),
                       AICc(lmer(y~WA.SST.Su+MEI+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#17
                       AICc(lmer(y~Location.2+(1|AA)+UpInAn.45.Summer, data=dataframe)), #18
                       AICc(lmer(y~UpInAn.45.Summer+PDO+Location.2+(1|AA), data=dataframe)),#19
                       AICc(lmer(y~UpInAn.45.Summer+NPGO+Location.2+(1|AA), data=dataframe)),#20
                       AICc(lmer(y~UpInAn.45.Summer+MEI+Location.2+(1|AA), data=dataframe)),#21
-                      #AIC(lmer(y~UpInAn.45.Summer+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#22
-                      # AIC(lmer(y~UpInAn.45.Summer+PDO+NPGO+Location.2+(1|AA), data=dataframe)),
-                      #AICc(lmer(y~UpInAn.45.Summer+PDO+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),
-                      #AIC(lmer(y~UpInAn.45.Summer+PDO+MEI+Location.2+(1|AA), data=dataframe)),
                       AICc(lmer(y~UpInAn.45.Summer+UpInAn.45.Spring+NPGO+Location.2+(1|AA), data=dataframe)),#22
-                      #AIC(lmer(y~UpInAn.45.Summer+MEI+NPGO+Location.2+(1|AA), data=dataframe)),
-                      #AICc(lmer(y~UpInAn.45.Summer+MEI+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#24
-                      
                       AICc(lmer(y~Location.2+(1|AA)+Col.Dis.high, data=dataframe)), #23
                       AICc(lmer(y~Col.Dis.high+PDO+Location.2+(1|AA), data=dataframe)),#24
                       AICc(lmer(y~Col.Dis.high+NPGO+Location.2+(1|AA), data=dataframe)),#25
                       AICc(lmer(y~Col.Dis.high+MEI+Location.2+(1|AA), data=dataframe)),#26
                       AICc(lmer(y~Col.Dis.high+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#27
-                      # AICc(lmer(y~Col.Dis.high+PDO+NPGO+Location.2+(1|AA), data=dataframe)),
                       AICc(lmer(y~Col.Dis.high+PDO+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#28
-                      #AICc(lmer(y~Col.Dis.high+PDO+MEI+Location.2+(1|AA), data=dataframe)),
                       AICc(lmer(y~Col.Dis.high+UpInAn.45.Spring+NPGO+Location.2+(1|AA), data=dataframe)),#29
-                      # AICc(lmer(y~Col.Dis.high+MEI+NPGO+Location.2+(1|AA), data=dataframe)),
                       AICc(lmer(y~Col.Dis.high+MEI+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#30
-                      
                       AICc(lmer(y~Col.Dis.high+WA.SST.Su+Location.2+(1|AA), data=dataframe)),#31
                       AICc(lmer(y~Col.Dis.high+UpInAn.45.Summer+Location.2+(1|AA), data=dataframe)),#32
                       AICc(lmer(y~WA.SST.Su+UpInAn.45.Summer+Location.2+(1|AA), data=dataframe)),#33
@@ -152,24 +131,43 @@ ModelSelection.CLIM<- function(dataframe,n, y) {
                       
   )
   
-  model.names <- c("1. Null","2. Location", "3. PDO", "4. NPGO", "5. MEI", "6. Upwelling (Sp)","NPGO,PDO", "7. PDO, Upwelling (Sp)",  
-                   "8. NPGO, Upwelling (Sp)","9. MEI, Upwelling (Sp)",  
+  model.names <- c("1. Null",
+                   "2. Location", 
+                   "3. PDO", 
+                   "4. NPGO", 
+                   "5. MEI", 
+                   "6. Upwelling (Sp)",
+                   "7. NPGO,PDO", 
+                   "8. PDO, Upwelling (Sp)",  
+                   "8. NPGO, Upwelling (Sp)",
+                   "9. MEI, Upwelling (Sp)",  
+                   "10. WA.SST.Su, Location", 
+                   "11. WA.SST.Su, PDO", 
+                   "12. WA.SST.Su, NPGO",
+                   "13. WA.SST.Su, MEI",
+                   "14. WA.SST.Su, Upwelling (Sp)",
+                   "15. WA.SST.Su, PDO, Upwelling (Sp)", 
+                   "16. WA.SST.Su, NPGO, Upwelling (Sp)",
+                   "17. WA.SST.Su, MEI, Upwelling (Sp)",
                    
-                   "10. WA.SST.Su, Location", "11. WA.SST.Su, PDO", "12. WA.SST.Su, NPGO", "13. WA.SST.Su, MEI",
-                   "14. WA.SST.Su, Upwelling (Sp)", "15. WA.SST.Su, PDO, Upwelling (Sp)", 
-                   "16. WA.SST.Su, NPGO, Upwelling (Sp)", "17. WA.SST.Su, MEI, Upwelling (Sp)",
-                   
-                   "18. UpInAn.45.Summer, Location", "19. UpInAn.45.Summer, PDO", "20. UpInAn.45.Summer, NPGO", 
-                   "21. UpInAn.45.Summer, MEI", #"22. UpInAn.45.Summer, Upwelling (Sp)",
-                   #"23.UpInAn.45.Summer,  PDO, Upwelling (Sp)",
-                   "22. UpInAn.45.Summer,  NPGO, Upwelling (Sp)", #"25. UpInAn.45.Summer, MEI, Upwelling (Sp)",
-                   
-                   "23. Col.Dis.high, Location", "24. Col.Dis.high, PDO", "25. Col.Dis.high, NPGO", "26. Col.Dis.high, MEI", "27. Upwelling (Sp)",
-                   "28.Col.Dis.high,  PDO, Upwelling (Sp)", "29.Col.Dis.high,  NPGO, Upwelling (Sp)",
+                   "18. UpInAn.45.Summer, Location", 
+                   "19. UpInAn.45.Summer, PDO", 
+                   "20. UpInAn.45.Summer, NPGO", 
+                   "21. UpInAn.45.Summer, MEI",
+                   "22. UpInAn.45.Summer,  NPGO, Upwelling (Sp)", 
+                   "23. Col.Dis.high, Location", 
+                   "24. Col.Dis.high, PDO", 
+                   "25. Col.Dis.high, NPGO",
+                   "26. Col.Dis.high, MEI", 
+                   "27. Upwelling (Sp)",
+                   "28.Col.Dis.high,  PDO, Upwelling (Sp)",
+                   "29.Col.Dis.high,  NPGO, Upwelling (Sp)",
                    "30. Col.Dis.high, MEI, Upwelling (Sp)",
                    
-                   "31. Col.Dis.high, WA.SST.Su", "32. Col.Dis.high UpInAn.45.Summer", 
-                   "33. WA.SST.Su, UpInAn.45.Summer", "34. WA.SST.Su, UpInAn.45.Summer, Col.Dis.high")
+                   "31. Col.Dis.high, WA.SST.Su", 
+                   "32. Col.Dis.high UpInAn.45.Summer", 
+                   "33. WA.SST.Su, UpInAn.45.Summer", 
+                   "34. WA.SST.Su, UpInAn.45.Summer, Col.Dis.high")
   
   row.names(aic.output) <- model.names
   delaic <- aic.output-min(aic.output)
@@ -426,7 +424,7 @@ color8<- rep(c('black','#CCA65A','#7EBA68','#00C1B2','#6FB1E7'), times=5)
 
 
 ENV <- tidy(modelENV.1)
-x <- data.frame("term" = c('Intercept',   'Location','Summer Upwelling'), "estimate" =   c(ENV[1:3,2]), "std.error" = c(ENV[1:3,3]), "group" = c(rep('fixed', 3)), model="fixed")
+x <- data.frame("term" = c('Intercept',   'Location','Summer Upwelling'), "estimate" =   c(ENV[1:3,4]), "std.error" = c(ENV[1:3,5]), "group" = c(rep('fixed', 3)), model="fixed")
 ENV.fixed <- as_tibble(x)
 x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelENV.1)$AA[1,1]),
                 "std.error" = c(ranef(modelENV.1)$AA[1,1]), "group" = 'random', model="Ala")
@@ -461,7 +459,7 @@ ENV.plot1 <-small_multiple(ENV.mods) +
 ENV.plot1
 
 ENV <- tidy(modelENV.2)
-x <- data.frame("term" = c('Intercept',   'Location','Summer SST'), "estimate" =   c(ENV[1:3,2]), "std.error" = c(ENV[1:3,3]), "group" = c(rep('fixed', 3)), model="fixed")
+x <- data.frame("term" = c('Intercept',   'Location','Summer SST'), "estimate" =   c(ENV[1:3,4]), "std.error" = c(ENV[1:3,5]), "group" = c(rep('fixed', 3)), model="fixed")
 ENV.fixed <- as_tibble(x)
 x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelENV.2)$AA[1,1]),
                 "std.error" = c(ranef(modelENV.2)$AA[1,1]), "group" = 'random', model="Ala")
@@ -497,8 +495,8 @@ ENV.plot2
 
 
 ENV <- tidy(modelENV.3)
-x <- data.frame("term" = c('Intercept',   'Location','Summer Upwelling', "MEI"), "estimate" =   c(ENV[1:4,2]), 
-                "std.error" = c(ENV[1:4,3]), "group" = c(rep('fixed', 4)), model="fixed")
+x <- data.frame("term" = c('Intercept',   'Location','Summer Upwelling', "MEI"), "estimate" =   c(ENV[1:4,4]), 
+                "std.error" = c(ENV[1:4,5]), "group" = c(rep('fixed', 4)), model="fixed")
 ENV.fixed <- as_tibble(x)
 x <- data.frame("term" = c('Intercept'), "estimate" = c(coef(modelENV.3)$AA[1,1]),
                 "std.error" = c(ranef(modelENV.3)$AA[1,1]), "group" = 'random', model="Ala")
@@ -661,9 +659,7 @@ PREY.plot<-annotate_figure(PREY.plot,
 PREY.plot
 
 
-pdf(file="Results/Figures/HCoefPlot.rev.pdf", width=12, height=6.5)
-PREY.plot
-dev.off()
+
 
 ########################    2. Environmental  Plots#######################
 library(dotwhisker)
@@ -824,7 +820,9 @@ ENV.plot<-annotate_figure(ENV.plot,
 ENV.plot
 
 
-
+pdf(file="Results/Figures/HCoefPlot_nonweightedBeta.rev.pdf", width=12, height=6.5)
+ENV.plot
+dev.off()
 
 ########################   2. Foodweb Plots#######################
 colorp1bar<- c('#7EBA68','grey','grey',"grey",'grey', #Hake
@@ -963,6 +961,12 @@ PREY.plot<-annotate_figure(PREY.plot
                           # top = text_grob("Food Web Models", color = "black", face = "bold", size = 14)
 )
 PREY.plot
+
+
+pdf(file="Results/Figures/Prey_HCoefPlot_nonweightedBeta.rev.pdf", width=12, height=6.5)
+PREY.plot
+dev.off()
+
 
 ####FULL PLOT####
 
