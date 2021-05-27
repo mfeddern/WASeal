@@ -1,0 +1,40 @@
+<table style="border-collapse:collapse; border:none;">
+<caption style="font-weight: bold; text-align:left;">Physiological Delay Top 5 Models</caption>
+<tr>
+<th style="border-top: double; text-align:center; font-style:italic; font-weight:normal; padding:0.2cm; border-bottom:1px solid black; text-align:left; ">Covariates</th>
+<th style="border-top: double; text-align:center; font-style:italic; font-weight:normal; padding:0.2cm; border-bottom:1px solid black; ">AICc</th>
+<th style="border-top: double; text-align:center; font-style:italic; font-weight:normal; padding:0.2cm; border-bottom:1px solid black; ">delAICc</th>
+<th style="border-top: double; text-align:center; font-style:italic; font-weight:normal; padding:0.2cm; border-bottom:1px solid black; ">AICc.Weight</th>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">19. Upwelling (Summer)</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">756.96</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0.62</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">33. Columbia Discharge High, Upwelling (Summer)</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">759.57</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">2.61</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0.17</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">34. SST (Summer), Upwelling (Summer)</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">761.74</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">4.78</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0.06</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">22. Upwelling (Summer), MEI</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">762.79</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">5.83</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0.03</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; border-bottom: double; ">35. SST (Summer), Upwelling (Summer), Columbia Discharge High</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; border-bottom: double; ">763.2</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; border-bottom: double; ">6.24</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; border-bottom: double; ">0.03</td>
+</tr>
+</table>
+

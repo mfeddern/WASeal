@@ -1,0 +1,220 @@
+<table style="border-collapse:collapse; border:none;">
+<caption style="font-weight: bold; text-align:left;">2-year Environmental Delay</caption>
+<tr>
+<th style="border-top: double; text-align:center; font-style:italic; font-weight:normal; padding:0.2cm; border-bottom:1px solid black; text-align:left; ">Covariates</th>
+<th style="border-top: double; text-align:center; font-style:italic; font-weight:normal; padding:0.2cm; border-bottom:1px solid black; ">AICc</th>
+<th style="border-top: double; text-align:center; font-style:italic; font-weight:normal; padding:0.2cm; border-bottom:1px solid black; ">delAICc</th>
+<th style="border-top: double; text-align:center; font-style:italic; font-weight:normal; padding:0.2cm; border-bottom:1px solid black; ">AICc.Weight</th>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">24. Columbia Discharge High, Location</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">751.11</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0.82</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">25. Columbia Discharge High, PDO</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">757.04</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">5.93</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0.04</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">32. Columbia Discharge High, SST (Summer)</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">757.21</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">6.1</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0.04</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">26. Columbia Discharge High, NPGO</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">757.33</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">6.22</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0.04</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">27. Columbia Discharge High, MEI</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">757.51</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">6.4</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0.03</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">33. Columbia Discharge High, Upwelling (Summer)</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">759.07</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">7.97</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0.02</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">28. Upwelling (Spring)</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">760.13</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">9.02</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0.01</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">35. SST (Summer), Upwelling (Summer), Columbia Discharge High</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">764.71</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">13.6</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">29.Columbia Discharge High,  PDO, Upwelling (Spring)</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">765.04</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">13.94</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">2. Location</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">765.09</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">13.98</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">31. Columbia Discharge High, MEI, Upwelling (Spring)</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">766.37</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">15.26</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">30. Columbia Discharge High,  NPGO, Upwelling (Spring)</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">766.39</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">15.28</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">5. MEI</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">769.77</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">18.66</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">4. NPGO</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">769.92</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">18.81</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">11. SST (Summer)</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">770.52</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">19.41</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">3. PDO</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">771.49</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">20.38</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">6. Upwelling (Spring)</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">772.73</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">21.62</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">19. Upwelling (Summer)</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">773.44</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">22.34</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">14. SST (Summer), MEI</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">774.44</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">23.33</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">13. SST (Summer), NPGO</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">775.69</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">24.58</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">7. NPGO,PDO</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">776.21</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">25.1</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">12. SST (Summer), PDO</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">776.87</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">25.76</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">34. SST (Summer), Upwelling (Summer)</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">777.89</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">26.78</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">22. Upwelling (Summer), MEI</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">778.09</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">26.99</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">10. MEI, Upwelling (Spring)</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">778.14</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">27.03</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">9. NPGO, Upwelling (Spring)</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">778.52</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">27.41</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">15. SST (Summer), Upwelling (Spring)</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">778.54</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">27.43</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">21. Upwelling (Summer), NPGO</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">778.64</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">27.54</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">8. PDO, Upwelling (Spring)</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">778.71</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">27.61</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">20. Upwelling (Summer), PDO</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">779.88</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">28.77</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">18. SST (Summer), MEI, Upwelling (Spring)</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">783.16</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">32.05</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">17. SST (Summer), NPGO, Upwelling (Spring)</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">784.21</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">33.1</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">16. SST (Summer), PDO, Upwelling (Spring)</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">784.43</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">33.32</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">23. Upwelling (Summer),  NPGO, Upwelling (Spring)</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">787.02</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">35.91</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; border-bottom: double; ">1. Null</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; border-bottom: double; ">787.38</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; border-bottom: double; ">36.27</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; border-bottom: double; ">0</td>
+</tr>
+</table>
+

@@ -1,4 +1,4 @@
-rm(list = ls())
+
 
 library(devtools)
 #install_version("lme4", "1.1-25")
@@ -7,25 +7,37 @@ library(lme4)
 library(AICcmodavg)
 
 dataALL <-  read.csv("Data/Compiled/HierarchicalData.csv")
-data<-subset(subset(dataALL, Location.2=="Inland"|Location.2=="Coastal"), beta==0& eq==2)
+data<-subset(subset(dataALL, Location.2=="Inland"|Location.2=="Coastal"), beta==1& eq==2)
 data.lag1<-data
 
 dataALL <-  read.csv("Data/Compiled/HierarchicalData2.csv")
-data<-subset(subset(dataALL, Location.2=="Inland"|Location.2=="Coastal"), beta==0& eq==2)
+data<-subset(subset(dataALL, Location.2=="Inland"|Location.2=="Coastal"), beta==1& eq==2)
 data.lag2<-data
 
 dataALL <-  read.csv("Data/Compiled/HierarchicalData3.csv")
-data<-subset(subset(dataALL, Location.2=="Inland"|Location.2=="Coastal"), beta==0& eq==2)
+data<-subset(subset(dataALL, Location.2=="Inland"|Location.2=="Coastal"), beta==1& eq==2)
 data.lag3<-data
 
 dataALL <-  read.csv("Data/Compiled/HierarchicalData4.csv")
-data<-subset(subset(dataALL, Location.2=="Inland"|Location.2=="Coastal"), beta==0& eq==2)
+data<-subset(subset(dataALL, Location.2=="Inland"|Location.2=="Coastal"), beta==1& eq==2)
 data.lag4<-data
 
 
-dataALL <-  read.csv("Data/Compiled/HierarchicalData5.csv")
+dataALL <-  read.csv('Data/Compiled/HierarchicalData1AdCorr.csv')
 data<-subset(subset(dataALL, Location.2=="Inland"|Location.2=="Coastal"), beta==1& eq==2)
-data.lag5<-data
+data.lag1ad<-data
+
+dataALL <-  read.csv('Data/Compiled/HierarchicalData2AdCorr.csv')
+data<-subset(subset(dataALL, Location.2=="Inland"|Location.2=="Coastal"), beta==1& eq==2)
+data.lag2ad<-data
+
+dataALL <-  read.csv('Data/Compiled/HierarchicalData3AdCorr.csv')
+data<-subset(subset(dataALL, Location.2=="Inland"|Location.2=="Coastal"), beta==1& eq==2)
+data.lag3ad<-data
+
+dataALL <-  read.csv('Data/Compiled/HierarchicalData0.csv')
+data<-subset(subset(dataALL, Location.2=="Inland"|Location.2=="Coastal"), beta==1& eq==2)
+data.lag3ad<-data
 ########################    Hier Clim2 Models       ############################
 
 dataCLIM <- subset(data.lag1, AA=="GLU"|AA=="ALA"|AA=="VAL"|AA=="PRO")
@@ -88,6 +100,67 @@ dataCLIM.4 <-dataCLIM %>% select(MEI,
                                  Location.2)
 dataCLIM.4 <- dataCLIM.4[complete.cases(dataCLIM.4), ]
 
+dataCLIM<- subset(data.lag1ad, AA=="GLU"|AA=="ALA"|AA=="PRO"|AA=="VAL"|AA=="PRO")
+dataCLIM.1ad <-dataCLIM %>% select(MEI, 
+                                 PDO,
+                                 NPGO,
+                                 WA.SST.Su, 
+                                 UpInAn.45.Spring,
+                                 Col.Dis.high,
+                                 UpInAn.45.Summer,
+                                 TP,
+                                 Year,
+                                 AA,
+                                 Sample.ID,
+                                 Location.2)
+dataCLIM.1ad <- dataCLIM.1ad[complete.cases(dataCLIM.1ad), ]
+
+dataCLIM<- subset(data.lag2ad, AA=="GLU"|AA=="ALA"|AA=="PRO"|AA=="VAL"|AA=="PRO")
+dataCLIM.2ad <-dataCLIM %>% select(MEI, 
+                                   PDO,
+                                   NPGO,
+                                   WA.SST.Su, 
+                                   UpInAn.45.Spring,
+                                   Col.Dis.high,
+                                   UpInAn.45.Summer,
+                                   TP,
+                                   Year,
+                                   AA,
+                                   Sample.ID,
+                                   Location.2)
+dataCLIM.2ad <- dataCLIM.2ad[complete.cases(dataCLIM.2ad), ]
+
+dataCLIM<- subset(data.lag3ad, AA=="GLU"|AA=="ALA"|AA=="PRO"|AA=="VAL"|AA=="PRO")
+dataCLIM.3ad <-dataCLIM %>% select(MEI, 
+                                   PDO,
+                                   NPGO,
+                                   WA.SST.Su, 
+                                   UpInAn.45.Spring,
+                                   Col.Dis.high,
+                                   UpInAn.45.Summer,
+                                   TP,
+                                   Year,
+                                   AA,
+                                   Sample.ID,
+                                   Location.2)
+dataCLIM.3ad <- dataCLIM.3ad[complete.cases(dataCLIM.3ad), ]
+
+
+dataCLIM<- subset(data.lag0, AA=="GLU"|AA=="ALA"|AA=="PRO"|AA=="VAL"|AA=="PRO")
+dataCLIM.0 <-dataCLIM %>% select(MEI, 
+                                   PDO,
+                                   NPGO,
+                                   WA.SST.Su, 
+                                   UpInAn.45.Spring,
+                                   Col.Dis.high,
+                                   UpInAn.45.Summer,
+                                   TP,
+                                   Year,
+                                   AA,
+                                   Sample.ID,
+                                   Location.2)
+dataCLIM.0 <- dataCLIM.0[complete.cases(dataCLIM.0), ]
+
 ModelSelection.CLIM<- function(dataframe,n, y) {
   
   aic.output <- rbind(AICc(lmer(y~(1|AA), data=dataframe)), #1
@@ -96,35 +169,35 @@ ModelSelection.CLIM<- function(dataframe,n, y) {
                       AICc(lmer(y~NPGO+Location.2+(1|AA), data=dataframe)),#4
                       AICc(lmer(y~MEI+Location.2+(1|AA), data=dataframe)),#5
                       AICc(lmer(y~UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#6
-                      AICc(lmer(y~PDO+NPGO+Location.2+(1|AA), data=dataframe)),
-                      AICc(lmer(y~PDO+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#7
-                      AICc(lmer(y~UpInAn.45.Spring+NPGO+Location.2+(1|AA), data=dataframe)),#8
-                      AICc(lmer(y~MEI+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#9
-                      AICc(lmer(y~Location.2+(1|AA)+WA.SST.Su, data=dataframe)), #10
-                      AICc(lmer(y~WA.SST.Su+PDO+Location.2+(1|AA), data=dataframe)),#11
-                      AICc(lmer(y~WA.SST.Su+NPGO+Location.2+(1|AA), data=dataframe)),#12
-                      AICc(lmer(y~WA.SST.Su+MEI+Location.2+(1|AA), data=dataframe)),#13
-                      AICc(lmer(y~WA.SST.Su+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#14
-                      AICc(lmer(y~WA.SST.Su+PDO+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#15
-                      AICc(lmer(y~WA.SST.Su+UpInAn.45.Spring+NPGO+Location.2+(1|AA), data=dataframe)),#16
-                      AICc(lmer(y~WA.SST.Su+MEI+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#17
-                      AICc(lmer(y~Location.2+(1|AA)+UpInAn.45.Summer, data=dataframe)), #18
-                      AICc(lmer(y~UpInAn.45.Summer+PDO+Location.2+(1|AA), data=dataframe)),#19
-                      AICc(lmer(y~UpInAn.45.Summer+NPGO+Location.2+(1|AA), data=dataframe)),#20
-                      AICc(lmer(y~UpInAn.45.Summer+MEI+Location.2+(1|AA), data=dataframe)),#21
-                      AICc(lmer(y~UpInAn.45.Summer+UpInAn.45.Spring+NPGO+Location.2+(1|AA), data=dataframe)),#22
-                      AICc(lmer(y~Location.2+(1|AA)+Col.Dis.high, data=dataframe)), #23
-                      AICc(lmer(y~Col.Dis.high+PDO+Location.2+(1|AA), data=dataframe)),#24
-                      AICc(lmer(y~Col.Dis.high+NPGO+Location.2+(1|AA), data=dataframe)),#25
-                      AICc(lmer(y~Col.Dis.high+MEI+Location.2+(1|AA), data=dataframe)),#26
-                      AICc(lmer(y~Col.Dis.high+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#27
-                      AICc(lmer(y~Col.Dis.high+PDO+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#28
-                      AICc(lmer(y~Col.Dis.high+UpInAn.45.Spring+NPGO+Location.2+(1|AA), data=dataframe)),#29
-                      AICc(lmer(y~Col.Dis.high+MEI+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#30
-                      AICc(lmer(y~Col.Dis.high+WA.SST.Su+Location.2+(1|AA), data=dataframe)),#31
-                      AICc(lmer(y~Col.Dis.high+UpInAn.45.Summer+Location.2+(1|AA), data=dataframe)),#32
-                      AICc(lmer(y~WA.SST.Su+UpInAn.45.Summer+Location.2+(1|AA), data=dataframe)),#33
-                      AICc(lmer(y~WA.SST.Su+UpInAn.45.Summer+Col.Dis.high+Location.2+(1|AA), data=dataframe))
+                      AICc(lmer(y~PDO+NPGO+Location.2+(1|AA), data=dataframe)),#7
+                      AICc(lmer(y~PDO+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#8
+                      AICc(lmer(y~UpInAn.45.Spring+NPGO+Location.2+(1|AA), data=dataframe)),#9
+                      AICc(lmer(y~MEI+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#10
+                      AICc(lmer(y~Location.2+(1|AA)+WA.SST.Su, data=dataframe)), #11
+                      AICc(lmer(y~WA.SST.Su+PDO+Location.2+(1|AA), data=dataframe)),#12
+                      AICc(lmer(y~WA.SST.Su+NPGO+Location.2+(1|AA), data=dataframe)),#13
+                      AICc(lmer(y~WA.SST.Su+MEI+Location.2+(1|AA), data=dataframe)),#14
+                      AICc(lmer(y~WA.SST.Su+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#15
+                      AICc(lmer(y~WA.SST.Su+PDO+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#16
+                      AICc(lmer(y~WA.SST.Su+UpInAn.45.Spring+NPGO+Location.2+(1|AA), data=dataframe)),#17
+                      AICc(lmer(y~WA.SST.Su+MEI+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#18
+                      AICc(lmer(y~Location.2+(1|AA)+UpInAn.45.Summer, data=dataframe)), #19
+                      AICc(lmer(y~UpInAn.45.Summer+PDO+Location.2+(1|AA), data=dataframe)),#20
+                      AICc(lmer(y~UpInAn.45.Summer+NPGO+Location.2+(1|AA), data=dataframe)),#21
+                      AICc(lmer(y~UpInAn.45.Summer+MEI+Location.2+(1|AA), data=dataframe)),#22
+                      AICc(lmer(y~UpInAn.45.Summer+UpInAn.45.Spring+NPGO+Location.2+(1|AA), data=dataframe)),#23
+                      AICc(lmer(y~Location.2+(1|AA)+Col.Dis.high, data=dataframe)), #24
+                      AICc(lmer(y~Col.Dis.high+PDO+Location.2+(1|AA), data=dataframe)),#25
+                      AICc(lmer(y~Col.Dis.high+NPGO+Location.2+(1|AA), data=dataframe)),#26
+                      AICc(lmer(y~Col.Dis.high+MEI+Location.2+(1|AA), data=dataframe)),#27
+                      AICc(lmer(y~Col.Dis.high+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#28
+                      AICc(lmer(y~Col.Dis.high+PDO+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#29
+                      AICc(lmer(y~Col.Dis.high+UpInAn.45.Spring+NPGO+Location.2+(1|AA), data=dataframe)),#30
+                      AICc(lmer(y~Col.Dis.high+MEI+UpInAn.45.Spring+Location.2+(1|AA), data=dataframe)),#31
+                      AICc(lmer(y~Col.Dis.high+WA.SST.Su+Location.2+(1|AA), data=dataframe)),#32
+                      AICc(lmer(y~Col.Dis.high+UpInAn.45.Summer+Location.2+(1|AA), data=dataframe)),#33
+                      AICc(lmer(y~WA.SST.Su+UpInAn.45.Summer+Location.2+(1|AA), data=dataframe)),#34
+                      AICc(lmer(y~WA.SST.Su+UpInAn.45.Summer+Col.Dis.high+Location.2+(1|AA), data=dataframe))#35
 
                       
                       
@@ -136,53 +209,62 @@ ModelSelection.CLIM<- function(dataframe,n, y) {
                    "3. PDO", 
                    "4. NPGO", 
                    "5. MEI", 
-                   "6. Upwelling (Sp)",
+                   "6. Upwelling (Spring)",
                    "7. NPGO,PDO", 
-                   "8. PDO, Upwelling (Sp)",  
-                   "8. NPGO, Upwelling (Sp)",
-                   "9. MEI, Upwelling (Sp)",  
-                   "10. WA.SST.Su, Location", 
-                   "11. WA.SST.Su, PDO", 
-                   "12. WA.SST.Su, NPGO",
-                   "13. WA.SST.Su, MEI",
-                   "14. WA.SST.Su, Upwelling (Sp)",
-                   "15. WA.SST.Su, PDO, Upwelling (Sp)", 
-                   "16. WA.SST.Su, NPGO, Upwelling (Sp)",
-                   "17. WA.SST.Su, MEI, Upwelling (Sp)",
+                   "8. PDO, Upwelling (Spring)",  
+                   "9. NPGO, Upwelling (Spring)",
+                   "10. MEI, Upwelling (Spring)",  
+                   "11. SST (Summer)", 
+                   "12. SST (Summer), PDO", 
+                   "13. SST (Summer), NPGO",
+                   "14. SST (Summer), MEI",
+                   "15. SST (Summer), Upwelling (Spring)",
+                   "16. SST (Summer), PDO, Upwelling (Spring)", 
+                   "17. SST (Summer), NPGO, Upwelling (Spring)",
+                   "18. SST (Summer), MEI, Upwelling (Spring)",
                    
-                   "18. UpInAn.45.Summer, Location", 
-                   "19. UpInAn.45.Summer, PDO", 
-                   "20. UpInAn.45.Summer, NPGO", 
-                   "21. UpInAn.45.Summer, MEI",
-                   "22. UpInAn.45.Summer,  NPGO, Upwelling (Sp)", 
-                   "23. Col.Dis.high, Location", 
-                   "24. Col.Dis.high, PDO", 
-                   "25. Col.Dis.high, NPGO",
-                   "26. Col.Dis.high, MEI", 
-                   "27. Upwelling (Sp)",
-                   "28.Col.Dis.high,  PDO, Upwelling (Sp)",
-                   "29.Col.Dis.high,  NPGO, Upwelling (Sp)",
-                   "30. Col.Dis.high, MEI, Upwelling (Sp)",
+                   "19. Upwelling (Summer)", 
+                   "20. Upwelling (Summer), PDO", 
+                   "21. Upwelling (Summer), NPGO", 
+                   "22. Upwelling (Summer), MEI",
+                   "23. Upwelling (Summer),  NPGO, Upwelling (Spring)", 
+                   "24. Columbia Discharge High, Location", 
+                   "25. Columbia Discharge High, PDO", 
+                   "26. Columbia Discharge High, NPGO",
+                   "27. Columbia Discharge High, MEI", 
+                   "28. Upwelling (Spring)",
+                   "29.Columbia Discharge High,  PDO, Upwelling (Spring)",
+                   "30. Columbia Discharge High,  NPGO, Upwelling (Spring)",
+                   "31. Columbia Discharge High, MEI, Upwelling (Spring)",
                    
-                   "31. Col.Dis.high, WA.SST.Su", 
-                   "32. Col.Dis.high UpInAn.45.Summer", 
-                   "33. WA.SST.Su, UpInAn.45.Summer", 
-                   "34. WA.SST.Su, UpInAn.45.Summer, Col.Dis.high")
+                   "32. Columbia Discharge High, SST (Summer)", 
+                   "33. Columbia Discharge High, Upwelling (Summer)", 
+                   "34. SST (Summer), Upwelling (Summer)", 
+                   "35. SST (Summer), Upwelling (Summer), Columbia Discharge High")
   
-  row.names(aic.output) <- model.names
+ # row.names(aic.output) <- model.names
   delaic <- aic.output-min(aic.output)
   aic.weight1 <- exp(-0.5*delaic)
-  aic.weight <- aic.weight1/sum(aic.weight1)
+  aic.weight <- round(aic.weight1/sum(aic.weight1), digits=2)
   #dev.ex <- model.summary[,14]
-  aic.output <- cbind(aic.output, delaic, aic.weight)
+  aic.output <- cbind(model.names, round(aic.output, digits=2), round(delaic, digits=2), aic.weight)
   
-  colnames(aic.output)<- c("AICc", "delAICc", "AICc Weight")
+  colnames(aic.output)<- c("Covariates","AICc", "delAICc", "AICc Weight")
   return(aic.output)
 }
 
+model.selectionCLIM.0 <- ModelSelection.CLIM(dataCLIM.0, n, dataCLIM.0$TP)
+clim.0 <-data.frame(model.selectionCLIM.0)
+clim.0.ordered <- clim.1[order(clim.0$AICc),]
+subset(clim.0, delAICc<=5)
+clim.1.ordered[1:6,]
+
 model.selectionCLIM.1 <- ModelSelection.CLIM(dataCLIM.1, n, dataCLIM.1$TP)
 clim.1 <-data.frame(model.selectionCLIM.1)
-subset(clim.1, delAICc<=1.97)
+clim.1.ordered <- clim.1[order(clim.1$AICc),]
+subset(clim.1, delAICc<=5)
+clim.1.ordered[1:6,]
+
 modelENV.1 <- lmer(TP~Location.2+UpInAn.45.Summer+(1|AA), data=dataCLIM.1)
 summary(modelENV.1)
 modelENV.1 <- lmer(TP~Location.2+UpInAn.45.Summer+(1|AA), data=dataCLIM.1)
@@ -190,14 +272,20 @@ summary(lmer(TP~(1|AA), data=dataCLIM.1))
 
 model.selectionCLIM.2 <- ModelSelection.CLIM(dataCLIM.2, n, dataCLIM.2$TP)
 clim.2 <-data.frame(model.selectionCLIM.2)
+clim.2.ordered <- clim.2[order(clim.2$AICc),]
 subset(clim.2, delAICc<=1.97)
+clim.2.ordered[1:6,]
+
 modelENV.2 <- lmer(TP~Location.2+WA.SST.Su+(1|AA), data=dataCLIM.2)
 summary(modelENV.2)
 
 model.selectionCLIM.3 <- ModelSelection.CLIM(dataCLIM.3, n, dataCLIM.3$TP)
 clim.3 <-data.frame(model.selectionCLIM.3)
 subset(clim.3, delAICc<=2)
-modelENV.3 <- lmer(TP~Location.2+UpInAn.45.Summer+MEI+(1|AA), data=dataCLIM.3)
+clim.3.ordered <- clim.3[order(clim.3$AICc),]
+clim.3.ordered[1:6,]
+
+modelENV.3 <- lmer(TP~Location.2+Col.Dis.high+(1|AA), data=dataCLIM.3)
 summary(modelENV.3)
 
 model.selectionCLIM.4 <- ModelSelection.CLIM(dataCLIM.4, n, dataCLIM.4$TP)
@@ -206,6 +294,23 @@ subset(clim.4, delAICc<=2)
 modelENV.4 <- lmer(TP~Location.2+WA.SST.Su+(1|AA), data=dataCLIM.4)
 summary(modelENV.4)
 
+model.selectionCLIM.1ad <- ModelSelection.CLIM(dataCLIM.1ad, n, dataCLIM.1ad$TP)
+clim.1ad <-data.frame(model.selectionCLIM.1ad)
+subset(clim.1ad, delAICc<=2)
+clim.1ad.ordered <- clim.1ad[order(clim.1ad$AICc),]
+clim.1ad.ordered[1:6,]
+
+model.selectionCLIM.2ad <- ModelSelection.CLIM(dataCLIM.2ad, n, dataCLIM.2ad$TP)
+clim.2ad <-data.frame(model.selectionCLIM.2ad)
+subset(clim.2ad, delAICc<=2)
+clim.2ad.ordered <- clim.2ad[order(clim.2ad$AICc),]
+clim.2ad.ordered[1:6,]
+
+model.selectionCLIM.3ad <- ModelSelection.CLIM(dataCLIM.3ad, n, dataCLIM.3ad$TP)
+clim.3ad <-data.frame(model.selectionCLIM.3ad)
+subset(clim.3ad, delAICc<=2)
+clim.3ad.ordered <- clim.3ad[order(clim.3ad$AICc),]
+clim.3ad.ordered[1:6,]
 ########################    Hier PREY Models       ############################
 
 dataPrey <- subset(data.lag1, AA=="GLU"|AA=="ALA"|AA=="VAL"|AA=="PRO")
@@ -296,6 +401,74 @@ dataPrey.5 <-dataPrey %>% select(allSmolt,
                                  beta)
 dataPrey.5 <- dataPrey.5[complete.cases(dataPrey.5), ]
 
+dataPREY<- subset(data.lag1ad, AA=="GLU"|AA=="ALA"|AA=="PRO"|AA=="VAL"|AA=="PRO")
+dataPREY.1ad <-dataPREY %>% select(allSmolt, 
+                                   HakeBiomass,
+                                   Herring.Biomass,
+                                   AA,
+                                   Chinook, 
+                                   HarborSeal,
+                                   WildProduction,
+                                   HatcherySmolts,
+                                   TP,
+                                   Year,
+                                   Sample.ID,
+                                   Location.2,
+                                   eq,
+                                   beta)
+dataPREY.1ad <- dataPREY.1ad[complete.cases(dataPREY.1ad), ]
+
+dataPREY<- subset(data.lag2ad, AA=="GLU"|AA=="ALA"|AA=="PRO"|AA=="VAL"|AA=="PRO")
+dataPREY.2ad <-dataPREY %>% select(allSmolt, 
+                                   HakeBiomass,
+                                   Herring.Biomass,
+                                   AA,
+                                   Chinook, 
+                                   HarborSeal,
+                                   WildProduction,
+                                   HatcherySmolts,
+                                   TP,
+                                   Year,
+                                   Sample.ID,
+                                   Location.2,
+                                   eq,
+                                   beta)
+dataPREY.2ad <- dataPREY.2ad[complete.cases(dataPREY.2ad), ]
+
+dataPREY<- subset(data.lag3ad, AA=="GLU"|AA=="ALA"|AA=="PRO"|AA=="VAL"|AA=="PRO")
+dataPREY.3ad <-dataPREY %>% select(allSmolt, 
+                                   HakeBiomass,
+                                   Herring.Biomass,
+                                   AA,
+                                   Chinook, 
+                                   HarborSeal,
+                                   WildProduction,
+                                   HatcherySmolts,
+                                   TP,
+                                   Year,
+                                   Sample.ID,
+                                   Location.2,
+                                   eq,
+                                   beta)
+dataPREY.3ad <- dataPREY.3ad[complete.cases(dataPREY.3ad), ]
+
+dataPREY<- subset(data.0, AA=="GLU"|AA=="ALA"|AA=="PRO"|AA=="VAL"|AA=="PRO")
+dataPREY.0 <-dataPREY %>% select(allSmolt, 
+                                   HakeBiomass,
+                                   Herring.Biomass,
+                                   AA,
+                                   Chinook, 
+                                   HarborSeal,
+                                   WildProduction,
+                                   HatcherySmolts,
+                                   TP,
+                                   Year,
+                                   Sample.ID,
+                                   Location.2,
+                                   eq,
+                                   beta)
+dataPREY.0 <- dataPREY.0[complete.cases(dataPREY.0), ]
+
 model.selection.PREY <- function(dataframe,n, y) {
   
   aic.output <- rbind(AICc(lmer(y~(1|AA), data=dataframe)), #1, null
@@ -335,76 +508,91 @@ model.selection.PREY <- function(dataframe,n, y) {
   
   model.names <- c("1. Null",
                    "2. Location Only",
-                   "3. Wild Smolts", 
-                   "4. Hatchery Smolts", 
+                   "3. Wild Chinook Smolts", 
+                   "4. Hatchery Chinook Smolts", 
                    "5. Herring Biomass", 
                    "6. Chinook Escapements", 
-                   "7. All Smolts", 
+                   "7. All Chinook Smolts", 
                    "8. Hake Biomass",
                    "9. Herring Biomass, Chinook escapements", 
                    "10. Herring Biomass, Hake Biomass", 
-                   "11. Herring Biomass, All Smolts", 
+                   "11. Herring Biomass, All Chinook Smolts", 
                    "12. Chinook escapement, Hake biomass",
-                   "13. Chinool escapments, all smolts",
-                   "14. All Smolts, Hake biomass", 
-                   "15. Chinook escapement, all smolts, Hake biomass", 
-                   "16. Herring Biomass, all Smolts, Hake biomass",
-                   "17. Chinook escapement, all smolts, herring biomass",
+                   "13. Chinook escapments, All Chinook Smolts",
+                   "14. All Chinook Smolts, Hake biomass", 
+                   "15. Chinook escapement, All Chinook Smolts, Hake biomass", 
+                   "16. Herring Biomass, All Chinook Smolts, Hake biomass",
+                   "17. Chinook escapement, All Chinook Smolts, herring biomass",
                    "18. Herring biomass, Hake biomass, Chinook escapement",
                    "19. Harbor Seal population",
                    "20. Harbor Seal population, Herring biomass", 
                    "21. Harbor Seal population, Chinook escapement", 
-                   "22.Harbor Seal population, all Smolts", 
+                   "22.Harbor Seal population, All Chinook Smolts", 
                    "23. Harbor seal population, Hake biomass",
                    "24. Harbor Seal population, Herring biomass, Chinook escapement",
                    "25.Harbor Seal population,  Herring biomass, Hake biomass", 
-                   "26.Harbor Seal population,  Herring biomass, all Smolts", 
+                   "26.Harbor Seal population,  Herring biomass, All Chinook Smolts", 
                    "27.Harbor Seal population,  Chinook escapement, Hake biomass",
-                   "28. Harbor Seal population, all Smolts, Hake biomass",
+                   "28. Harbor Seal population, All Chinook Smolts, Hake biomass",
                    "29. Hake and Herring interaction",
-                   "30. Hake and Herring interaction, all smolts")
+                   "30. Hake and Herring interaction, All Chinook Smolts")
   
-  row.names(aic.output) <- model.names
+  #row.names(aic.output) <- model.names
   delaic <- aic.output-min(aic.output)
   aic.weight1 <- exp(-0.5*delaic)
   aic.weight <- aic.weight1/sum(aic.weight1)
   #dev.ex <- model.summary[,14]
-  aic.output <- cbind(aic.output, delaic, aic.weight)
+  aic.output <- cbind(model.names, round(aic.output, digits=2), round(delaic, digits=2), round(aic.weight, digits=2))
   
-  colnames(aic.output)<- c("AICc", "delAICc", "AICc Weight")
+  colnames(aic.output)<- c("Covariates","AICc", "delAICc", "AICc Weight")
   return(aic.output)
 }
 
+
+model.selectionPREY.0 <- model.selection.PREY(dataPREY.0, n, dataPREY.0$TP)
+prey0<-data.frame(model.selectionPREY.0)
+subset(prey0, delAICc<=2)
+prey0.ordered <- prey1[order(prey0$AICc),]
+prey0.ordered[1:6,]
+
 model.selectionPREY.1 <- model.selection.PREY(dataPrey.1, n, dataPrey.1$TP)
-x<-data.frame(model.selectionPREY.1)
-subset(x, delAICc<=2)
+prey1<-data.frame(model.selectionPREY.1)
+subset(prey1, delAICc<=2)
+prey1.ordered <- prey1[order(prey1$AICc),]
+prey1.ordered[1:6,]
 modelPREY1<-lmer(TP~Location.2+HakeBiomass+(1|AA), data=dataPrey.1)
 summary(modelPREY1)
 
 model.selectionPREY.2 <- model.selection.PREY(dataPrey.2, n, dataPrey.2$TP)
-x<-data.frame(model.selectionPREY.2)
-subset(x, delAICc<=2)
+prey2<-data.frame(model.selectionPREY.2)
+prey2.ordered <- prey2[order(prey2$AICc),]
+prey2.ordered[1:6,]
 modelPREY2<-lmer(TP~Location.2+allSmolt+(1|AA), data=dataPrey.2)
 summary(modelPREY2)
 
 model.selectionPREY.3 <- model.selection.PREY(dataPrey.3, n, dataPrey.3$TP)
-x<-data.frame(model.selectionPREY.3)
-subset(x, delAICc<=2)
-modelPREY3<-lmer(TP~Location.2+allSmolt+HakeBiomass+Herring.Biomass+(1|AA), data=dataPrey.3)
+prey3<-data.frame(model.selectionPREY.3)
+prey3.ordered <- prey3[order(prey3$AICc),]
+prey3.ordered[1:6,]
+modelPREY3<-lmer(TP~Location.2+Chinook+(1|AA), data=dataPrey.3)
 summary(modelPREY3)
 
-model.selectionPREY.4 <- model.selection.PREY(dataPrey.4, n, dataPrey.4$TP)
-x<-data.frame(model.selectionPREY.4)
-subset(x, delAICc<=5)
-modelPREY3<-lmer(TP~Location.2+allSmolt+HakeBiomass+Herring.Biomass+(1|AA), data=dataPrey.3)
-summary(modelPREY3)
+model.selectionPREY.1ad <- model.selection.PREY(dataPREY.1ad, n, dataPREY.1ad$TP)
+prey1ad<-data.frame(model.selectionPREY.1ad)
+subset(prey1ad, delAICc<=5)
+subset(prey1ad, delAICc<=2)
+prey1ad.ordered <- prey1ad[order(prey1ad$AICc),]
+prey1ad.ordered[1:6,]
 
-model.selectionPREY.5 <- model.selection.PREY(dataPrey.5, n, dataPrey.5$TP)
-x<-data.frame(model.selectionPREY.5)
-subset(x, delAICc<=5)
-modelPREY3<-lmer(TP~Location.2+allSmolt+HakeBiomass+Herring.Biomass+(1|AA), data=dataPrey.3)
-summary(modelPREY3)
+model.selectionPREY.2ad <- model.selection.PREY(dataPREY.2ad, n, dataPREY.2ad$TP)
+prey2ad<-data.frame(model.selectionPREY.2ad)
+prey2ad.ordered <- prey2ad[order(prey2ad$AICc),]
+prey2ad.ordered[1:6,]
 
+model.selectionPREY.3ad <- model.selection.PREY(dataPREY.3ad, n, dataPREY.3ad$TP)
+prey3ad<-data.frame(model.selectionPREY.3ad)
+prey3ad.ordered <- prey3ad[order(prey3ad$AICc),]
+prey3ad.ordered[1:6,]
 ########################    1. Environmental  Plots#######################
 library(dotwhisker)
 library(broom)
@@ -1103,3 +1291,47 @@ resid.ss
 
 dev.off()
 
+
+
+
+#######TABLES
+
+tab_df(prey1.ordered,
+       
+       title = "Prey Physiological Delay", #always give
+       #your tables
+       #titles
+       file = "Results/Tables/Prey1.doc")
+
+tab_df(prey2.ordered,
+       
+       title = "1-year Ecological Delay", #always give
+       #your tables
+       #titles
+       file = "Results/Tables/Prey2.doc")
+tab_df(prey3.ordered,
+       
+       title = "1-year Ecological Delay", #always give
+       #your tables
+       #titles
+       file = "Results/Tables/Prey3.doc")
+
+tab_df(clim.1.ordered,
+       
+       title = "Environment Physiological Delay", #always give
+       #your tables
+       #titles
+       file = "Results/Tables/Env1.doc")
+
+tab_df(clim.2.ordered,
+       
+       title = "1-year Environmental Delay", #always give
+       #your tables
+       #titles
+       file = "Results/Tables/Env2.doc")
+tab_df(clim.3.ordered,
+       
+       title = "2-year Environmental Delay", #always give
+       #your tables
+       #titles
+       file = "Results/Tables/Env3.doc")

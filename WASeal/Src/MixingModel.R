@@ -747,7 +747,7 @@ write.csv(total2, 'Data/Compiled/HierarchicalData2.csv')
 
 
 lag <- 3
-data3 <-cbind(Year=data.hier$years--lag, data.hier)
+data3 <-cbind(Year=data.hier$years-lag, data.hier)
 prey <- read.csv("Data/Compiled/WA.Prey.tot.csv")
 Env <- read.csv("Data/Compiled/Washington.Environmental.Standardized.csv")
 total1 <- left_join(data3, Env, by="Year")
@@ -770,8 +770,8 @@ total2 <- left_join(total1, prey, by="Year")
 write.csv(total2, 'Data/Compiled/HierarchicalData4.csv')
 
 
-lag <- 5
-data3 <-cbind(Year=data.hier$years+lag, data.hier)
+lag <- 3
+data3 <-cbind(Year=data.hier$year+lag, data.hier)
 #total3 <- left_join(data3, data.d13C, by="Sample.ID")
 #total3 <- left_join(total3,data.hPHE, by="Sample.ID")
 #total3 <- left_join(total3,data.hd15N, by="Sample.ID")
@@ -784,7 +784,7 @@ total2 <- left_join(total1, prey, by="Year")
 write.csv(total2, 'Data/Compiled/HierarchicalData5.csv')
 
 lag <- 6
-data3 <-cbind(Year=data.hier$years+lag, data.hier)
+data3 <-cbind(Year=data.hier$years-lag, data.hier)
 #total3 <- left_join(data3, data.d13C, by="Sample.ID")
 #total3 <- left_join(total3,data.hPHE, by="Sample.ID")
 #total3 <- left_join(total3,data.hd15N, by="Sample.ID")
@@ -797,7 +797,7 @@ total2 <- left_join(total1, prey, by="Year")
 write.csv(total2, 'Data/Compiled/HierarchicalData5.csv')
 
 lag <- 7
-data3 <-cbind(Year=data.hier$years+lag, data.hier)
+data3 <-cbind(Year=data.hier$years-lag, data.hier)
 #total3 <- left_join(data3, data.d13C, by="Sample.ID")
 #total3 <- left_join(total3,data.hPHE, by="Sample.ID")
 #total3 <- left_join(total3,data.hd15N, by="Sample.ID")
@@ -821,7 +821,7 @@ data6<-  cbind(data[,c("years","Location.2", "Sample.ID", "Sex", "Length", "d13C
 
 
 lag <- 2
-data6 <-cbind(Year=data6$years+lag, data6)
+data6 <-cbind(Year=data6$years-lag, data6)
 
 prey <- read.csv("Data/Compiled/WA.Prey.tot.csv")
 Env <- read.csv("Data/Compiled/Washington.Environmental.Standardized.csv")
@@ -835,7 +835,7 @@ data7<-  cbind(data[,c("years","Location.2", "Sample.ID", "Sex", "Length", "d13C
                        "d13C", "d15N", "PHE.mean", "GLU.mean", "VAL.mean", "PRO.mean",
                        "ASP.mean")],TP)
 lag <- 0
-data7 <-cbind(Year=data6$years+lag, data7)
+data7 <-cbind(Year=data6$years-lag, data7)
 
 prey <- read.csv("Data/Compiled/WA.Prey.tot.csv")
 Env <- read.csv("Data/Compiled/Washington.Environmental.Standardized.csv")
@@ -843,3 +843,4 @@ total1 <- left_join(data7, Env, by="Year")
 total2 <- left_join(total1, prey, by="Year")
 
 write.csv(total2, 'Data/Compiled/DataFull0.csv')
+

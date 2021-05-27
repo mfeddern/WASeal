@@ -1,0 +1,190 @@
+<table style="border-collapse:collapse; border:none;">
+<caption style="font-weight: bold; text-align:left;">Prey Physiological Delay</caption>
+<tr>
+<th style="border-top: double; text-align:center; font-style:italic; font-weight:normal; padding:0.2cm; border-bottom:1px solid black; text-align:left; ">Covariates</th>
+<th style="border-top: double; text-align:center; font-style:italic; font-weight:normal; padding:0.2cm; border-bottom:1px solid black; ">AICc</th>
+<th style="border-top: double; text-align:center; font-style:italic; font-weight:normal; padding:0.2cm; border-bottom:1px solid black; ">delAICc</th>
+<th style="border-top: double; text-align:center; font-style:italic; font-weight:normal; padding:0.2cm; border-bottom:1px solid black; ">AICc.Weight</th>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">8. Hake Biomass</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">560.47</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0.52</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">14. All Chinook Smolts, Hake biomass</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">563.52</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">3.05</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0.11</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">7. All Chinook Smolts</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">563.64</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">3.17</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0.11</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">4. Hatchery Chinook Smolts</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">563.74</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">3.27</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0.1</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">2. Location Only</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">565.7</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">5.23</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0.04</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">12. Chinook escapement, Hake biomass</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">566.76</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">6.29</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0.02</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">29. Hake and Herring interaction</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">567.05</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">6.58</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0.02</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">23. Harbor seal population, Hake biomass</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">567.57</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">7.1</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0.01</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">16. Herring Biomass, All Chinook Smolts, Hake biomass</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">567.82</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">7.35</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0.01</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">10. Herring Biomass, Hake Biomass</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">568.72</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">8.25</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0.01</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">19. Harbor Seal population</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">569.01</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">8.54</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0.01</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">25.Harbor Seal population,  Herring biomass, Hake biomass</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">569.67</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">9.2</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0.01</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">13. Chinook escapments, All Chinook Smolts</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">569.69</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">9.21</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0.01</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">15. Chinook escapement, All Chinook Smolts, Hake biomass</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">569.84</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">9.37</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">5. Herring Biomass</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">570.16</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">9.69</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">11. Herring Biomass, All Chinook Smolts</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">570.49</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">10.02</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">22.Harbor Seal population, All Chinook Smolts</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">570.64</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">10.17</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">28. Harbor Seal population, All Chinook Smolts, Hake biomass</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">570.7</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">10.23</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">3. Wild Chinook Smolts</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">571.11</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">10.64</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">30. Hake and Herring interaction, All Chinook Smolts</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">571.47</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">10.99</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">6. Chinook Escapements</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">571.51</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">11.04</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">18. Herring biomass, Hake biomass, Chinook escapement</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">572.96</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">12.49</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">27.Harbor Seal population,  Chinook escapement, Hake biomass</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">573.89</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">13.42</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">20. Harbor Seal population, Herring biomass</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">574.92</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">14.44</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">21. Harbor Seal population, Chinook escapement</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">575.25</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">14.78</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">9. Herring Biomass, Chinook escapements</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">576.27</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">15.79</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">26.Harbor Seal population,  Herring biomass, All Chinook Smolts</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">576.45</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">15.97</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">17. Chinook escapement, All Chinook Smolts, herring biomass</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">576.55</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">16.08</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">1. Null</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">579.69</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">19.22</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; border-bottom: double; ">24. Harbor Seal population, Herring biomass, Chinook escapement</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; border-bottom: double; ">581.17</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; border-bottom: double; ">20.7</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; border-bottom: double; ">0</td>
+</tr>
+</table>
+
