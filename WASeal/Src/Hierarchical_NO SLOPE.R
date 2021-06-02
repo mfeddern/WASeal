@@ -263,7 +263,11 @@ model.selectionCLIM.1 <- ModelSelection.CLIM(dataCLIM.1, n, dataCLIM.1$TP)
 clim.1 <-data.frame(model.selectionCLIM.1)
 clim.1.ordered <- clim.1[order(clim.1$AICc),]
 subset(clim.1, delAICc<=5)
-clim.1.ordered[1:6,]
+clim.1.ordered[1:5,]
+
+sjPlot::tab_df(clim.1.ordered[1:5,],
+               title = "Physiological Delay Top 5 Models", 
+               file = "Results/Tables/Clim1Top5.doc")
 
 modelENV.1 <- lmer(TP~Location.2+UpInAn.45.Summer+(1|AA), data=dataCLIM.1)
 summary(modelENV.1)
@@ -274,7 +278,12 @@ model.selectionCLIM.2 <- ModelSelection.CLIM(dataCLIM.2, n, dataCLIM.2$TP)
 clim.2 <-data.frame(model.selectionCLIM.2)
 clim.2.ordered <- clim.2[order(clim.2$AICc),]
 subset(clim.2, delAICc<=1.97)
-clim.2.ordered[1:6,]
+clim.2.ordered[1:5,]
+
+sjPlot::tab_df(clim.2.ordered[1:5,],
+               title = "1-Year Ecological Delay Top 5 Models", 
+               file = "Results/Tables/Clim2Top5.doc")
+
 
 modelENV.2 <- lmer(TP~Location.2+WA.SST.Su+(1|AA), data=dataCLIM.2)
 summary(modelENV.2)
@@ -284,6 +293,12 @@ clim.3 <-data.frame(model.selectionCLIM.3)
 subset(clim.3, delAICc<=2)
 clim.3.ordered <- clim.3[order(clim.3$AICc),]
 clim.3.ordered[1:6,]
+
+sjPlot::tab_df(clim.3.ordered[1:5,],
+               title = "1-Year Ecological Delay Top 5 Models", 
+               file = "Results/Tables/Clim3Top5.doc")
+
+
 
 modelENV.3 <- lmer(TP~Location.2+Col.Dis.high+(1|AA), data=dataCLIM.3)
 summary(modelENV.3)
@@ -562,6 +577,10 @@ prey1.ordered <- prey1[order(prey1$AICc),]
 prey1.ordered[1:6,]
 modelPREY1<-lmer(TP~Location.2+HakeBiomass+(1|AA), data=dataPrey.1)
 summary(modelPREY1)
+sjPlot::tab_df(prey1.ordered[1:5,],
+               title = "Physiological Delay Top 5 Models (Prey Availability)", 
+               file = "Results/Tables/Prey1Top5.doc")
+
 
 model.selectionPREY.2 <- model.selection.PREY(dataPrey.2, n, dataPrey.2$TP)
 prey2<-data.frame(model.selectionPREY.2)
@@ -569,6 +588,11 @@ prey2.ordered <- prey2[order(prey2$AICc),]
 prey2.ordered[1:6,]
 modelPREY2<-lmer(TP~Location.2+allSmolt+(1|AA), data=dataPrey.2)
 summary(modelPREY2)
+sjPlot::tab_df(prey2.ordered[1:5,],
+               title = "1-Year Physiological Top 5 Models (Prey Availability)", 
+               file = "Results/Tables/Prey2Top5.doc")
+
+
 
 model.selectionPREY.3 <- model.selection.PREY(dataPrey.3, n, dataPrey.3$TP)
 prey3<-data.frame(model.selectionPREY.3)
@@ -576,6 +600,12 @@ prey3.ordered <- prey3[order(prey3$AICc),]
 prey3.ordered[1:6,]
 modelPREY3<-lmer(TP~Location.2+Chinook+(1|AA), data=dataPrey.3)
 summary(modelPREY3)
+sjPlot::tab_df(prey3.ordered[1:10,],
+               title = "2-Year Physiological Top 5 Models (Prey Availability)", 
+               file = "Results/Tables/Prey3Top5.doc")
+
+
+
 
 model.selectionPREY.1ad <- model.selection.PREY(dataPREY.1ad, n, dataPREY.1ad$TP)
 prey1ad<-data.frame(model.selectionPREY.1ad)
@@ -584,10 +614,22 @@ subset(prey1ad, delAICc<=2)
 prey1ad.ordered <- prey1ad[order(prey1ad$AICc),]
 prey1ad.ordered[1:6,]
 
+
+
 model.selectionPREY.2ad <- model.selection.PREY(dataPREY.2ad, n, dataPREY.2ad$TP)
 prey2ad<-data.frame(model.selectionPREY.2ad)
 prey2ad.ordered <- prey2ad[order(prey2ad$AICc),]
 prey2ad.ordered[1:6,]
+summary(lmer(TP~Location.2+HarborSeal+Herring.Biomass+(1|AA), dataPREY.2ad))
+summary(lmer(TP~Location.2+HarborSeal+(1|AA), dataPREY.2ad))
+summary(lmer(TP~Location.2+HarborSeal+HakeBiomass+(1|AA), dataPREY.2ad))
+
+
+sjPlot::tab_df(prey2ad.ordered[1:5,],
+               title = "2-Year Future Top 5 Models (Prey Availability)", 
+               file = "Results/Tables/FutureTop5.doc")
+
+
 
 model.selectionPREY.3ad <- model.selection.PREY(dataPREY.3ad, n, dataPREY.3ad$TP)
 prey3ad<-data.frame(model.selectionPREY.3ad)
