@@ -1,4 +1,14 @@
 
+library(mgcViz)
+library(AICcmodavg)
+library(vapniks)
+require(nlme)
+require(mgcv)
+library(qpcR)
+library(dplyr)
+library(dotwhisker)
+library(car)
+library(ggpubr)
 
 library(devtools)
 #install_version("lme4", "1.1-25")
@@ -489,7 +499,7 @@ model.selection.PREY <- function(dataframe,n, y) {
   aic.output <- rbind(AICc(lmer(y~(1|AA), data=dataframe)), #1, null
                       AICc(lmer(y~Location.2+(1|AA), data=dataframe)), #2 Location Only
                       AICc(lmer(y~Location.2+WildProduction+(1|AA), data=dataframe)), #3. Wild Production Smolts
-                      AICc(lmer(y~Location.2+HatcherySmolts+(1|AA), data=dataframe)),#4. Hatchery smolts
+                      #AICc(lmer(y~Location.2+HatcherySmolts+(1|AA), data=dataframe)),#4. Hatchery smolts
                       AICc(lmer(y~Herring.Biomass+Location.2+(1|AA), data=dataframe)), #5. Herring Biomass
                       AICc(lmer(y~Chinook+Location.2+(1|AA), data=dataframe)),#6. Chinook Escapements
                       AICc(lmer(y~allSmolt+Location.2+(1|AA), data=dataframe)), #7. All smolts
@@ -523,34 +533,32 @@ model.selection.PREY <- function(dataframe,n, y) {
   
   model.names <- c("1. Null",
                    "2. Location Only",
-                   "3. Wild Chinook Smolts", 
-                   "4. Hatchery Chinook Smolts", 
-                   "5. Herring Biomass", 
-                   "6. Chinook Escapements", 
-                   "7. All Chinook Smolts", 
-                   "8. Hake Biomass",
-                   "9. Herring Biomass, Chinook escapements", 
-                   "10. Herring Biomass, Hake Biomass", 
-                   "11. Herring Biomass, All Chinook Smolts", 
-                   "12. Chinook escapement, Hake biomass",
-                   "13. Chinook escapments, All Chinook Smolts",
-                   "14. All Chinook Smolts, Hake biomass", 
-                   "15. Chinook escapement, All Chinook Smolts, Hake biomass", 
-                   "16. Herring Biomass, All Chinook Smolts, Hake biomass",
-                   "17. Chinook escapement, All Chinook Smolts, herring biomass",
-                   "18. Herring biomass, Hake biomass, Chinook escapement",
-                   "19. Harbor Seal population",
-                   "20. Harbor Seal population, Herring biomass", 
-                   "21. Harbor Seal population, Chinook escapement", 
-                   "22.Harbor Seal population, All Chinook Smolts", 
-                   "23. Harbor seal population, Hake biomass",
-                   "24. Harbor Seal population, Herring biomass, Chinook escapement",
-                   "25.Harbor Seal population,  Herring biomass, Hake biomass", 
-                   "26.Harbor Seal population,  Herring biomass, All Chinook Smolts", 
-                   "27.Harbor Seal population,  Chinook escapement, Hake biomass",
-                   "28. Harbor Seal population, All Chinook Smolts, Hake biomass",
-                   "29. Hake and Herring interaction",
-                   "30. Hake and Herring interaction, All Chinook Smolts")
+                   "3. Herring Biomass", 
+                   "4. Chinook Escapements", 
+                   "5. All Chinook Smolts", 
+                   "6. Hake Biomass",
+                   "7. Herring Biomass, Chinook escapements", 
+                   "8. Herring Biomass, Hake Biomass", 
+                   "9. Herring Biomass, All Chinook Smolts", 
+                   "10. Chinook escapement, Hake biomass",
+                   "11. Chinook escapments, All Chinook Smolts",
+                   "12. All Chinook Smolts, Hake biomass", 
+                   "13. Chinook escapement, All Chinook Smolts, Hake biomass", 
+                   "14. Herring Biomass, All Chinook Smolts, Hake biomass",
+                   "15. Chinook escapement, All Chinook Smolts, herring biomass",
+                   "16. Herring biomass, Hake biomass, Chinook escapement",
+                   "17. Harbor Seal population",
+                   "18. Harbor Seal population, Herring biomass", 
+                   "19. Harbor Seal population, Chinook escapement", 
+                   "20.Harbor Seal population, All Chinook Smolts", 
+                   "21. Harbor seal population, Hake biomass",
+                   "22. Harbor Seal population, Herring biomass, Chinook escapement",
+                   "23.Harbor Seal population,  Herring biomass, Hake biomass", 
+                   "24.Harbor Seal population,  Herring biomass, All Chinook Smolts", 
+                   "25.Harbor Seal population,  Chinook escapement, Hake biomass",
+                   "26. Harbor Seal population, All Chinook Smolts, Hake biomass",
+                   "27. Hake and Herring interaction",
+                   "28. Hake and Herring interaction, All Chinook Smolts")
   
   #row.names(aic.output) <- model.names
   delaic <- aic.output-min(aic.output)
@@ -567,7 +575,7 @@ model.selection.PREY <- function(dataframe,n, y) {
 model.selectionPREY.0 <- model.selection.PREY(dataPREY.0, n, dataPREY.0$TP)
 prey0<-data.frame(model.selectionPREY.0)
 subset(prey0, delAICc<=2)
-prey0.ordered <- prey1[order(prey0$AICc),]
+prey0.ordered <- prey0[order(prey0$AICc),]
 prey0.ordered[1:6,]
 
 model.selectionPREY.1 <- model.selection.PREY(dataPrey.1, n, dataPrey.1$TP)
@@ -575,7 +583,7 @@ prey1<-data.frame(model.selectionPREY.1)
 subset(prey1, delAICc<=2)
 prey1.ordered <- prey1[order(prey1$AICc),]
 prey1.ordered[1:6,]
-modelPREY1<-lmer(TP~Location.2+HakeBiomass+(1|AA), data=dataPrey.1)
+modelPREY1<-lmer(TP~Location.2+Chinook+Herring.Biomass+(1|AA), data=dataPrey.1)
 summary(modelPREY1)
 sjPlot::tab_df(prey1.ordered[1:5,],
                title = "Physiological Delay Top 5 Models (Prey Availability)", 
@@ -586,7 +594,7 @@ model.selectionPREY.2 <- model.selection.PREY(dataPrey.2, n, dataPrey.2$TP)
 prey2<-data.frame(model.selectionPREY.2)
 prey2.ordered <- prey2[order(prey2$AICc),]
 prey2.ordered[1:6,]
-modelPREY2<-lmer(TP~Location.2+allSmolt+(1|AA), data=dataPrey.2)
+modelPREY2<-lmer(TP~Location.2+HakeBiomass+(1|AA), data=dataPrey.2)
 summary(modelPREY2)
 sjPlot::tab_df(prey2.ordered[1:5,],
                title = "1-Year Physiological Top 5 Models (Prey Availability)", 
@@ -597,10 +605,10 @@ sjPlot::tab_df(prey2.ordered[1:5,],
 model.selectionPREY.3 <- model.selection.PREY(dataPrey.3, n, dataPrey.3$TP)
 prey3<-data.frame(model.selectionPREY.3)
 prey3.ordered <- prey3[order(prey3$AICc),]
-prey3.ordered[1:6,]
-modelPREY3<-lmer(TP~Location.2+Chinook+(1|AA), data=dataPrey.3)
+prey3.ordered[1:7,]
+modelPREY3<-lmer(TP~Location.2+allSmolt+(1|AA), data=dataPrey.3)
 summary(modelPREY3)
-sjPlot::tab_df(prey3.ordered[1:10,],
+sjPlot::tab_df(prey3.ordered[1:7,],
                title = "2-Year Physiological Top 5 Models (Prey Availability)", 
                file = "Results/Tables/Prey3Top5.doc")
 
@@ -635,6 +643,39 @@ model.selectionPREY.3ad <- model.selection.PREY(dataPREY.3ad, n, dataPREY.3ad$TP
 prey3ad<-data.frame(model.selectionPREY.3ad)
 prey3ad.ordered <- prey3ad[order(prey3ad$AICc),]
 prey3ad.ordered[1:6,]
+
+
+######################## EDITED plots for VERION 2 #######################
+color.env <-c('#7EBA68','#6FB1E7','#D494E1',"#009ADE")
+plot_summs(modelENV.1, modelENV.2, modelENV.3, 
+           model.names = c("Physiological Delay", "1-year Ecological Delay", "2-year Ecological Delay"), colors=color.env, ylab="Covariates")+
+  theme_bw()+
+  geom_hline(yintercept = 0, colour = "grey60", linetype = 2) +
+  ggtitle("Ocean Condition Models") +
+
+  theme(plot.title = element_text(face="bold", hjust=0.5, size=14), 
+        plot.background = element_rect(fill = "transparent", color = NA),
+        panel.grid.minor = element_blank(),
+        panel.grid.major = element_blank(),
+        
+        #axis.text.x = element_blank(),
+        axis.text.y = element_text( size = 10)) 
+
+
+
+plot_summs(modelPREY1, modelPREY2, modelPREY3, 
+           model.names = c("Physiological Delay", "1-year Ecological Delay", "2-year Ecological Delay"), colors=color.env, ylab="Covariates")+
+  theme_bw()+geom_hline(yintercept = 0, colour = "grey60", linetype = 2) +
+  ggtitle("Food Web Models") +
+  
+  theme(plot.title = element_text(face="bold", hjust=0.5, size=14), 
+        plot.background = element_rect(fill = "transparent", color = NA),
+        panel.grid.minor = element_blank(),
+        panel.grid.major = element_blank(),
+        
+        #axis.text.x = element_blank(),
+        axis.text.y = element_text( size = 10)) 
+
 ########################    1. Environmental  Plots#######################
 library(dotwhisker)
 library(broom)
@@ -671,7 +712,7 @@ ENV.VAL <- as_tibble(x)
 
 ENV.mods <- rbind(ENV.fixed, ENV.GLU, ENV.ALA,ENV.VAL, ENV.PRO)
 
-ENV.plot1 <-small_multiple(ENV.mods) +
+ENV.plot1 <-dwplot(ENV.mods) +
   theme_bw()+
   geom_point (colour=color3)+
   geom_errorbar (colour=color4, width=.2,
