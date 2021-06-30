@@ -1260,7 +1260,7 @@ dev.off()
 
 ###############Residual Plots ##############
 library(HLMdiag)
-HLMresid(modelFULL, level=1)
+HLMdiag::HLMresid(modelFULL, level=1)
 col<- c('#CCA65A','#7EBA68','#6FB1E7','#D494E1')
 
 
@@ -1375,9 +1375,76 @@ resid.ss
 dev.off()
 
 
+###############Residual Plots ##############
+library(HLMdiag)
+HLMresid(modelFULL, level=1)
+col<-c('#CCA65A','#7EBA68','#00C1B2','#6FB1E7')
+palette(c('#7EBA68','#00C1B2','#CCA65A','#6FB1E7','#D494E1'))
+
+pdf(file="Results/Figures/ResidualsDiagnostics.pdf", width=16, height=12)
+par(mfrow=c(3,4))
+
+y<- dataCLIM.1
+plot(predict(modelENV.1), y[,'TP'], pch=19, cex=0.5, ylab = "Observed", xlab = "Predicted",
+     main="A. Physiological Delay Model", col=dataCLIM.1$AA)
+abline(0, 1)
+legend('bottomright', legend = c("Alanine", "Glutamic Acid", "Proline", "Valine"), col = c(1,3:5), cex = 0.8, pch = 16)
+
+plot(predict(modelENV.1), residuals(modelENV.1), ylab = "Residuals", xlab = "Predicted",
+     main= "Physiological Delay Model",  pch=19, cex=0.5, col=dataCLIM.1$AA, ylim = c(-2,2))
+abline(0, 0)
+
+y<- na.omit(cbind(subset(data.wa, Year>1950 & Year<2010)$d13C.s, subset(data.wa, Year>1950& Year<2010)$Year))
+plot(predict(d13C.WA.Best), y[,1], pch=19, cex=0.5, ylab = "Observed", xlab = "Predicted",
+     main=expression(paste("WA ",delta^13, "C")))
+abline(0, 1)
+plot(predict(d13C.WA.Best), residuals(d13C.WA.Best), ylab = "Residuals", xlab = "Predicted",
+     main=expression(paste("WA ",delta^13, "C")),  pch=19, cex=0.5)
+abline(0, 0)
 
 
-#######TABLES
+
+
+y<- na.omit(cbind(subset(data.goa, Year>1950 & Year<2010)$PHE.mean, subset(data.goa, Year>1950& Year<2010)$Year))
+plot(predict(phe.GOA.Best), y[,1], pch=19, cex=0.5, ylab = "Observed", xlab = "Predicted",
+     main=expression(paste("GOA ",delta^15, "N Phenylalanine")))
+abline(0, 1)
+plot(predict(phe.GOA.Best), residuals(phe.GOA.Best), ylab = "Residuals", xlab = "Predicted",
+     main=expression(paste("GOA ",delta^15, "N Phenylalanine")),  pch=19, cex=0.5)
+abline(0, 0)
+
+y<- na.omit(cbind(subset(data.goa, Year>1950 & Year<2010)$d13C.s, subset(data.goa, Year>1950& Year<2010)$Year))
+plot(predict(d13C.GOA.Best), y[,1], pch=19, cex=0.5, ylab = "Observed", xlab = "Predicted",
+     main=expression(paste("GOA ",delta^13, "C")))
+abline(0, 1)
+plot(predict(d13C.GOA.Best), residuals(d13C.GOA.Best), ylab = "Residuals", xlab = "Predicted",
+     main=expression(paste("GOA ",delta^13, "C")),  pch=19, cex=0.5)
+abline(0, 0)
+
+
+
+
+y<- na.omit(cbind(subset(data.ebs, Year>1950 & Year<2010)$PHE.mean, subset(data.ebs, Year>1950& Year<2010)$Year))
+plot(predict(phe.EBS.Best), y[,1], pch=19, cex=0.5, ylab = "Observed", xlab = "Predicted",
+     main=expression(paste("EBS ",delta^15, "N Phenylalanine")))
+abline(0, 1)
+plot(predict(phe.EBS.Best), residuals(phe.EBS.Best), ylab = "Residuals", xlab = "Predicted",
+     main=expression(paste("EBS ",delta^15, "N Phenylalanine")),  pch=19, cex=0.5)
+abline(0, 0)
+
+y<- na.omit(cbind(subset(data.ebs, Year>1950 & Year<2010)$d13C.s, subset(data.ebs, Year>1950& Year<2010)$Year))
+plot(predict(d13C.EBS.Best), y[,1], pch=19, cex=0.5, ylab = "Observed", xlab = "Predicted",
+     main=expression(paste("EBS ",delta^13, "C")))
+abline(0, 1)
+plot(predict(d13C.EBS.Best), residuals(d13C.EBS.Best), ylab = "Residuals", xlab = "Predicted",
+     main=expression(paste("EBS ",delta^13, "C")),  pch=19, cex=0.5)
+abline(0, 0)
+
+dev.off()
+
+
+
+#######TABLES######
 
 tab_df(prey1.ordered,
        
