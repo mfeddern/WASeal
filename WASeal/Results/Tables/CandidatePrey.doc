@@ -1,0 +1,91 @@
+<table style="border-collapse:collapse; border:none;">
+<caption style="font-weight: bold; text-align:left;">Food Web Candidate Models</caption>
+<tr>
+<th style="border-top: double; text-align:center; font-style:italic; font-weight:normal; padding:0.2cm; border-bottom:1px solid black; text-align:left; ">Covariates</th>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">1. Null</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">2. Location Only</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">3. Herring Spawning Biomass, Location</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">4. Chinook Escapements, Location</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">5. Chinook Smolts Production, Location</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">6. Hake Spawning Biomass, Location</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">7. Herring Spawning Biomass, Chinook Escapements, Location</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">8. Herring Spawning Biomass, Hake Spawning Biomass, Location</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">9. Herring Spawning Biomass, Chinook Smolt Production, Location</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">10. Chinook Escapements, Hake Spawning Biomass, Location</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">11. Chinook Escapments, Chinook Smolt Production, Location</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">12. Chinook Smolt Production, Hake Spawning Biomass, Location</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">13. Chinook Escapement, Chinook Smolt Production, Hake Spawning Biomass, Location</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">14. Herring Spawning Biomass, Chinook Smolt Production, Hake Spawning Biomass, Location</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">15. Chinook Escapements, Chinook Smolt Production, Herring Spawning Biomass, Location</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">16. Herring Spawning Biomass, Hake Spawning Biomass, Chinook Escapements, Location</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">17. Harbor Seal Abundance, Location</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">18. Harbor Seal Abundance, Herring Spawning Biomass, Location</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">19. Harbor Seal Abundance, Chinook Escapements, Location</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">20. Harbor Seal Abundance, Chinook Smolt Production, Location</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">21. Harbor seal Abundance, Hake Spawning iomass, Location</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">22. Harbor Seal Abundance, Herring biomass, Chinook Escapements, Location</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">23. Harbor Seal Abundance, Herring Spawning Biomass, Hake Spawning Biomass, Location</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">24. Harbor Seal Abundance, Herring Spawning Biomass, Chinook Smolt Production, Location</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">25. Harbor Seal Abundance, Chinook Escapements, Hake Spawning Biomass, Location</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">26. Harbor Seal Abundance, Chinook Smolt Production, Hake Spawning Biomass, Location</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">27. Hake Spawning Biomass, Herring Spawning Biomass, Hake and Herring Interaction, Location</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; border-bottom: double; ">1. Null</td>
+</tr>
+</table>
+
