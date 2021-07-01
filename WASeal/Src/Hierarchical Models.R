@@ -52,47 +52,47 @@ data.lag3ad<-data
 
 dataCLIM <- subset(data.lag1, AA=="GLU"|AA=="ALA"|AA=="VAL"|AA=="PRO")
 dataCLIM.1 <-dataCLIM %>% select(MEI, 
-                               PDO,
-                               NPGO,
-                               WA.SST.Su, 
-                               UpInAn.45.Spring,
-                               Col.Dis.high,
-                               UpInAn.45.Summer,
-                               TP,
-                               Year,
-                               AA,
-                               Sample.ID,
-                               Location.2)
+                                 PDO,
+                                 NPGO,
+                                 WA.SST.Su, 
+                                 UpInAn.45.Spring,
+                                 Col.Dis.high,
+                                 UpInAn.45.Summer,
+                                 TP,
+                                 Year,
+                                 AA,
+                                 Sample.ID,
+                                 Location.2)
 dataCLIM.1 <- dataCLIM.1[complete.cases(dataCLIM.1), ]
 
 dataCLIM <- subset(data.lag2, AA=="GLU"|AA=="ALA"|AA=="VAL"|AA=="PRO")
 dataCLIM.2 <-dataCLIM %>% select(MEI, 
-                                   PDO,
-                                   NPGO,
-                                   WA.SST.Su, 
-                                   UpInAn.45.Spring,
-                                   Col.Dis.high,
-                                   UpInAn.45.Summer,
-                                   TP,
-                                   Year,
-                                   AA,
-                                   Sample.ID,
-                                   Location.2)
+                                 PDO,
+                                 NPGO,
+                                 WA.SST.Su, 
+                                 UpInAn.45.Spring,
+                                 Col.Dis.high,
+                                 UpInAn.45.Summer,
+                                 TP,
+                                 Year,
+                                 AA,
+                                 Sample.ID,
+                                 Location.2)
 dataCLIM.2 <- dataCLIM.2[complete.cases(dataCLIM.2), ]
 
 dataCLIM<- subset(data.lag3, AA=="GLU"|AA=="ALA"|AA=="VAL"|AA=="PRO")
 dataCLIM.3 <-dataCLIM %>% select(MEI, 
-                                   PDO,
-                                   NPGO,
-                                   WA.SST.Su, 
-                                   UpInAn.45.Spring,
-                                   Col.Dis.high,
-                                   UpInAn.45.Summer,
-                                   TP,
-                                   Year,
-                                   AA,
-                                   Sample.ID,
-                                   Location.2)
+                                 PDO,
+                                 NPGO,
+                                 WA.SST.Su, 
+                                 UpInAn.45.Spring,
+                                 Col.Dis.high,
+                                 UpInAn.45.Summer,
+                                 TP,
+                                 Year,
+                                 AA,
+                                 Sample.ID,
+                                 Location.2)
 dataCLIM.3 <- dataCLIM.3[complete.cases(dataCLIM.3), ]
 
 dataCLIM<- subset(data.lag4, AA=="GLU"|AA=="ALA"|AA=="PRO"|AA=="VAL"|AA=="PRO")
@@ -112,17 +112,17 @@ dataCLIM.4 <- dataCLIM.4[complete.cases(dataCLIM.4), ]
 
 dataCLIM<- subset(data.lag1ad, AA=="GLU"|AA=="ALA"|AA=="PRO"|AA=="VAL"|AA=="PRO")
 dataCLIM.1ad <-dataCLIM %>% select(MEI, 
-                                 PDO,
-                                 NPGO,
-                                 WA.SST.Su, 
-                                 UpInAn.45.Spring,
-                                 Col.Dis.high,
-                                 UpInAn.45.Summer,
-                                 TP,
-                                 Year,
-                                 AA,
-                                 Sample.ID,
-                                 Location.2)
+                                   PDO,
+                                   NPGO,
+                                   WA.SST.Su, 
+                                   UpInAn.45.Spring,
+                                   Col.Dis.high,
+                                   UpInAn.45.Summer,
+                                   TP,
+                                   Year,
+                                   AA,
+                                   Sample.ID,
+                                   Location.2)
 dataCLIM.1ad <- dataCLIM.1ad[complete.cases(dataCLIM.1ad), ]
 
 dataCLIM<- subset(data.lag2ad, AA=="GLU"|AA=="ALA"|AA=="PRO"|AA=="VAL"|AA=="PRO")
@@ -158,17 +158,17 @@ dataCLIM.3ad <- dataCLIM.3ad[complete.cases(dataCLIM.3ad), ]
 
 dataCLIM<- subset(data.lag0, AA=="GLU"|AA=="ALA"|AA=="PRO"|AA=="VAL"|AA=="PRO")
 dataCLIM.0 <-dataCLIM %>% select(MEI, 
-                                   PDO,
-                                   NPGO,
-                                   WA.SST.Su, 
-                                   UpInAn.45.Spring,
-                                   Col.Dis.high,
-                                   UpInAn.45.Summer,
-                                   TP,
-                                   Year,
-                                   AA,
-                                   Sample.ID,
-                                   Location.2)
+                                 PDO,
+                                 NPGO,
+                                 WA.SST.Su, 
+                                 UpInAn.45.Spring,
+                                 Col.Dis.high,
+                                 UpInAn.45.Summer,
+                                 TP,
+                                 Year,
+                                 AA,
+                                 Sample.ID,
+                                 Location.2)
 dataCLIM.0 <- dataCLIM.0[complete.cases(dataCLIM.0), ]
 
 ModelSelection.CLIM<- function(dataframe,n, y) {
@@ -208,51 +208,51 @@ ModelSelection.CLIM<- function(dataframe,n, y) {
                       AICc(lmer(y~Col.Dis.high+UpInAn.45.Summer+Location.2+(1|AA), data=dataframe)),#33
                       AICc(lmer(y~WA.SST.Su+UpInAn.45.Summer+Location.2+(1|AA), data=dataframe)),#34
                       AICc(lmer(y~WA.SST.Su+UpInAn.45.Summer+Col.Dis.high+Location.2+(1|AA), data=dataframe))#35
-
+                      
                       
                       
                       
   )
   
   model.names <- c("1. Null",
-                   "2. Location Only", 
-                   "3. PDO, Location", 
-                   "4. NPGO, Location", 
-                   "5. MEI, Location", 
-                   "6. Upwelling (Spring), Location",
-                   "7. NPGO, PDO, Location", 
-                   "8. PDO, Upwelling (Spring), Location",  
-                   "9. NPGO, Upwelling (Spring), Location",
-                   "10. MEI, Upwelling (Spring), Location",  
-                   "11. SST (Summer), Location", 
-                   "12. SST (Summer), PDO, Location", 
-                   "13. SST (Summer), NPGO, Location",
-                   "14. SST (Summer), MEI, Location",
-                   "15. SST (Summer), Upwelling (Spring), Location",
-                   "16. SST (Summer), PDO, Upwelling (Spring), Location", 
-                   "17. SST (Summer), NPGO, Upwelling (Spring), Location",
-                   "18. SST (Summer), MEI, Upwelling (Spring), Location",
+                   "2. Location", 
+                   "3. PDO", 
+                   "4. NPGO", 
+                   "5. MEI", 
+                   "6. Upwelling (Spring)",
+                   "7. NPGO,PDO", 
+                   "8. PDO, Upwelling (Spring)",  
+                   "9. NPGO, Upwelling (Spring)",
+                   "10. MEI, Upwelling (Spring)",  
+                   "11. SST (Summer)", 
+                   "12. SST (Summer), PDO", 
+                   "13. SST (Summer), NPGO",
+                   "14. SST (Summer), MEI",
+                   "15. SST (Summer), Upwelling (Spring)",
+                   "16. SST (Summer), PDO, Upwelling (Spring)", 
+                   "17. SST (Summer), NPGO, Upwelling (Spring)",
+                   "18. SST (Summer), MEI, Upwelling (Spring)",
                    
-                   "19. Upwelling (Summer), Location", 
-                   "20. Upwelling (Summer), PDO, Location", 
-                   "21. Upwelling (Summer), NPGO, Location", 
-                   "22. Upwelling (Summer), MEI, Location",
-                   "23. Upwelling (Summer),  NPGO, Upwelling (Spring), Location", 
-                   "24. Columbia Discharge (High), Location", 
-                   "25. Columbia Discharge (High), PDO, Location", 
-                   "26. Columbia Discharge (High), NPGO, Location",
-                   "27. Columbia Discharge (High), MEI, Location", 
-                   "28. Upwelling (Spring), Location",
-                   "29. Columbia Discharge (High),  PDO, Upwelling (Spring), Location",
-                   "30. Columbia Discharge High,  NPGO, Upwelling (Spring), Location",
-                   "31. Columbia Discharge High, MEI, Upwelling (Spring), Location",
+                   "19. Upwelling (Summer)", 
+                   "20. Upwelling (Summer), PDO", 
+                   "21. Upwelling (Summer), NPGO", 
+                   "22. Upwelling (Summer), MEI",
+                   "23. Upwelling (Summer),  NPGO, Upwelling (Spring)", 
+                   "24. Columbia Discharge High, Location", 
+                   "25. Columbia Discharge High, PDO", 
+                   "26. Columbia Discharge High, NPGO",
+                   "27. Columbia Discharge High, MEI", 
+                   "28. Upwelling (Spring)",
+                   "29.Columbia Discharge High,  PDO, Upwelling (Spring)",
+                   "30. Columbia Discharge High,  NPGO, Upwelling (Spring)",
+                   "31. Columbia Discharge High, MEI, Upwelling (Spring)",
                    
-                   "32. Columbia Discharge (High), SST (Summer), Location", 
-                   "33. Columbia Discharge (High), Upwelling (Summer), Location", 
-                   "34. SST (Summer), Upwelling (Summer), Location", 
-                   "35. SST (Summer), Upwelling (Summer), Columbia Discharge (High), Location")
+                   "32. Columbia Discharge High, SST (Summer)", 
+                   "33. Columbia Discharge High, Upwelling (Summer)", 
+                   "34. SST (Summer), Upwelling (Summer)", 
+                   "35. SST (Summer), Upwelling (Summer), Columbia Discharge High")
   
- # row.names(aic.output) <- model.names
+  # row.names(aic.output) <- model.names
   delaic <- aic.output-min(aic.output)
   aic.weight1 <- exp(-0.5*delaic)
   aic.weight <- round(aic.weight1/sum(aic.weight1), digits=2)
@@ -263,16 +263,11 @@ ModelSelection.CLIM<- function(dataframe,n, y) {
   return(aic.output)
 }
 
-Enviro.Candidate <- data.frame(Covariates = clim.1$Covariates)
-sjPlot::tab_df(Enviro.Candidate,
-               title = "Ocean Condition Candidate Models", 
-               file = "Results/Tables/CandidateOceanCondition.doc")
-
 model.selectionCLIM.0 <- ModelSelection.CLIM(dataCLIM.0, n, dataCLIM.0$TP)
 clim.0 <-data.frame(model.selectionCLIM.0)
 clim.0.ordered <- clim.1[order(clim.0$AICc),]
 subset(clim.0, delAICc<=5)
-clim.0.ordered[1:5,]
+clim.1.ordered[1:6,]
 
 model.selectionCLIM.1 <- ModelSelection.CLIM(dataCLIM.1, n, dataCLIM.1$TP)
 clim.1 <-data.frame(model.selectionCLIM.1)
@@ -283,9 +278,6 @@ clim.1.ordered[1:5,]
 sjPlot::tab_df(clim.1.ordered[1:5,],
                title = "Physiological Delay Top 5 Models", 
                file = "Results/Tables/Clim1Top5.doc")
-
-
-
 
 modelENV.1 <- lmer(TP~Location.2+UpInAn.45.Summer+(1|AA), data=dataCLIM.1)
 summary(modelENV.1)
@@ -310,7 +302,7 @@ model.selectionCLIM.3 <- ModelSelection.CLIM(dataCLIM.3, n, dataCLIM.3$TP)
 clim.3 <-data.frame(model.selectionCLIM.3)
 subset(clim.3, delAICc<=2)
 clim.3.ordered <- clim.3[order(clim.3$AICc),]
-clim.3.ordered[1:5,]
+clim.3.ordered[1:6,]
 
 sjPlot::tab_df(clim.3.ordered[1:5,],
                title = "1-Year Ecological Delay Top 5 Models", 
@@ -348,56 +340,56 @@ clim.3ad.ordered[1:6,]
 
 dataPrey <- subset(data.lag1, AA=="GLU"|AA=="ALA"|AA=="VAL"|AA=="PRO")
 dataPrey.1 <-dataPrey %>% select(allSmolt, 
-                            HakeBiomass,
-                            Herring.Biomass,
-                            AA,
-                            Chinook, 
-                            HarborSeal,
-                            WildProduction,
-                            HatcherySmolts,
-                            Chum,
-                            MEI,
-                            TP,
-                            Year,
-                            Sample.ID,
-                            Location.2,
-                            eq,
-                            beta)
+                                 HakeBiomass,
+                                 Herring.Biomass,
+                                 AA,
+                                 Chinook, 
+                                 HarborSeal,
+                                 WildProduction,
+                                 HatcherySmolts,
+                                 Chum,
+                                 MEI,
+                                 TP,
+                                 Year,
+                                 Sample.ID,
+                                 Location.2,
+                                 eq,
+                                 beta)
 dataPrey.1 <- dataPrey.1[complete.cases(dataPrey.1), ]
 
 dataPrey <- subset(data.lag2, AA=="GLU"|AA=="ALA"|AA=="VAL"|AA=="PRO")
 dataPrey.2 <-dataPrey %>% select(allSmolt, 
-                                  HakeBiomass,
-                                  Herring.Biomass,
-                                  AA,
-                                  Chinook, 
-                                  HarborSeal,
+                                 HakeBiomass,
+                                 Herring.Biomass,
+                                 AA,
+                                 Chinook, 
+                                 HarborSeal,
                                  WildProduction,
                                  HatcherySmolts,
-                                  MEI,
-                                  TP,
-                                  Year,
-                                  Sample.ID,
-                                  Location.2,
-                                  eq,
-                                  beta)
+                                 MEI,
+                                 TP,
+                                 Year,
+                                 Sample.ID,
+                                 Location.2,
+                                 eq,
+                                 beta)
 dataPrey.2 <- dataPrey.2[complete.cases(dataPrey.2), ]
 
 dataPrey <- subset(data.lag3, AA=="GLU"|AA=="ALA"|AA=="VAL"|AA=="PRO")
 dataPrey.3 <-dataPrey %>% select(allSmolt, 
-                                  HakeBiomass,
-                                  Herring.Biomass,
-                                  AA,
-                                  Chinook, 
-                                  HarborSeal,
+                                 HakeBiomass,
+                                 Herring.Biomass,
+                                 AA,
+                                 Chinook, 
+                                 HarborSeal,
                                  WildProduction,
                                  HatcherySmolts,
-                                  TP,
-                                  Year,
-                                  Sample.ID,
-                                  Location.2,
-                                  eq,
-                                  beta)
+                                 TP,
+                                 Year,
+                                 Sample.ID,
+                                 Location.2,
+                                 eq,
+                                 beta)
 dataPrey.3 <- dataPrey.3[complete.cases(dataPrey.3), ]
 
 dataPrey <- subset(data.lag4, AA=="GLU"|AA=="ALA"|AA=="VAL"|AA=="PRO")
@@ -487,19 +479,19 @@ dataPREY.3ad <- dataPREY.3ad[complete.cases(dataPREY.3ad), ]
 
 dataPREY<- subset(data.0, AA=="GLU"|AA=="ALA"|AA=="PRO"|AA=="VAL"|AA=="PRO")
 dataPREY.0 <-dataPREY %>% select(allSmolt, 
-                                   HakeBiomass,
-                                   Herring.Biomass,
-                                   AA,
-                                   Chinook, 
-                                   HarborSeal,
-                                   WildProduction,
-                                   HatcherySmolts,
-                                   TP,
-                                   Year,
-                                   Sample.ID,
-                                   Location.2,
-                                   eq,
-                                   beta)
+                                 HakeBiomass,
+                                 Herring.Biomass,
+                                 AA,
+                                 Chinook, 
+                                 HarborSeal,
+                                 WildProduction,
+                                 HatcherySmolts,
+                                 TP,
+                                 Year,
+                                 Sample.ID,
+                                 Location.2,
+                                 eq,
+                                 beta)
 dataPREY.0 <- dataPREY.0[complete.cases(dataPREY.0), ]
 
 model.selection.PREY <- function(dataframe,n, y) {
@@ -520,7 +512,7 @@ model.selection.PREY <- function(dataframe,n, y) {
                       AICc(lmer(y~allSmolt+HakeBiomass+Location.2+(1|AA), data=dataframe)),#14. all smolt, Hake Biomass
                       AICc(lmer(y~allSmolt+Chinook+HakeBiomass+Location.2+(1|AA), data=dataframe)),#15. all smolt, Chinook escapent, Hake Biomas
                       AICc(lmer(y~Herring.Biomass+allSmolt+HakeBiomass+Location.2+(1|AA), data=dataframe)),#16. Herring Biomass, all smolts, Hake Biomass
-                     AICc(lmer(y~Herring.Biomass+allSmolt+Chinook+Location.2+(1|AA), data=dataframe)),#17.Herring biomass, all smolts, Chinook escapements
+                      AICc(lmer(y~Herring.Biomass+allSmolt+Chinook+Location.2+(1|AA), data=dataframe)),#17.Herring biomass, all smolts, Chinook escapements
                       AICc(lmer(y~Herring.Biomass+Chinook+HakeBiomass+Location.2+(1|AA), data=dataframe)), #18. Herring Biomass, Chinook escapements, Hake biomass
                       AICc(lmer(y~HarborSeal+Location.2+(1|AA), data=dataframe)), #19. Harbor seal 
                       AICc(lmer(y~HarborSeal+Herring.Biomass+Location.2+(1|AA), data=dataframe)),#20. Harbor seal, herring biomass
@@ -532,39 +524,41 @@ model.selection.PREY <- function(dataframe,n, y) {
                       AICc(lmer(y~HarborSeal+Herring.Biomass+allSmolt+Location.2+(1|AA), data=dataframe)),#26. Harbor seal, herring biomass, all smolts
                       AICc(lmer(y~HarborSeal+HakeBiomass+Chinook+Location.2+(1|AA), data=dataframe)),#27. Harbor seal, hake biomass, Chinool escapement
                       AICc(lmer(y~HarborSeal+allSmolt+HakeBiomass+Location.2+(1|AA), data=dataframe)),#28. Harbor seal, all smolts, hake biomass
-                      AICc(lmer(y~Herring.Biomass*HakeBiomass+Location.2+(1|AA), data=dataframe)) #29. Hake:Herring biomass
-
+                      AICc(lmer(y~Herring.Biomass*HakeBiomass+Location.2+(1|AA), data=dataframe)), #29. Hake:Herring biomass
+                      AICc(lmer(y~Herring.Biomass*HakeBiomass+allSmolt+Location.2+(1|AA), data=dataframe))#30. Hake:Herring biomass, all smolt
+                      
                       
                       
   )
   
   model.names <- c("1. Null",
                    "2. Location Only",
-                   "3. Herring Spawning Biomass, Location", 
-                   "4. Chinook Escapements, Location", 
-                   "5. Chinook Smolts Production, Location", 
-                   "6. Hake Spawning Biomass, Location",
-                   "7. Herring Spawning Biomass, Chinook Escapements, Location", 
-                   "8. Herring Spawning Biomass, Hake Spawning Biomass, Location", 
-                   "9. Herring Spawning Biomass, Chinook Smolt Production, Location", 
-                   "10. Chinook Escapements, Hake Spawning Biomass, Location",
-                   "11. Chinook Escapments, Chinook Smolt Production, Location",
-                   "12. Chinook Smolt Production, Hake Spawning Biomass, Location", 
-                   "13. Chinook Escapement, Chinook Smolt Production, Hake Spawning Biomass, Location", 
-                   "14. Herring Spawning Biomass, Chinook Smolt Production, Hake Spawning Biomass, Location",
-                   "15. Chinook Escapements, Chinook Smolt Production, Herring Spawning Biomass, Location",
-                   "16. Herring Spawning Biomass, Hake Spawning Biomass, Chinook Escapements, Location",
-                   "17. Harbor Seal Abundance, Location",
-                   "18. Harbor Seal Abundance, Herring Spawning Biomass, Location", 
-                   "19. Harbor Seal Abundance, Chinook Escapements, Location", 
-                   "20. Harbor Seal Abundance, Chinook Smolt Production, Location", 
-                   "21. Harbor seal Abundance, Hake Spawning iomass, Location",
-                   "22. Harbor Seal Abundance, Herring biomass, Chinook Escapements, Location",
-                   "23. Harbor Seal Abundance, Herring Spawning Biomass, Hake Spawning Biomass, Location", 
-                   "24. Harbor Seal Abundance, Herring Spawning Biomass, Chinook Smolt Production, Location", 
-                   "25. Harbor Seal Abundance, Chinook Escapements, Hake Spawning Biomass, Location",
-                   "26. Harbor Seal Abundance, Chinook Smolt Production, Hake Spawning Biomass, Location",
-                   "27. Hake Spawning Biomass, Herring Spawning Biomass, Hake and Herring Interaction, Location")
+                   "3. Herring Biomass", 
+                   "4. Chinook Escapements", 
+                   "5. All Chinook Smolts", 
+                   "6. Hake Biomass",
+                   "7. Herring Biomass, Chinook escapements", 
+                   "8. Herring Biomass, Hake Biomass", 
+                   "9. Herring Biomass, All Chinook Smolts", 
+                   "10. Chinook escapement, Hake biomass",
+                   "11. Chinook escapments, All Chinook Smolts",
+                   "12. All Chinook Smolts, Hake biomass", 
+                   "13. Chinook escapement, All Chinook Smolts, Hake biomass", 
+                   "14. Herring Biomass, All Chinook Smolts, Hake biomass",
+                   "15. Chinook escapement, All Chinook Smolts, herring biomass",
+                   "16. Herring biomass, Hake biomass, Chinook escapement",
+                   "17. Harbor Seal population",
+                   "18. Harbor Seal population, Herring biomass", 
+                   "19. Harbor Seal population, Chinook escapement", 
+                   "20.Harbor Seal population, All Chinook Smolts", 
+                   "21. Harbor seal population, Hake biomass",
+                   "22. Harbor Seal population, Herring biomass, Chinook escapement",
+                   "23.Harbor Seal population,  Herring biomass, Hake biomass", 
+                   "24.Harbor Seal population,  Herring biomass, All Chinook Smolts", 
+                   "25.Harbor Seal population,  Chinook escapement, Hake biomass",
+                   "26. Harbor Seal population, All Chinook Smolts, Hake biomass",
+                   "27. Hake and Herring interaction",
+                   "28. Hake and Herring interaction, All Chinook Smolts")
   
   #row.names(aic.output) <- model.names
   delaic <- aic.output-min(aic.output)
@@ -577,11 +571,12 @@ model.selection.PREY <- function(dataframe,n, y) {
   return(aic.output)
 }
 
-Prey.Candidate <- data.frame(Covariates = prey1$Covariates)
-sjPlot::tab_df(Prey.Candidate,
-               title = "Food Web Candidate Models", 
-               file = "Results/Tables/CandidatePrey.doc")
 
+model.selectionPREY.0 <- model.selection.PREY(dataPREY.0, n, dataPREY.0$TP)
+prey0<-data.frame(model.selectionPREY.0)
+subset(prey0, delAICc<=2)
+prey0.ordered <- prey0[order(prey0$AICc),]
+prey0.ordered[1:6,]
 
 model.selectionPREY.1 <- model.selection.PREY(dataPrey.1, n, dataPrey.1$TP)
 prey1<-data.frame(model.selectionPREY.1)
@@ -612,9 +607,8 @@ prey3<-data.frame(model.selectionPREY.3)
 prey3.ordered <- prey3[order(prey3$AICc),]
 prey3.ordered[1:7,]
 modelPREY3<-lmer(TP~Location.2+allSmolt+(1|AA), data=dataPrey.3)
-summary(lmer(TP~Location.2+HakeBiomass+allSmolt+(1|AA), data=dataPrey.3))
 summary(modelPREY3)
-sjPlot::tab_df(prey3.ordered[1:5,],
+sjPlot::tab_df(prey3.ordered[1:7,],
                title = "2-Year Physiological Top 5 Models (Prey Availability)", 
                file = "Results/Tables/Prey3Top5.doc")
 
@@ -653,25 +647,23 @@ prey3ad.ordered[1:6,]
 
 ######################## EDITED plots for VERION 2 #######################
 color.env <-c('#7EBA68','#6FB1E7','#D494E1',"#009ADE")
-OceanCondition <- plot_summs(modelENV.1, modelENV.2, modelENV.3, 
-           model.names = c("Physiological Delay", "1-year Ecological Delay", "2-year Ecological Delay"), 
-           colors=color.env, ylab="Covariates")+
+plot_summs(modelENV.1, modelENV.2, modelENV.3, 
+           model.names = c("Physiological Delay", "1-year Ecological Delay", "2-year Ecological Delay"), colors=color.env, ylab="Covariates")+
   theme_bw()+
   geom_hline(yintercept = 0, colour = "grey60", linetype = 2) +
   ggtitle("Ocean Condition Models") +
-
+  
   theme(plot.title = element_text(face="bold", hjust=0.5, size=14), 
         plot.background = element_rect(fill = "transparent", color = NA),
         panel.grid.minor = element_blank(),
         panel.grid.major = element_blank(),
-        legend.position = "none",
         
         #axis.text.x = element_blank(),
         axis.text.y = element_text( size = 10)) 
 
-OceanCondition
 
-FoodWeb <- plot_summs(modelPREY1, modelPREY2, modelPREY3, 
+
+plot_summs(modelPREY1, modelPREY2, modelPREY3, 
            model.names = c("Physiological Delay", "1-year Ecological Delay", "2-year Ecological Delay"), colors=color.env, ylab="Covariates")+
   theme_bw()+geom_hline(yintercept = 0, colour = "grey60", linetype = 2) +
   ggtitle("Food Web Models") +
@@ -683,14 +675,7 @@ FoodWeb <- plot_summs(modelPREY1, modelPREY2, modelPREY3,
         
         #axis.text.x = element_blank(),
         axis.text.y = element_text( size = 10)) 
-FoodWeb
-FULL.plot<-ggarrange(OceanCondition, FoodWeb,
-                     ncol = 2, nrow = 1, align= 'h', widths=c(1.2,1.8))
 
-pdf(file="Results/Figures/CoefPlot.pdf",
-    width=9.5, height=4)
-FULL.plot
-dev.off()
 ########################    1. Environmental  Plots#######################
 library(dotwhisker)
 library(broom)
@@ -818,9 +803,9 @@ ENV.plot3
 
 
 ENV.plot<-ggarrange(ENV.plot1,ENV.plot2,ENV.plot3,
-                     ncol = 3, nrow = 1, align= 'v')
+                    ncol = 3, nrow = 1, align= 'v')
 ENV.plot<-annotate_figure(ENV.plot,
-                           top = text_grob("Ocean Condition Models", color = "black", face = "bold", size = 14)
+                          top = text_grob("Ocean Condition Models", color = "black", face = "bold", size = 14)
 )
 ENV.plot
 
@@ -960,8 +945,8 @@ colore1bar<- c('black','grey','grey',"grey",'grey', #Int
                '#D494E1','grey','grey',"grey",'grey') #Upwelling
 
 colore1pt<- c( 'black','#CCA65A','#D494E1','grey',"grey",'grey', 'grey',
-              'grey', 'grey','grey','grey',"grey",'grey', 'grey',
-              'grey') #Location
+               'grey', 'grey','grey','grey',"grey",'grey', 'grey',
+               'grey') #Location
 
 
 ENV <- tidy(modelENV.1)
@@ -1112,8 +1097,8 @@ dev.off()
 
 ########################   2. Foodweb Plots#######################
 colorp1bar<- c('#7EBA68','grey','grey',"grey",'grey', #Hake
-            'black','grey','grey',"grey",'grey', #Int
-            '#CCA65A','grey','grey',"grey",'grey') #Location
+               'black','grey','grey',"grey",'grey', #Int
+               '#CCA65A','grey','grey',"grey",'grey') #Location
 
 colorp1pt<- c('#7EBA68', 'black','#CCA65A','grey',"grey",'grey', 'grey',
               'grey', 'grey','grey','grey',"grey",'grey', 'grey',
@@ -1172,8 +1157,8 @@ colorp2bar<- c('black','grey','grey',"grey",'grey', #chinook
                '#6FB1E7','grey','grey',"grey",'grey') #Location
 
 colorp2pt<- c( 'black','#CCA65A','#6FB1E7','grey',"grey",'grey', 'grey',
-              'grey', 'grey','grey','grey',"grey",'grey', 'grey',
-              'grey') #Location
+               'grey', 'grey','grey','grey',"grey",'grey', 'grey',
+               'grey') #Location
 
 PREY.plot2 <-small_multiple(PREY.mods) +
   theme_bw()+
@@ -1183,7 +1168,7 @@ PREY.plot2 <-small_multiple(PREY.mods) +
                  position=position_dodge(.9))+
   ylab("") +
   geom_hline(yintercept = 0, colour = "grey60", linetype = 2) +
- ggtitle("Food Web Models") +
+  ggtitle("Food Web Models") +
   # scale_y_discrete("", breaks=waiver(), labels=waiver())+
   theme(plot.title = element_text(face="bold", hjust=0.5, size=16), 
         plot.background = element_rect(fill = "transparent", color = NA),
@@ -1214,7 +1199,7 @@ colorp3bar<- c('#7EBA68','grey','grey',"grey",'grey', #chinook
                'black' ,'grey','grey',"grey",'grey', #herring
                '#CCA65A','grey','grey',"grey",'grey', #Int
                '#6FB1E7','grey','grey',"grey",'grey') #Location
-             
+
 
 colorp3pt<- c('#7EBA68', '#D494E1','black','#CCA65A','#6FB1E7', 
               'grey',"grey",'grey', 'grey', 'grey',
@@ -1231,7 +1216,7 @@ PREY.plot3 <-small_multiple(PREY.mods) +
   ylab("") +
   geom_hline(yintercept = 0, colour = "grey60", linetype = 2) +
   ggtitle(" ") +
- # facet_grid(term ~ ., labeller(term=label_wrap_gen(10)))+
+  # facet_grid(term ~ ., labeller(term=label_wrap_gen(10)))+
   theme(plot.title = element_text(face="bold", hjust=0.5, size=14), 
         plot.background = element_rect(fill = "transparent", color = NA),
         panel.grid.minor = element_blank(),
@@ -1244,7 +1229,7 @@ PREY.plot3
 PREY.plot<-ggarrange(PREY.plot1,PREY.plot2,PREY.plot3,
                      ncol = 3, nrow = 1, align= 'v')
 PREY.plot<-annotate_figure(PREY.plot
-                          # top = text_grob("Food Web Models", color = "black", face = "bold", size = 14)
+                           # top = text_grob("Food Web Models", color = "black", face = "bold", size = 14)
 )
 PREY.plot
 
@@ -1272,131 +1257,13 @@ dev.off()
 
 
 
-
-###############Residual Plots ##############
-library(HLMdiag)
-HLMdiag::HLMresid(modelFULL, level=1)
-col<- c('#CCA65A','#7EBA68','#6FB1E7','#D494E1')
-
-
-
-dataresid<-cbind(dataCLIM,resid=resid(modelENV))
-
-
-dataresid.coastal<- subset(dataresid, Location.2=="Coastal")
-dataresid.coastal<- subset(dataresid.coastal, AA=="VAL"|AA=="GLU"|AA=="ALA"|AA=="PRO")
-
-#dataresid.coastal <- dataresid.coastal[complete.cases(dataresid.coastal), ]
-dataresid.coastal$AA<- factor(dataresid.coastal$AA, levels = c("GLU","ALA","VAL",
-                                                               "PRO"),
-                              labels = c("Glutamic Acid", "Alanine", "Valine", "Proline")
-)
-
-
-resid.coastalENV <- ggplot(dataresid.coastal, aes(x = Year, y = resid)) + 
-  #stat_smooth(fullrange=TRUE,aes(color = Location.2)) +
-  labs(y="Residuals")+
-  geom_point(aes(color = AA, alpha=0.5), pch=16, size=2.5) +
-  geom_smooth(method = "gam", formula = y ~ s(x, bs = "cs", k=4),aes(color = AA, alpha=0.5))+
-  scale_colour_manual(name = "AA",values = col)+
-  facet_grid(AA~.,labeller = labeller(dataresid.coastal$AA))+
-  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))+
-  guides(colour=FALSE, alpha=FALSE)
-resid.coastal
-
-
-
-
-
-
-dataresid.ss<- subset(dataresid, Location.2=="Inland")
-dataresid.ss<- subset(dataresid.ss, AA=="VAL"|AA=="GLU"|AA=="ALA"|AA=="PRO")
-
-dataresid.ss <- dataresid.ss[complete.cases(dataresid.ss), ]
-dataresid.ss$AA<- factor(dataresid.ss$AA, levels = c("GLU","ALA",
-                                                     "VAL","PRO"),
-                         labels = c("Glutamic Acid", "Alanine", "Valine", "Proline")
-)
-
-
-resid.ssENV <- ggplot(dataresid.ss, aes(x = Year, y = resid)) + 
-  #stat_smooth(fullrange=TRUE,aes(color = Location.2)) +
-  labs(y="Residuals")+
-  geom_point(aes(color = AA, alpha=0.5), pch=16, size=2.5) +
-  geom_smooth(method="gam", aes(color = AA, alpha=0.5))+
-  scale_colour_manual(name = "AA",values = col)+
-  facet_grid(AA~.,labeller = labeller(dataresid.ss$AA))+
-  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))+
-  guides(colour=FALSE, alpha=FALSE)
-resid.ss
-
-
-dataresid<-cbind(dataPrey,resid=resid(modelPREY))
-
-
-
-
-dataresid.coastal<- subset(dataresid, Location.2=="Coastal")
-dataresid.coastal<- subset(dataresid.coastal, AA=="VAL"|AA=="GLU"|AA=="ALA"|AA=="PRO")
-
-#dataresid.coastal <- dataresid.coastal[complete.cases(dataresid.coastal), ]
-dataresid.coastal$AA<- factor(dataresid.coastal$AA, levels = c("GLU","ALA","VAL",
-                                                               "PRO"),
-                              labels = c("Glutamic Acid", "Alanine", "Valine", "Proline")
-)
-
-
-resid.coastalPREY <- ggplot(dataresid.coastal, aes(x = Year, y = resid)) + 
-  #stat_smooth(fullrange=TRUE,aes(color = Location.2)) +
-  labs(y="Residuals")+
-  geom_point(aes(color = AA, alpha=0.5), pch=16, size=2.5) +
-  geom_smooth(method = "gam", formula = y ~ s(x, bs = "cs", k=4),aes(color = AA, alpha=0.5))+
-  scale_colour_manual(name = "AA",values = col)+
-  facet_grid(AA~.,labeller = labeller(dataresid.coastal$AA))+
-  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))+
-  guides(colour=FALSE, alpha=FALSE)
-resid.coastal
-
-
-
-
-
-
-dataresid.ss<- subset(dataresid, Location.2=="Inland")
-dataresid.ss<- subset(dataresid.ss, AA=="VAL"|AA=="GLU"|AA=="ALA"|AA=="PRO")
-
-dataresid.ss <- dataresid.ss[complete.cases(dataresid.ss), ]
-dataresid.ss$AA<- factor(dataresid.ss$AA, levels = c("GLU","ALA",
-                                                     "VAL","PRO"),
-                         labels = c("Glutamic Acid", "Alanine", "Valine", "Proline")
-)
-
-
-resid.ssPREY <- ggplot(dataresid.ss, aes(x = Year, y = resid)) + 
-  #stat_smooth(fullrange=TRUE,aes(color = Location.2)) +
-  labs(y="Residuals")+
-  geom_point(aes(color = AA, alpha=0.5), pch=16, size=2.5) +
-  geom_smooth(method="gam", aes(color = AA, alpha=0.5))+
-  scale_colour_manual(name = "AA",values = col)+
-  facet_grid(AA~.,labeller = labeller(dataresid.ss$AA))+
-  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))+
-  guides(colour=FALSE, alpha=FALSE)
-resid.ss
-
-dev.off()
-
-
 ###############Residual Plots ##############
 library(HLMdiag)
 HLMresid(modelFULL, level=1)
 col<-c('#CCA65A','#7EBA68','#00C1B2','#6FB1E7')
 palette(c('#7EBA68','#00C1B2','#CCA65A','#6FB1E7','#D494E1'))
 
-pdf(file="Results/Figures/ResidualsDiagnostics.pdf", width=16, height=12)
+pdf(file="Results/Figures/ResidualsDiagnosticsENV.pdf", width=16, height=12)
 par(mfrow=c(3,4))
 
 y<- dataCLIM.1
@@ -1406,59 +1273,30 @@ abline(0, 1)
 legend('bottomright', legend = c("Alanine", "Glutamic Acid", "Proline", "Valine"), col = c(1,3:5), cex = 0.8, pch = 16)
 
 plot(predict(modelENV.1), residuals(modelENV.1), ylab = "Residuals", xlab = "Predicted",
-     main= "Physiological Delay Model",  pch=19, cex=0.5, col=dataCLIM.1$AA, ylim = c(-2,2))
+     main= "Physiological Delay Model",  pch=19, cex=0.5, col=dataCLIM.1$AA)
 abline(0, 0)
 
-y<- na.omit(cbind(subset(data.wa, Year>1950 & Year<2010)$d13C.s, subset(data.wa, Year>1950& Year<2010)$Year))
-plot(predict(d13C.WA.Best), y[,1], pch=19, cex=0.5, ylab = "Observed", xlab = "Predicted",
-     main=expression(paste("WA ",delta^13, "C")))
+y<- dataCLIM.1
+plot(predict(modelENV.1), y[,'TP'], pch=19, cex=0.5, ylab = "Observed", xlab = "Predicted",
+     main="B. Physiological Delay Model", col=dataCLIM.1$AA)
 abline(0, 1)
-plot(predict(d13C.WA.Best), residuals(d13C.WA.Best), ylab = "Residuals", xlab = "Predicted",
-     main=expression(paste("WA ",delta^13, "C")),  pch=19, cex=0.5)
+legend('bottomright', legend = c("Alanine", "Glutamic Acid", "Proline", "Valine"), col = c(1,3:5), cex = 0.8, pch = 16)
+
+plot(predict(modelENV.1), residuals(modelENV.1), ylab = "Residuals", xlab = "Predicted",
+     main= "Physiological Delay Model",  pch=19, cex=0.5, col=dataCLIM.1$AA)
 abline(0, 0)
 
-
-
-
-y<- na.omit(cbind(subset(data.goa, Year>1950 & Year<2010)$PHE.mean, subset(data.goa, Year>1950& Year<2010)$Year))
-plot(predict(phe.GOA.Best), y[,1], pch=19, cex=0.5, ylab = "Observed", xlab = "Predicted",
-     main=expression(paste("GOA ",delta^15, "N Phenylalanine")))
+y<- dataCLIM.1
+plot(predict(modelENV.1), y[,'TP'], pch=19, cex=0.5, ylab = "Observed", xlab = "Predicted",
+     main="C. Physiological Delay Model", col=dataCLIM.1$AA)
 abline(0, 1)
-plot(predict(phe.GOA.Best), residuals(phe.GOA.Best), ylab = "Residuals", xlab = "Predicted",
-     main=expression(paste("GOA ",delta^15, "N Phenylalanine")),  pch=19, cex=0.5)
-abline(0, 0)
+legend('bottomright', legend = c("Alanine", "Glutamic Acid", "Proline", "Valine"), col = c(1,3:5), cex = 0.8, pch = 16)
 
-y<- na.omit(cbind(subset(data.goa, Year>1950 & Year<2010)$d13C.s, subset(data.goa, Year>1950& Year<2010)$Year))
-plot(predict(d13C.GOA.Best), y[,1], pch=19, cex=0.5, ylab = "Observed", xlab = "Predicted",
-     main=expression(paste("GOA ",delta^13, "C")))
-abline(0, 1)
-plot(predict(d13C.GOA.Best), residuals(d13C.GOA.Best), ylab = "Residuals", xlab = "Predicted",
-     main=expression(paste("GOA ",delta^13, "C")),  pch=19, cex=0.5)
-abline(0, 0)
-
-
-
-
-y<- na.omit(cbind(subset(data.ebs, Year>1950 & Year<2010)$PHE.mean, subset(data.ebs, Year>1950& Year<2010)$Year))
-plot(predict(phe.EBS.Best), y[,1], pch=19, cex=0.5, ylab = "Observed", xlab = "Predicted",
-     main=expression(paste("EBS ",delta^15, "N Phenylalanine")))
-abline(0, 1)
-plot(predict(phe.EBS.Best), residuals(phe.EBS.Best), ylab = "Residuals", xlab = "Predicted",
-     main=expression(paste("EBS ",delta^15, "N Phenylalanine")),  pch=19, cex=0.5)
-abline(0, 0)
-
-y<- na.omit(cbind(subset(data.ebs, Year>1950 & Year<2010)$d13C.s, subset(data.ebs, Year>1950& Year<2010)$Year))
-plot(predict(d13C.EBS.Best), y[,1], pch=19, cex=0.5, ylab = "Observed", xlab = "Predicted",
-     main=expression(paste("EBS ",delta^13, "C")))
-abline(0, 1)
-plot(predict(d13C.EBS.Best), residuals(d13C.EBS.Best), ylab = "Residuals", xlab = "Predicted",
-     main=expression(paste("EBS ",delta^13, "C")),  pch=19, cex=0.5)
+plot(predict(modelENV.1), residuals(modelENV.1), ylab = "Residuals", xlab = "Predicted",
+     main= "Physiological Delay Model",  pch=19, cex=0.5, col=dataCLIM.1$AA)
 abline(0, 0)
 
 dev.off()
-
-
-
 #######TABLES######
 
 tab_df(prey1.ordered,
