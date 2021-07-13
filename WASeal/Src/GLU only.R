@@ -3,26 +3,23 @@ rm(list = ls())
 library(lme4)
 library(AICcmodavg)
 
-dataALL <-  read.csv("Data/Compiled/HierarchicalDataCorr.csv")
+
+dataALL <-  read.csv("Data/Compiled/HierarchicalData.csv")
 data<-subset(subset(dataALL, Location.2=="Inland"|Location.2=="Coastal"), beta==1& eq==2)
 data.lag1<-data
 
-dataALL <-  read.csv("Data/Compiled/HierarchicalData2Corr.csv")
+dataALL <-  read.csv("Data/Compiled/HierarchicalData2.csv")
 data<-subset(subset(dataALL, Location.2=="Inland"|Location.2=="Coastal"), beta==1& eq==2)
 data.lag2<-data
 
-dataALL <-  read.csv("Data/Compiled/HierarchicalData3Corr.csv")
+dataALL <-  read.csv("Data/Compiled/HierarchicalData3.csv")
 data<-subset(subset(dataALL, Location.2=="Inland"|Location.2=="Coastal"), beta==1& eq==2)
 data.lag3<-data
 
-dataALL <-  read.csv("Data/Compiled/HierarchicalData4Corr.csv")
+dataALL <-  read.csv("Data/Compiled/HierarchicalData4.csv")
 data<-subset(subset(dataALL, Location.2=="Inland"|Location.2=="Coastal"), beta==1& eq==2)
 data.lag4<-data
 
-
-dataALL <-  read.csv("Data/Compiled/HierarchicalData5.csv")
-data<-subset(subset(dataALL, Location.2=="Inland"|Location.2=="Coastal"), beta==1& eq==2)
-data.lag5<-data
 ########################    Hier Clim2 Models       ############################
 
 dataCLIM <- subset(data.lag1, AA=="GLU")
@@ -297,8 +294,6 @@ model.selection.PREY <- function(dataframe,n, y) {
   
   aic.output <- rbind( 
                       AICc(lm(y~Location.2, data=dataframe)),
-                      AICc(lm(y~Location.2+WildProduction, data=dataframe)),
-                      AICc(lm(y~Location.2+HatcherySmolts, data=dataframe)),
                       AICc(lm(y~Herring.Biomass+Location.2, data=dataframe)),
                       AICc(lm(y~Chinook+Location.2, data=dataframe)),
                       AICc(lm(y~allSmolt+Location.2, data=dataframe)),
@@ -328,14 +323,13 @@ model.selection.PREY <- function(dataframe,n, y) {
                       AICc(lm(y~HarborSeal+allSmolt+HakeBiomass+Location.2, data=dataframe)),#6
                       
                       
-                      AICc(lm(y~Herring.Biomass*HakeBiomass+Location.2, data=dataframe)),
-                      AICc(lm(y~Herring.Biomass*HakeBiomass+allSmolt+Location.2, data=dataframe))
-                      
+                      AICc(lm(y~Herring.Biomass*HakeBiomass+Location.2, data=dataframe))
+
                       
                       
   )
   
-  model.names <- c("Location","Wild Smolts", "Hatch Smolts", "Herring", "Chinook", "Smolts", "Hake","1. Herring, Chinook", 
+  model.names <- c("Location", "Herring", "Chinook", "Smolts", "Hake","1. Herring, Chinook", 
                    "2. Herring, Hake", "3. Herring, Smolts", "4. Chinook, Hake","CH SM",
                    "6. Smolts, Hake", "CH SM", "8. Herring, Smolts, Hake","CH SM",
                    "11. Herring Hake Chinook",
@@ -343,7 +337,7 @@ model.selection.PREY <- function(dataframe,n, y) {
                    "Hake","1. Harbor Seal, Herring, Chinook",
                    "2.Harbor Seal,  Herring, Hake", "3.Harbor Seal,  Herring, Smolts", "4.Harbor Seal,  Chinook, Hake",
                    "6. Harbor Seal, Smolts, Hake",
-                   "Int","Int Sm")
+                   "Int")
   
   row.names(aic.output) <- model.names
   delaic <- aic.output-min(aic.output)

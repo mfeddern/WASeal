@@ -1257,46 +1257,230 @@ dev.off()
 
 
 
+
+############### Time Series #################
+palette(c("#ED90A4", "#C0AB52","#28BBD7", "#4FBF85",  "#C699E7"))
+palette()
+
+cols<-c('#7EBA68','#CCA65A','#D494E1','#6FB1E7')
+palette(c('#7EBA68','#00C1B2','#CCA65A','#6FB1E7','#D494E1'))
+
+dataCLIM.1<- cbind(dataCLIM.1,residuals = residuals(modelENV.1))
+dataCLIM.1$AA<- factor(dataCLIM.1$AA, levels = c('ALA','GLU',
+                                                 'PRO', 'VAL', 'ASP'),
+                             labels = c("Alanine", "Glutamic Acid", "Proline", "Valine*", "Aspartic Acid")
+)
+
+
+clim1_TS <- ggplot(dataCLIM.1, aes(x = Year, y = residuals)) + 
+  stat_smooth(method = "gam", formula = y ~ s(x, k = 6), aes(color = AA))+
+  geom_point(aes(color = AA, alpha=0.5), pch=16, size=2.5) +
+  facet_grid(AA~.,labeller = labeller(dataCLIM.1$AA))+
+  scale_colour_manual(values = cols)+
+  labs(title = "A. Physological Delay Model", y="Residuals", x="Year")+
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
+        plot.title = element_text(hjust = 0.5))+
+  guides(colour=FALSE, alpha=FALSE)
+clim1_TS
+
+dataCLIM.2<- cbind(dataCLIM.2,residuals = residuals(modelENV.2))
+dataCLIM.2$AA<- factor(dataCLIM.2$AA, levels = c('ALA','GLU',
+                                                 'PRO', 'VAL', 'ASP'),
+                       labels = c("Alanine", "Glutamic Acid", "Proline", "Valine*", "Aspartic Acid"))
+
+
+clim2_TS <- ggplot(dataCLIM.2, aes(x = Year, y = residuals)) + 
+  stat_smooth(method = "gam", formula = y ~ s(x, k = 6), aes(color = AA))+
+  geom_point(aes(color = AA, alpha=0.5), pch=16, size=2.5) +
+  facet_grid(AA~.,labeller = labeller(dataCLIM.2$AA))+
+  scale_colour_manual(values = cols)+
+  labs(title = "B. 1-Year Ecological Delay Model", y="Residuals", x="Year")+
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
+        plot.title = element_text(hjust = 0.5))+
+  guides(colour=FALSE, alpha=FALSE)
+clim2_TS
+
+dataCLIM.3<- cbind(dataCLIM.3,residuals = residuals(modelENV.3))
+dataCLIM.3$AA<- factor(dataCLIM.3$AA, levels = c('ALA','GLU',
+                                                 'PRO', 'VAL', 'ASP'),
+                       labels = c("Alanine", "Glutamic Acid", "Proline", "Valine*", "Aspartic Acid"))
+
+
+clim3_TS <- ggplot(dataCLIM.3, aes(x = Year, y = residuals)) + 
+  stat_smooth(method = "gam", formula = y ~ s(x, k = 6), aes(color = AA))+
+  geom_point(aes(color = AA, alpha=0.5), pch=16, size=2.5) +
+  facet_grid(AA~.,labeller = labeller(dataCLIM.3$AA))+
+  scale_colour_manual(values = cols)+
+  labs(title = "C. 2-Year Ecological Delay Model", y="Residuals", x="Year")+
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
+        plot.title = element_text(hjust = 0.5))+
+  guides(colour=FALSE, alpha=FALSE)
+clim3_TS
+
+
+ResidualTSOcean<-annotate_figure(ggarrange(clim1_TS, clim2_TS, clim3_TS, ncol = 3, nrow = 1),top = text_grob("Ocean Condition Models", color = "black", face = "bold", size = 14))
+
+
+pdf(file="Results/Figures/ResidualTSOcean.pdf", width=11, height=6.5)
+ResidualTSOcean
+dev.off()
+
+
+
+
+
+
+
+
+
+
+dataPrey.1<- cbind(dataPrey.1,residuals = residuals(modelPREY1))
+dataPrey.1$AA<- factor(dataPrey.1$AA, levels = c('ALA','GLU',
+                                                 'PRO', 'VAL', 'ASP'),
+                       labels = c("Alanine", "Glutamic Acid", "Proline", "Valine*", "Aspartic Acid")
+)
+
+
+prey1_TS <- ggplot(dataPrey.1, aes(x = Year, y = residuals)) + 
+  stat_smooth(method = "gam", formula = y ~ s(x, k = 6), aes(color = AA))+
+  geom_point(aes(color = AA, alpha=0.5), pch=16, size=2.5) +
+  facet_grid(AA~.,labeller = labeller(dataCLIM.1$AA))+
+  scale_colour_manual(values = cols)+
+  labs(title = "A. Physological Delay Model", y="Residuals", x="Year")+
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
+        plot.title = element_text(hjust = 0.5))+
+  guides(colour=FALSE, alpha=FALSE)
+prey1_TS
+
+dataPrey.2<- cbind(dataPrey.2,residuals = residuals(modelPREY2))
+dataPrey.2$AA<- factor(dataPrey.2$AA, levels = c('ALA','GLU',
+                                                 'PRO', 'VAL', 'ASP'),
+                       labels = c("Alanine", "Glutamic Acid", "Proline", "Valine*", "Aspartic Acid")
+)
+
+
+prey2_TS <- ggplot(dataPrey.2, aes(x = Year, y = residuals)) + 
+  stat_smooth(method = "gam", formula = y ~ s(x, k = 6), aes(color = AA))+
+  geom_point(aes(color = AA, alpha=0.5), pch=16, size=2.5) +
+  facet_grid(AA~.,labeller = labeller(dataCLIM.1$AA))+
+  scale_colour_manual(values = cols)+
+  labs(title = "B. 1-Year Ecological Delay Model", y="Residuals", x="Year")+
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
+        plot.title = element_text(hjust = 0.5))+
+  guides(colour=FALSE, alpha=FALSE)
+prey2_TS
+
+dataPrey.3<- cbind(dataPrey.3,residuals = residuals(modelPREY3))
+dataPrey.3$AA<- factor(dataPrey.3$AA, levels = c('ALA','GLU',
+                                                 'PRO', 'VAL', 'ASP'),
+                       labels = c("Alanine", "Glutamic Acid", "Proline", "Valine*", "Aspartic Acid")
+)
+
+
+prey3_TS <- ggplot(dataPrey.3, aes(x = Year, y = residuals)) + 
+  stat_smooth(method = "gam", formula = y ~ s(x, k = 6), aes(color = AA))+
+  geom_point(aes(color = AA, alpha=0.5), pch=16, size=2.5) +
+  facet_grid(AA~.,labeller = labeller(dataCLIM.1$AA))+
+  scale_colour_manual(values = cols)+
+  labs(title = "C. 2-Year Ecological Delay Model", y="Residuals", x="Year")+
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
+        plot.title = element_text(hjust = 0.5))+
+  guides(colour=FALSE, alpha=FALSE)
+prey3_TS
+
+
+ResidualTSPrey<-annotate_figure(ggarrange(prey1_TS, prey2_TS, prey3_TS, ncol = 3, nrow = 1),top = text_grob("Food Web Models", color = "black", face = "bold", size = 14))
+
+
+pdf(file="Results/Figures/ResidualTSPrey.pdf", width=11, height=6.5)
+ResidualTSPrey
+dev.off()
+
+
+
+
+
 ###############Residual Plots ##############
 library(HLMdiag)
 HLMresid(modelFULL, level=1)
-col<-c('#CCA65A','#7EBA68','#00C1B2','#6FB1E7')
-palette(c('#7EBA68','#00C1B2','#CCA65A','#6FB1E7','#D494E1'))
+col<-c('#7EBA68','#CCA65A','#6FB1E7','#D494E1')
+palette(c('#7EBA68','#CCA65A','#6FB1E7','#D494E1'))
 
-pdf(file="Results/Figures/ResidualsDiagnosticsENV.pdf", width=16, height=12)
-par(mfrow=c(3,4))
+pdf(file="Results/Figures/ResidualsDiagnosticsENV.pdf", width=6, height=8)
+par(mfrow=c(3,2))
 
 y<- dataCLIM.1
 plot(predict(modelENV.1), y[,'TP'], pch=19, cex=0.5, ylab = "Observed", xlab = "Predicted",
      main="A. Physiological Delay Model", col=dataCLIM.1$AA)
 abline(0, 1)
-legend('bottomright', legend = c("Alanine", "Glutamic Acid", "Proline", "Valine"), col = c(1,3:5), cex = 0.8, pch = 16)
+legend('bottomright', legend = c("Alanine", "Glutamic Acid", "Proline", "Valine"),col=col,  cex = 0.8, pch = 16)
 
 plot(predict(modelENV.1), residuals(modelENV.1), ylab = "Residuals", xlab = "Predicted",
      main= "Physiological Delay Model",  pch=19, cex=0.5, col=dataCLIM.1$AA)
 abline(0, 0)
 
-y<- dataCLIM.1
-plot(predict(modelENV.1), y[,'TP'], pch=19, cex=0.5, ylab = "Observed", xlab = "Predicted",
-     main="B. Physiological Delay Model", col=dataCLIM.1$AA)
+y<- dataCLIM.2
+plot(predict(modelENV.2), y[,'TP'], pch=19, cex=0.5, ylab = "Observed", xlab = "Predicted",
+     main="B. 1-year Ecological Delay", col=dataCLIM.2$AA)
 abline(0, 1)
-legend('bottomright', legend = c("Alanine", "Glutamic Acid", "Proline", "Valine"), col = c(1,3:5), cex = 0.8, pch = 16)
 
-plot(predict(modelENV.1), residuals(modelENV.1), ylab = "Residuals", xlab = "Predicted",
-     main= "Physiological Delay Model",  pch=19, cex=0.5, col=dataCLIM.1$AA)
+plot(predict(modelENV.2), residuals(modelENV.2), ylab = "Residuals", xlab = "Predicted",
+     main= "1-year Ecological Delay",  pch=19, cex=0.5, col=dataCLIM.2$AA)
 abline(0, 0)
 
-y<- dataCLIM.1
-plot(predict(modelENV.1), y[,'TP'], pch=19, cex=0.5, ylab = "Observed", xlab = "Predicted",
-     main="C. Physiological Delay Model", col=dataCLIM.1$AA)
+y<- dataCLIM.3
+plot(predict(modelENV.3), y[,'TP'], pch=19, cex=0.5, ylab = "Observed", xlab = "Predicted",
+     main="C. 2-year Ecological Delay", col=dataCLIM.3$AA)
 abline(0, 1)
-legend('bottomright', legend = c("Alanine", "Glutamic Acid", "Proline", "Valine"), col = c(1,3:5), cex = 0.8, pch = 16)
 
-plot(predict(modelENV.1), residuals(modelENV.1), ylab = "Residuals", xlab = "Predicted",
-     main= "Physiological Delay Model",  pch=19, cex=0.5, col=dataCLIM.1$AA)
+plot(predict(modelENV.3), residuals(modelENV.3), ylab = "Residuals", xlab = "Predicted",
+     main= "3-year Ecological Delay",  pch=19, cex=0.5, col=dataCLIM.3$AA)
 abline(0, 0)
 
 dev.off()
+
+
+
+pdf(file="Results/Figures/ResidualsDiagnosticsPREY.pdf", width=6, height=8)
+par(mfrow=c(3,2))
+
+y<- dataPrey.1
+plot(predict(modelPREY1), y[,'TP'], pch=19, cex=0.5, ylab = "Observed", xlab = "Predicted",
+     main="A. Physiological Delay Model", col=dataPrey.1$AA)
+abline(0, 1)
+legend('bottomright', legend = c("Alanine", "Glutamic Acid", "Proline", "Valine"), col = col, cex = 0.8, pch = 16)
+
+plot(predict(modelPREY1), residuals(modelPREY1), ylab = "Residuals", xlab = "Predicted",
+     main= "Physiological Delay Model",  pch=19, cex=0.5, col=dataPrey.1$AA)
+abline(0, 0)
+
+y<- dataPrey.2
+plot(predict(modelPREY2), y[,'TP'], pch=19, cex=0.5, ylab = "Observed", xlab = "Predicted",
+     main="B. 1-year Ecological Delay", col=dataPrey.2$AA)
+abline(0, 1)
+
+plot(predict(modelPREY2), residuals(modelPREY2), ylab = "Residuals", xlab = "Predicted",
+     main= "1-year Ecological Delay",  pch=19, cex=0.5, col=dataPrey.2$AA)
+abline(0, 0)
+
+y<- dataPrey.3
+plot(predict(modelPREY3), y[,'TP'], pch=19, cex=0.5, ylab = "Observed", xlab = "Predicted",
+     main="C. 2-year Ecological Delay", col=dataPrey.3$AA)
+abline(0, 1)
+
+plot(predict(modelPREY3), residuals(modelPREY3), ylab = "Residuals", xlab = "Predicted",
+     main= "3-year Ecological Delay",  pch=19, cex=0.5, col=dataPrey.3$AA)
+abline(0, 0)
+
+dev.off()
+
+
 #######TABLES######
 
 tab_df(prey1.ordered,

@@ -463,6 +463,18 @@ sum(na.omit(TP[,16:20]) > 3.5 & na.omit(TP[,16:20]) < 5)/sum(na.omit(TP[,16:20])
 text(4.25,1.85,labels="0.76",cex=cex)
 
 
+sum(na.omit(TP[,19]) > 3.5 & na.omit(TP[,19]) < 5)/sum(na.omit(TP[,19]) > 0 & na.omit(TP[,19]) < 8)
+sum(na.omit(TP[,16]) > 3.5 & na.omit(TP[,16]) < 5)/sum(na.omit(TP[,16]) > 0 & na.omit(TP[,16]) < 8)
+sum(na.omit(TP[,17]) > 3.5 & na.omit(TP[,17]) < 5)/sum(na.omit(TP[,17]) > 0 & na.omit(TP[,17]) < 8)
+sum(na.omit(TP[,18]) > 3.5 & na.omit(TP[,18]) < 5)/sum(na.omit(TP[,18]) > 0 & na.omit(TP[,18]) < 8)
+sum(na.omit(TP[,20]) > 3.5 & na.omit(TP[,20]) < 5)/sum(na.omit(TP[,20]) > 0 & na.omit(TP[,20]) < 8)
+
+max(na.omit(TP[,19])) - min(na.omit(subset(TP[,19], TP[,19]>0)))
+max(na.omit(TP[,16])) - min(na.omit(subset(TP[,16], TP[,16]>0)))
+max(na.omit(TP[,17])) - min(na.omit(subset(TP[,16], TP[,17]>0)))
+max(na.omit(TP[,18])) - min(na.omit(subset(TP[,16], TP[,18]>0)))
+max(na.omit(TP[,20])) - min(na.omit(subset(TP[,16], TP[,20]>0)))
+
 
 plot(density(na.omit(TP$TP.ALA3.beta)), xlim=c(1,7), ylim=c(0,2),col='#7EBA68', lwd=2, lty=3, bty='n', cex.lab=0.75,xlab='Trophic Position',cex.main=0.85,
      main=expression(paste("3. ",frac(paste(paste(delta^15, "N"['Tr'])," - ",paste(delta^15, "N"['Phe'])," - ", "TDF"['Phy'], " - ", beta['W']),
