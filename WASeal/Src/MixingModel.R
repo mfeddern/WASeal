@@ -363,11 +363,11 @@ colnames(TP)<- c("TP.ALA1", "TP.GLU1", "TP.VAL1", "TP.ASP1","TP.PRO1","TP.ALA1.b
 color<- rep(c('black','#CCA65A','#7EBA68','#00C1B2','#6FB1E7'), each=4)
 par(mfrow=c(1,1),mar=c(3,3,4,2))
 cex=0.85
-pdf(file="Results/Figures/TEF.pdf", width=5, height=5)
+pdf(file="Results/Figures/TEF.pdf", width=5.25, height=5.25)
 par(mfrow=c(2,2),mar=c(4,3,4,2))
 plot(density(na.omit(TP$TP.ALA1)), xlim=c(1,7), ylim=c(0,2),xlab='Trophic Position',col='#7EBA68', cex.lab=0.75,lwd=2,lty=3, bty='n',cex.main=0.85,
-     main=expression(paste("1. ",frac(paste(paste(delta^15, "N"['Tr'])," - ",paste(delta^15, "N"['Phe']), " - ", beta['Aq']),
-                                      "TDF"['Average'])," + 1")))
+     main=expression(paste("1. ",frac(paste(paste(delta^15, "N"['(i-o)']), " - ", beta['(i-o),N']),
+                                      bar("TDF")['Average'])," + 1")))
 polygon(density(na.omit(TP$TP.ALA1)),col=alpha('#7EBA68',0.25),border='#7EBA68', lwd=2, lty=3)
 polygon(density(na.omit(TP$TP.GLU1)),col=alpha('#CCA65A',0.25),border='#CCA65A', lwd=2, lty=1)
 polygon(density(na.omit(TP$TP.ASP1)),col=alpha('#00C1B2',0.25),border='#00C1B2',lwd=2,lty=2)
@@ -383,8 +383,8 @@ text(4.25,1.85,labels="0.15",cex=cex)
 
 
 plot(density(na.omit(TP$TP.ALA2)), xlim=c(1,7), ylim=c(0,2),col='#7EBA68', lty=3, lwd=2, cex.lab=0.75,bty='n', xlab='Trophic Position',cex.main=0.85,
-     main=expression(paste("2. ",frac(paste(paste(delta^15, "N"['Tr'])," - ",paste(delta^15, "N"['Phe'])," - ", "TDF"['HS'], " - ", beta['Aq']),
-                                      "TDF"['Average'])," + 2")))
+     main=expression(paste("2. ",frac(paste(paste(delta^15, "N"['(i-o)'])," - ", "TDF"['(i-o),h'], " - ", beta['(i-o),N']),
+                                      bar("TDF")['(i-o)'])," + 2")))
 polygon(density(na.omit(TP$TP.ALA2)),col=alpha('#7EBA68',0.25),border='#7EBA68', lwd=2, lty=3)
 polygon(density(na.omit(TP$TP.GLU2)),col=alpha('#CCA65A',0.25),border='#CCA65A', lwd=2, lty=1)
 polygon(density(na.omit(TP$TP.ASP2)),col=alpha('#00C1B2',0.25),border='#00C1B2',lwd=2,lty=2)
@@ -397,8 +397,8 @@ text(4.25,1.85,labels="0.22",cex=cex)
 
 
 plot(density(na.omit(TP$TP.ALA3)), xlim=c(1,7), ylim=c(0,2),col='#7EBA68', lwd=2, lty=3,cex.lab=0.75, bty='n', xlab='Trophic Position',cex.main=0.85,
-     main=expression(paste("3. ",frac(paste(paste(delta^15, "N"['Tr'])," - ",paste(delta^15, "N"['Phe'])," - ", "TDF"['Phy'], " - ", beta['Aq']),
-                                      "TDF"['Average'])," + 2")))
+     main=expression(paste("3. ",frac(paste(paste(delta^15, "N"['(i-o)'])," - ", "TDF"['(i-o),p'], " - ", beta['(i-o),N']),
+                                      bar("TDF")['(i-o)'])," + 2")))
 polygon(density(na.omit(TP$TP.ALA3)),col=alpha('#7EBA68',0.25),border='#7EBA68', lwd=2, lty=3)
 polygon(density(na.omit(TP$TP.GLU3)),col=alpha('#CCA65A',0.25),border='#CCA65A', lwd=2, lty=1)
 polygon(density(na.omit(TP$TP.ASP3)),col=alpha('#00C1B2',0.25),border='#00C1B2',lwd=2,lty=2)
@@ -411,8 +411,8 @@ text(4.25,1.85,labels="0.66",cex=cex)
 
 
 plot(density(na.omit(TP$TP.ALA4)), xlim=c(1,7), ylim=c(0,2),col='#7EBA68',lty=3, lwd=2, cex.lab=0.75,bty='n', xlab='Trophic Position',cex.main=0.85,
-     main=expression(paste("4. ",frac(paste(paste(delta^15, "N"['Tr'])," - ",paste(delta^15, "N"['Phe'])," - ", "TDF"['Phy'], " - ", "TDF"['HS']," - ", beta['Aq']),
-                                      "TDF"['Average'])," + 3")))
+     main=expression(paste("4. ",frac(paste(paste(delta^15, "N"['T(i-o)'])," - ", "TDF"['(i-o),p'], " - ", "TDF"['(i-o),h']," - ", beta['(i-o),N']),
+                                      bar("TDF")['(i-o)'])," + 3")))
 polygon(density(na.omit(TP$TP.ALA4)),col=alpha('#7EBA68',0.25),border='#7EBA68', lwd=2, lty=3)
 polygon(density(na.omit(TP$TP.GLU4)),col=alpha('#CCA65A',0.25),border='#CCA65A', lwd=2, lty=1)
 polygon(density(na.omit(TP$TP.ASP4)),col=alpha('#00C1B2',0.25),border='#00C1B2',lwd=2,lty=2)
@@ -427,11 +427,11 @@ dev.off()
 
 ########################    TP Plots variable TEF and Beta parameterization                    ############################
 par(mfrow=c(1,1),mar=c(4,3,4,2))
-pdf(file="Results/Figures/TEF.beta.pdf", width=5, height=5)
+pdf(file="Results/Figures/TEF.beta.pdf", width=5.25, height=5.25)
 par(mfrow=c(2,2),mar=c(4,3,4,2))
 plot(density(na.omit(TP$TP.ALA1.beta)), xlim=c(1,7), ylim=c(0,2),xlab='Trophic Position',col='#7EBA68',cex.lab=0.75, lwd=2,lty=3, bty='n',cex.main=0.85,
-     main=expression(paste("1. ",frac(paste(paste(delta^15, "N"['Tr'])," - ",paste(delta^15, "N"['Phe']), " - ", beta['W']),
-                                      "TDF"['Average'])," + 1")))
+     main=expression(paste("1. ",frac(paste(paste(delta^15, "N"['(i-o)']), " - ", beta['(i-o),NV']),
+                                      bar("TDF")['(i-o)'])," + 1")))
 
 polygon(density(na.omit(TP$TP.ALA1.beta)),col=alpha('#7EBA68',0.25),border='#7EBA68', lwd=2, lty=3)
 polygon(density(na.omit(TP$TP.GLU1.beta)),col=alpha('#CCA65A',0.25),border='#CCA65A', lwd=2, lty=1)
@@ -449,8 +449,8 @@ text(4.25,1.85,labels="0.65",cex=cex)
 
 
 plot(density(na.omit(TP$TP.ALA2.beta)), xlim=c(1,7), ylim=c(0,2),col='#7EBA68', cex.lab=0.75,lty=3, lwd=2, bty='n', xlab='Trophic Position',cex.main=0.85,
-     main=expression(paste("2. ",frac(paste(paste(delta^15, "N"['Tr'])," - ",paste(delta^15, "N"['Phe'])," - ", "TDF"['HS'], " - ", beta['W']),
-                                      "TDF"['Average'])," + 2")))
+     main=expression(paste("2. ",frac(paste(paste(delta^15, "N"['(i-o)'])," - ","TDF"['(i-o),h'], " - ", beta['(i-o),NV']),
+                                      bar("TDF")['(i-o)'])," + 2")))
 polygon(density(na.omit(TP$TP.ALA2.beta)),col=alpha('#7EBA68',0.25),border='#7EBA68', lwd=2, lty=3)
 polygon(density(na.omit(TP$TP.GLU2.beta)),col=alpha('#CCA65A',0.25),border='#CCA65A', lwd=2, lty=1)
 polygon(density(na.omit(TP$TP.ASP2.beta)),col=alpha('#00C1B2',0.25),border='#00C1B2',lwd=2,lty=2)
@@ -477,8 +477,8 @@ max(na.omit(TP[,20])) - min(na.omit(subset(TP[,16], TP[,20]>0)))
 
 
 plot(density(na.omit(TP$TP.ALA3.beta)), xlim=c(1,7), ylim=c(0,2),col='#7EBA68', lwd=2, lty=3, bty='n', cex.lab=0.75,xlab='Trophic Position',cex.main=0.85,
-     main=expression(paste("3. ",frac(paste(paste(delta^15, "N"['Tr'])," - ",paste(delta^15, "N"['Phe'])," - ", "TDF"['Phy'], " - ", beta['W']),
-                                      "TDF"['Average'])," + 2")))
+     main=expression(paste("3. ",frac(paste(paste(delta^15, "N"['(i-o)'])," - ", "TDF"['(i-o),p'], " - ", beta['(i-o),NV']),
+                                      bar("TDF")['(i-o)'])," + 2")))
 polygon(density(na.omit(TP$TP.ALA3.beta)),col=alpha('#7EBA68',0.25),border='#7EBA68', lwd=2, lty=3)
 polygon(density(na.omit(TP$TP.GLU3.beta)),col=alpha('#CCA65A',0.25),border='#CCA65A', lwd=2, lty=1)
 polygon(density(na.omit(TP$TP.ASP3.beta)),col=alpha('#00C1B2',0.25),border='#00C1B2',lwd=2,lty=2)
@@ -492,8 +492,8 @@ text(4.25,1.85,labels="0.48",cex=cex)
 
 
 plot(density(na.omit(TP$TP.ALA4.beta)), xlim=c(1,7), ylim=c(0,2),col='#7EBA68',lty=3, lwd=2, bty='n',cex.lab=0.75, xlab='Trophic Position',cex.main=0.85,
-     main=expression(paste("4. ",frac(paste(paste(delta^15, "N"['Tr'])," - ",paste(delta^15, "N"['Phe'])," - ", "TDF"['Phy'], " - ", "TDF"['HS']," - ", beta['W']),
-                                      "TDF"['Average'])," + 3")))
+     main=expression(paste("4. ",frac(paste(paste(delta^15, "N"['(i-o)'])," - ", "TDF"['(i-o),h']," - ", "TDF"['(i-o),p'], " - ", beta['(i-o),NV']),
+                                      bar("TDF")['(i-o)'])," + 3")))
 polygon(density(na.omit(TP$TP.ALA4.beta)),col=alpha('#7EBA68',0.25),border='#7EBA68', lwd=2, lty=3)
 polygon(density(na.omit(TP$TP.GLU4.beta)),col=alpha('#CCA65A',0.25),border='#CCA65A', lwd=2, lty=1)
 polygon(density(na.omit(TP$TP.ASP4.beta)),col=alpha('#00C1B2',0.25),border='#00C1B2',lwd=2,lty=2)
