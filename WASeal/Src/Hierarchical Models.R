@@ -574,7 +574,7 @@ model.selection.PREY <- function(dataframe,n, y) {
 
 model.selectionPREY.0 <- model.selection.PREY(dataPREY.0, n, dataPREY.0$TP)
 prey0<-data.frame(model.selectionPREY.0)
-subset(prey0, delAICc<=2)
+subset(prey0, as.numeric(delAICc)<=2)
 prey0.ordered <- prey0[order(prey0$AICc),]
 prey0.ordered[1:6,]
 
@@ -617,7 +617,7 @@ sjPlot::tab_df(prey3.ordered[1:7,],
 
 model.selectionPREY.1ad <- model.selection.PREY(dataPREY.1ad, n, dataPREY.1ad$TP)
 prey1ad<-data.frame(model.selectionPREY.1ad)
-subset(prey1ad, delAICc<=5)
+subset(prey1ad, as.numeric(delAICc)<=5)
 subset(prey1ad, delAICc<=2)
 prey1ad.ordered <- prey1ad[order(prey1ad$AICc),]
 prey1ad.ordered[1:6,]
