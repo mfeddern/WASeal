@@ -1,5 +1,5 @@
 <table style="border-collapse:collapse; border:none;">
-<caption style="font-weight: bold; text-align:left;">1-Year Ecological Delay Top 5 Models</caption>
+<caption style="font-weight: bold; text-align:left;">1-Year Ecological Delay Top 10 Models</caption>
 <tr>
 <th style="border-top: double; text-align:center; font-style:italic; font-weight:normal; padding:0.2cm; border-bottom:1px solid black; text-align:left; ">Covariates</th>
 <th style="border-top: double; text-align:center; font-style:italic; font-weight:normal; padding:0.2cm; border-bottom:1px solid black; ">AICc</th>
@@ -7,34 +7,64 @@
 <th style="border-top: double; text-align:center; font-style:italic; font-weight:normal; padding:0.2cm; border-bottom:1px solid black; ">AICc.Weight</th>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">11. SST (Summer)</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">749.94</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">15. SST (Summer), Upwelling (Spring), Location</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">734.84</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0.54</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0.39</td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">15. SST (Summer), Upwelling (Spring)</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">751.94</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">2</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0.2</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">16. SST (Summer), PDO, Upwelling (Spring), Location</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">736.55</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">1.7</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0.17</td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">14. SST (Summer), MEI</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">753.36</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">3.42</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0.1</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">18. SST (Summer), MEI, Upwelling (Spring), Location</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">736.65</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">1.81</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0.16</td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">32. Columbia Discharge High, SST (Summer)</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">753.86</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">3.92</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0.08</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">17. SST (Summer), NPGO, Upwelling (Spring), Location</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">736.8</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">1.95</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0.15</td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; border-bottom: double; ">12. SST (Summer), PDO</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; border-bottom: double; ">755.82</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; border-bottom: double; ">5.87</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; border-bottom: double; ">0.03</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">14. SST (Summer), MEI, Location</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">738.91</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">4.07</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0.05</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">11. SST (Summer), Location</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">740.21</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">5.37</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0.03</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">32. Columbia Discharge (High), SST (Summer), Location</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">741.3</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">6.46</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0.02</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">12. SST (Summer), PDO, Location</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">741.34</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">6.49</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0.02</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">34. SST (Summer), Upwelling (Summer), Location</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">741.99</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">7.15</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; ">0.01</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; border-bottom: double; ">13. SST (Summer), NPGO, Location</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; border-bottom: double; ">742.04</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; border-bottom: double; ">7.2</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center; border-bottom: double; ">0.01</td>
 </tr>
 </table>
 
