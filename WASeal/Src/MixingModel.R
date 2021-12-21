@@ -80,7 +80,7 @@ beta<-beta %>% select(Glu,
                       Val,
                       Pro)
 
-beta[1,7]=-7.7
+beta[1,15]=-7.7
 
 data2 <-data %>% select(PHE.mean,
                         GLU.mean,
