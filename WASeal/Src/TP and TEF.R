@@ -30,6 +30,7 @@ data2 <- read.csv("Data/Compiled/WASealAAandTP2.csv")
 data <- read.csv("Data/Compiled/SI Data.csv")
 
 
+
 ########################     Calculating TEFs                      ############################
 
 ger <- read.csv("Data/Compiled/GermainData2.csv")

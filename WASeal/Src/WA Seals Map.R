@@ -52,6 +52,9 @@ t.1 <- adjustcolor(col[4], alpha.f=0.5)
 t.2 <- adjustcolor(col[1], alpha.f=0.5)
 t.14 <- adjustcolor(col[4], alpha.f=1)
 
+#points(samples$Long, samples$Lat, pch=16, col=samples$Year, cex=2.5)
+
+
 points(samples.i$Long, samples.i$Lat, pch=16, col=paste(t.2), cex=2.5)
 points(samples.c$Long, samples.c$Lat, pch=16, col=paste(t.1), cex=2.5)
 legend(-125.6,46.55, c('n = 1', expression("n ">="2"), "OCNMS"), 
@@ -71,3 +74,38 @@ barplot(coastal$Coastal, ylab = "Number of Specimens", xlab="Year", col= col[4],
         names.arg = coastal$Year, main = "Coastal Specimens", cex.lab=1.5, cex.axis = 1.5, 
         cex.names = 1.5, cex.main=1.5)
 dev.off()
+
+
+
+
+ #### SECOND MAP #####
+samples <- read.csv("Data/Compiled/Samples_InPosession_Summary.csv")
+samples <-samples %>% 
+  mutate(Year.bin = cut(Year, breaks=c(1925, 1960, 1970, 1975, 1980, 1985, 1990, 1995, 2000, 2005, 2020)))
+samples$Year.bin2<- factor(samples$Year.bin, levels = levels(samples$Year.bin),
+                       labels = c("1925 - 1960", 
+                                  "1960 - 1970", 
+                                  "1970 - 1975", 
+                                  "1975 - 1980", 
+                                  "1980 - 1985",
+                                  "1985 - 1990",
+                                  "1990 - 1995",
+                                  "1995 - 2000",
+                                  "2000 - 2005",
+                                  "2005 - 2020")
+)
+pdf(file="Results/Figures/WAMap2.pdf", width=4, height=4.5)
+palette(hcl.colors(10,"Sunset", alpha=0.75))
+
+par(oma=c(0,0,0,0), mar=c(5,10,0,0))
+plotMap(nepacLLhigh, xlim=c(-127, -121.5), ylim=c(46, 49.5),col="white", bg='grey90', cex.lab=1.5, cex.axis=1.35,
+        border='grey48',  axes = FALSE, ylab='', xlab='', colHoles=NULL)
+
+points(samples$Long, samples$Lat, pch=16, col=as.factor(samples$Year.bin2), cex=1.5)
+
+palette(hcl.colors(10,"Sunset", alpha=1))
+legend(-127,48.55, pch=16, title= "Year Range", bg='white', legend=levels(samples$Year.bin2),col = as.factor(levels(samples$Year.bin2)))
+
+
+dev.off()
+

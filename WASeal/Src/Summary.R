@@ -20,16 +20,35 @@ library(viridisLite)
 data <- read.csv("Data/Compiled/HierarchicalData.csv")
 data<-subset(data, beta==1& eq==2)
 
+
+##### Calculating propagated error for analytical uncertainty for TP ####
+
+sd.tp.glu <- sqrt(0.56^2+0.34^2)
+sd.tp.ala <- sqrt(0.46^2+0.34^2)
+sd.tp.pro <- sqrt(0.48^2+0.34^2)
+sd.tp.val <- sqrt(0.38^2+0.34^2)
+sd.tp.asp <- sqrt(0.83^2+0.34^2)
+
+AnalyticalError<- data.frame(AA = c("GLU", "ALA", "PRO", "VAL", "ASP"),
+                        tp.sd=as.numeric(c(sqrt(0.56^2+0.34^2),
+                                sqrt(0.46^2+0.34^2),
+                                sqrt(0.48^2+0.34^2),
+                                sqrt(0.38^2+0.34^2),
+                                sqrt(0.83^2+0.34^2))))
+
 ############### Seasonality #################
 data2 <- read.csv("Data/Compiled/WASealAAandTP2.csv")
-data4 <- left_join(data, data2, by = "Sample.ID")
+data4 <- data%>%
+  left_join(data2, by = "Sample.ID")%>%
+  left_join(AnalyticalError, by = "AA")
 
 dataSeas <-data4 %>% select(
   TP,
   Location.2.x,
   AA,
   Year,
-  Month)%>%
+  Month,
+  tp.sd)%>%
   mutate(AA2 =recode(AA,'GLU' = "a. Glutamic Acid",'ALA'="b. Alanine",
                      'ASP'="d. Aspartic Acid", 'VAL'="c. Valine", "PRO"="e. Proline"))
 
@@ -49,6 +68,7 @@ Seas <- ggplot(dataSeas, aes(x=Month, y= TP, color=col)) +
   #stat_smooth(aes(color = AA2), method='loess', formula=y~x)+
   stat_smooth(method = "gam", formula = y ~ s(x, k = 12), aes(color = AA2))+
   geom_point(aes(color = AA2, alpha=0.5), pch=16, size=2.5) +
+
   facet_grid(AA2~.,labeller = labeller(dataSeas$AA2))+
   ylim(2, 7)+
   xlim(1, 12)+
@@ -63,18 +83,39 @@ Seas
 
 GLU<-filter(dataSeas, AA == "GLU")
 summary(gam(TP~s(Month, k = 12), data=GLU))
+summary(lm(TP~sin(2*pi*Month/12), data=GLU))
+summary(lm(TP~cos(2*pi*Month/12), data=GLU))
 
-ALA<-filter(dataSeas, AA == "ALA")
+ALA<-filter(dataSeas, AA == "ALA" & TP>0)
 summary(gam(TP~s(Month, k = 12), data=ALA))
+summary(lm(TP~sin(2*pi*Month/12), data=ALA))
+summary(lm(TP~cos(2*pi*Month/12), data=ALA))
 
-ASP<-filter(dataSeas, AA == "ASP")
+
+ASP<-filter(dataSeas, AA == "ASP"& TP>0)
 summary(gam(TP~s(Month, k = 12), data=ASP))
+summary(lm(TP~sin(2*pi*Month/12), data=ASP))
+summary(lm(TP~cos(2*pi*Month/12), data=ASP))
+
 
 VAL<-filter(dataSeas, AA == "VAL")
 summary(gam(TP~s(Month, k = 12), data=VAL))
+summary(lm(TP~sin(2*pi*Month/12), data=VAL))
+summary(lm(TP~cos(2*pi*Month/12), data=VAL))
+
 
 PRO<-filter(dataSeas, AA == "PRO")
 summary(gam(TP~s(Month, k = 12), data=PRO))
+summary(lm(TP~sin((2*pi*PRO$Month)/12), data=PRO))
+summary(lm(TP~cos(2*pi*Month/12), data=PRO))
+
+
+plot(cos(GLU$Month), GLU$TP)
+plot(cos(ALA$Month), ALA$TP)
+plot(cos(2*ASP$Month), ASP$TP)
+plot(cos(VAL$Month), VAL$TP)
+plot(cos(PRO$Month), PRO$TP)
+
 
 pdf(file="Results/Figures/Seasonality.pdf", width=5, height=8)
 Seas
@@ -87,12 +128,16 @@ ALA=subset(data, AA=='ALA')$TP, ASP=subset(data, AA=='ASP')$TP)
 cor(Corr.mat, method = "pearson", use = "complete.obs")
 ############### Time Series #################
 
+data <- data%>%
+  left_join(AnalyticalError, by = "AA")
+
 
 dataTS <-data %>% select(
   TP,
   Location.2,
   AA,
-  Year)%>%
+  Year,
+  tp.sd)%>%
   mutate(AA2 =recode(AA,'GLU' = "a. Glutamic Acid",'ALA'="b. Alanine",
                           'ASP'="d. Aspartic Acid", 'VAL'="c. Valine", "PRO"="e. Proline"))
 
@@ -116,6 +161,7 @@ SS.TS <- ggplot(dataTS.ss, aes(x=Year, y= TP, color=col)) +
   #stat_smooth(aes(color = AA2), method='loess', formula=y~x)+
   stat_smooth(method = "gam", formula = y ~ s(x, k = 4), aes(color = AA2))+
   geom_point(aes(color = AA2, alpha=0.5), pch=16, size=2.5) +
+#  geom_errorbar(aes(ymin=TP-tp.sd, ymax=TP+tp.sd,color=AA2))+
   facet_grid(AA2~.,labeller = labeller(dataTS.ss$AA2))+
   ylim(2, 6)+
   xlim(1925, 2015)+
@@ -578,3 +624,35 @@ plot(data2$ALA.mean, data2$TP.ALA2.beta, ylim=c(0,6),xlim=c(10,30))
 plot(data2$PRO.mean, data2$TP.PRO2.beta, ylim=c(0,6),xlim=c(10,30))
 plot(data2$ASP.mean, data2$TP.ASP2.beta, ylim=c(0,6),xlim=c(10,30))
 plot(data2$VAL.mean, data2$TP.VAL2.beta, ylim=c(0,6),xlim=c(10,30))
+
+
+##### Summary Table #####
+
+dataSumm <-data %>% 
+  select(
+  TP,
+  Location.2,
+  AA,
+  years,
+   Sample.ID, TP, tp.sd)%>%
+  filter(AA=="GLU")%>%
+  filter(Location.2=="Inland" | Location.2 =="Coastal")%>%
+  drop_na(TP) %>% 
+  group_by(years) %>%
+  summarise(mean = mean(TP), sd.samples = sd(TP), n = n())%>%
+  mutate(sd = sqrt(0.3462^2+0.56^2+sd.samples^2))%>%
+  replace_na(list(sd=0.655))
+
+dataSummTab<- dataSumm%>%
+  select(years,
+         mean,
+         n,
+         sd)
+
+tab_df(dataSummTab,
+       
+       title = "Prey Physiological Delay", #always give
+       #your tables
+       #titles
+       file = "Results/Tables/tpsumm.doc")
+
