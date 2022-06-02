@@ -9,11 +9,10 @@ library(dplyr)
 library(dotwhisker)
 library(car)
 library(ggpubr)
-
+library(purrr)
 library(devtools)
 #install_version("lme4", "1.1-25")
 library(lme4)
-
 library(AICcmodavg)
 
 dataALL <-  read.csv("Data/Compiled/HierarchicalData.csv")
@@ -326,6 +325,8 @@ CLIM1.plot
 sjPlot::tab_df(clim.1.ordered[1:10,],
                title = "Physiological Delay Top 10 Models", 
                file = "Results/Tables/Clim1Top5.doc")
+
+
 
 
 
@@ -1012,3 +1013,29 @@ summary(modelPREY1.1)
 
 confint(modelPREY2.1, level=0.95)
 summary(modelPREY2.1)
+
+
+####Cross Validation####
+get_pred  <- function(model, test_data){
+  data  <- as.data.frame(test_data)
+  pred  <- add_predictions(data, model)
+  return(pred)
+}
+
+###climate model lag 1
+data.mod <- dataPrey.1%>%
+  filter(Location.2 == "Inland")
+data.test <-dataPrey.1%>%
+  filter(Location.2 == "Coastal")
+#cross validation
+modelCLIM1.1<-lmer(TP~allSmolt+Herring.Biomass+HakeBiomass+(1|AA), data=data.mod, REML=F)
+pred1  <- predict(modelCLIM1.1,data.test)
+mean((data.test$TP-pred1)^2) #0.57
+
+modelCLIM1.2<-lmer(TP~allSmolt+HakeBiomass+(1|AA), data=data.mod, REML=F)
+pred2  <- predict(modelCLIM1.2,data.test)
+mean((data.test$TP-pred2)^2)#0.5
+
+
+modelPREY1.1<-lmer(TP~Location.2+allSmolt+Herring.Biomass+HakeBiomass+(1|AA), data=dataPrey.1, REML=F)
+modelPREY1.2<-lmer(TP~Location.2+allSmolt+HakeBiomass+(1|AA), data=dataPrey.1, REML=F)

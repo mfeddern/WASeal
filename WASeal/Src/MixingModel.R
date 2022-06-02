@@ -135,6 +135,13 @@ coastal.C4.weighted<-data.frame(beta*Percent.C4[1,1]/100)
 salishsea.C4.weighted<-data.frame(beta*Percent.C4[2,1]/100)
 all.C4.weighted<-data.frame(beta*Percent.C4[1,3]/100)
 
+sd(beta$Glu*Function.MixingModel2(all)/100)
+sd(beta$Ala*Function.MixingModel2(all)/100)
+sd(beta$Asp*Function.MixingModel2(all)/100)
+sd(beta$Val*Function.MixingModel2(all)/100)
+sd(-7.7*Function.MixingModel2(all)/100)
+mean(-7.7*Function.MixingModel2(all)/100)
+
 all.C4.weighted<-data.frame(beta*Percent.C4[1,3]/100)
 
 
@@ -185,6 +192,13 @@ phe<- herring['Phe']
 TEF <- data.frame(((hs-hs[10,])-herring+herring[10,]))
 TEF<- data.frame(t(TEF))
 
+herring2<-t(herring)
+sd(ger.sealAA$Ala-ger.sealAA$Phe-21.9+11.3)
+sd(ger.sealAA$Glu-ger.sealAA$Phe-20.6+11.3)
+sd(ger.sealAA$Asp-ger.sealAA$Phe-15.7+11.3)
+sd(ger.sealAA$Pro-ger.sealAA$Phe-22.7+11.3)
+sd(ger.sealAA$Val-ger.sealAA$Phe-13.8+11.3)
+
 ########################  TEF EQ1                ############################
 
 TP<-data.frame(rep(NA, length(AA.mean)))
@@ -197,7 +211,7 @@ Calculating.TP.1  <- function(dataframe, AA.mean, AA, AA2, x){
 
 
 ########################   TEF EQ2                ############################
-TP<-data.frame(rep(NA, length(AA.mean)))
+TP<-data.frame(rep(NA, length(data$GLU.mean)))
 
 Calculating.TP.2  <- function(dataframe, AA.mean, AA, AA2, x) {
   
@@ -209,7 +223,25 @@ Calculating.TP.2  <- function(dataframe, AA.mean, AA, AA2, x) {
   TP  
 }
 
+#### Error Prop GLU Eq 2 weighted beta ####
 
+SD<-data.frame(rep(NA, length(data$GLU.mean)))
+
+Calculating.SD  <- function(dataframe, AA.mean, AA, AA2, x) {
+  
+  for(i in 1:length(AA.mean)){
+    SD[i,]<- (-TEF.JN[1,AA]^-2)^2*(sd.glu+sd.phe+Beta.JN[2,AA])+
+      TEF.JN[2,AA]*((AA.mean[i]-data$PHE.mean[i]-Beta.JN[1,AA])/(TEF.JN[1,AA])^2)^2
+    
+  }
+  SD 
+}
+
+SD=Calculating.SD(data, data$GLU.mean, 'GLU', 'Glu',  Percent.C3[1,3])
+Tp=Calculating.TP.2(data, data$GLU.mean, 'GLU', 'Glu',  Percent.C3[1,3])
+Error.prop = cbind(data[,c("years","Location.2", "Sample.ID", "PHE.mean","GLU.mean","d13C", "d13C.s", "d15N","Sex", "Length")], "TP"=Tp, "SD"=SD)
+colnames(Error.prop)<- c("years","Location.2", "Sample.ID", "PHE.mean","GLU.mean","d13C", "d13C.s", "d15N","Sex",  "Length", "TP", "SD")
+write.csv(Error.prop, 'Data/Compiled/ErrorProp.csv')
 
 ########################     Calculating TEF EQ3                ############################
 TP<-data.frame(rep(NA, length(data$AA.mean)))
@@ -612,43 +644,6 @@ fit.TP <- gam(TP.GLU~s(Year)+Location.2, data=Location)
 AIC(gam(TP.GLU~s(Year), data=Location)) # 82.81808 gam with a smooth term to year, two level factors with a plus after year
 AIC(gam(TP.GLU~s(Year, by=Location.2), data=Location)) #82.85721 gam with a smooth term to year, two level factors with a plus after year
 
-########################     Time sereis to check seasonality and size       ############################
-
-pdf(file="Results/Figures/MonthAnalysis.TPMean.pdf", width=6, height=5)
-fit.1 <- gam(TP.ger~s(Month, bs="cc", k=12), data=data2)
-b <- getViz(fit.1)
-phe.m <- plot(b) +  l_points(shape = 19, size = 2.5, alpha = 0.2)+ l_fitLine(linetype = 3) +
-  ggtitle(expression(paste(delta^15, "Trophic Position")))+
-  l_ciLine(colour = 'red') + theme_classic() + labs(title = NULL)
-print(phe.m, pages = 1)
-
-dev.off()
-
-palette(c('black','#6FB1E7','#D494E1','#CCA65A','#7EBA68','#00C1B2'))
-
-
-pdf(file="Results/Figures/TPbyLength.pdf", width=8, height=4)
-shapes = c(16, 17, 18) 
-shapes <- shapes[as.numeric(length$Location.2)]
-par(mfrow=c(1,1), mar=c(5,5,2,2))
-length <- subset(data, Length>=1&Location.2=="Inland"|Location.2=="Coastal")
-length(length$Sample.ID) #73
-length.stand <- ifelse(length$Length>900, length$Length/10, length$Length)
-length.st<- cbind(length, length.stand =length.stand)
-plot(log(length.st$length.stand), length.st$TP.GLU,ylab="Trophic Position", xlab="Length (cm)", 
-     pch=shapes,
-     ylim=c(2,6), col=length$Sex, bty='n')
-lm(length.st$TP.GLU~log(length.st$length.stand))
-summary(lm(length.st$TP.GLU~log(length.st$length.stand)))
-abline(3.91, 0.00149, col='red')
-dev.off()
-
-fit.2 <- gam(TP.GLU~s(length.stand, k=3), data=length.st) #82.85721 gam with a smooth term to year, two level factors with a plus after year
-b <- getViz(fit.2)
-length <- plot(b) +  l_points(shape = 19, size = 2.5, alpha = 0.2)+ l_fitLine(linetype = 3) +
-  ggtitle(expression(paste(delta^15, "Trophic Position")))+
-  l_ciLine(colour = 'red') + theme_classic() + labs(title = NULL)
-summary(fit.2)
 ########################     Creating Hierarchical Dataset subset selection       ############################
 
 x<-0

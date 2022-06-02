@@ -10,49 +10,82 @@
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">2. Location Only</td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">3. Herring Spawning Biomass, Location</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">3. Herring Biomass</td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">4. Chinook Escapements, Location</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">4. Chinook Escapements</td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">5. Chinook Smolts Production, Location</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">5. All Chinook Smolts</td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">6. Hake Spawning Biomass, Location</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">6. Hake Biomass</td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">7. Herring Spawning Biomass, Chinook Escapements, Location</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">7. Herring Biomass, Chinook escapements</td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">8. Herring Spawning Biomass, Hake Spawning Biomass, Location</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">8. Herring Biomass, Hake Biomass</td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">9. Herring Spawning Biomass, Chinook Smolt Production, Location</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">9. Herring Biomass, All Chinook Smolts</td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">10. Chinook Escapements, Hake Spawning Biomass, Location</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">10. Chinook escapement, Hake biomass</td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">11. Chinook Escapments, Chinook Smolt Production, Location</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">11. Chinook escapments, All Chinook Smolts</td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">12. Chinook Smolt Production, Hake Spawning Biomass, Location</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">12. All Chinook Smolts, Hake biomass</td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">17. Harbor Seal Abundance, Location</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">13. Chinook escapement, All Chinook Smolts, Hake biomass</td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">18. Harbor Seal Abundance, Herring Spawning Biomass, Location</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">14. Herring Biomass, All Chinook Smolts, Hake biomass</td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">19. Harbor Seal Abundance, Chinook Escapements, Location</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">15. Chinook escapement, All Chinook Smolts, herring biomass</td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">20. Harbor Seal Abundance, Chinook Smolt Production, Location</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">16. Herring biomass, Hake biomass, Chinook escapement</td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">21. Harbor seal Abundance, Hake Spawning iomass, Location</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">17. Harbor Seal population</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">18. Harbor Seal population, Herring biomass</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">19. Harbor Seal population, Chinook escapement</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">20.Harbor Seal population, All Chinook Smolts</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">21. Harbor seal population, Hake biomass</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">22. Harbor Seal population, Herring biomass, Chinook escapement</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">23.Harbor Seal population,  Herring biomass, Hake biomass</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">24.Harbor Seal population,  Herring biomass, All Chinook Smolts</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">25.Harbor Seal population,  Chinook escapement, Hake biomass</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">26. Harbor Seal population, All Chinook Smolts, Hake biomass</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">27. Hake and Herring interaction</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">28. Hake and Herring interaction, All Chinook Smolts</td>
 </tr>
 <tr>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; border-bottom: double; ">1. Null</td>

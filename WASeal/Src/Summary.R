@@ -21,20 +21,6 @@ data <- read.csv("Data/Compiled/HierarchicalData.csv")
 data<-subset(data, beta==1& eq==2)
 
 
-##### Calculating propagated error for analytical uncertainty for TP ####
-
-sd.tp.glu <- sqrt(0.56^2+0.34^2)
-sd.tp.ala <- sqrt(0.46^2+0.34^2)
-sd.tp.pro <- sqrt(0.48^2+0.34^2)
-sd.tp.val <- sqrt(0.38^2+0.34^2)
-sd.tp.asp <- sqrt(0.83^2+0.34^2)
-
-AnalyticalError<- data.frame(AA = c("GLU", "ALA", "PRO", "VAL", "ASP"),
-                        tp.sd=as.numeric(c(sqrt(0.56^2+0.34^2),
-                                sqrt(0.46^2+0.34^2),
-                                sqrt(0.48^2+0.34^2),
-                                sqrt(0.38^2+0.34^2),
-                                sqrt(0.83^2+0.34^2))))
 
 ############### Seasonality #################
 data2 <- read.csv("Data/Compiled/WASealAAandTP2.csv")
@@ -628,26 +614,29 @@ plot(data2$VAL.mean, data2$TP.VAL2.beta, ylim=c(0,6),xlim=c(10,30))
 
 ##### Summary Table #####
 
-dataSumm <-data %>% 
+
+
+
+dat <- read.csv('Data/Compiled/ErrorProp.csv')
+dataSumm <-dat %>% 
   select(
   TP,
   Location.2,
-  AA,
+
   years,
-   Sample.ID, TP, tp.sd)%>%
-  filter(AA=="GLU")%>%
+   Sample.ID, TP, SD)%>%
   filter(Location.2=="Inland" | Location.2 =="Coastal")%>%
   drop_na(TP) %>% 
   group_by(years) %>%
-  summarise(mean = mean(TP), sd.samples = sd(TP), n = n())%>%
-  mutate(sd = sqrt(0.3462^2+0.56^2+sd.samples^2))%>%
-  replace_na(list(sd=0.655))
-
+  summarise(mean = sprintf("%.1f", round(mean(TP), 1)), SD = sprintf("%.1f", round((1/n()*sqrt(sum(SD))),1)), n = n())
+  #mutate(sd = sd.samples))h
+  #replace_na(list(sd=0.655))
+dataSumm
 dataSummTab<- dataSumm%>%
   select(years,
          mean,
-         n,
-         sd)
+         SD,
+         n)
 
 tab_df(dataSummTab,
        
@@ -656,3 +645,14 @@ tab_df(dataSummTab,
        #titles
        file = "Results/Tables/tpsumm.doc")
 
+dat %>% 
+  select(
+    TP,
+    Location.2,
+    years,
+    Sample.ID, TP, SD)%>%
+  filter(years == 1942)%>%
+  filter(Location.2=="Inland" | Location.2 =="Coastal")
+
+dat$X<-years %% 2
+summary(lm(TP~as.factor(X), data=dat))
